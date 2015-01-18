@@ -1,0 +1,19 @@
+<dataset>
+    <table_prescription 
+    	id="1" 
+    	lot_number="20141001001"
+    	date="2014-10-01" 
+    	part_number="TS-ABCd" 
+    	part_number_head="TS" 
+    	part_number_body="ABCd" 
+    	total_amount="10.33" 
+    	total_price="20.51" 
+    	average_cost="3.1416" 
+    	hand="2.2"
+    	total_amount_after_handed="39.283"
+    	created_date="2014-10-01 00:12:23"
+    	created_by="Rocky"
+    	modified_date="2014-10-02 21:15:16"
+    	modified_by="Chen"/>
+    	
+</dataset>
