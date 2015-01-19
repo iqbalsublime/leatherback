@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.rc.leatherback.exception.PrescriptionNotFoundException;
+import com.rc.leatherback.facade.dto.PageableDto;
 import com.rc.leatherback.model.Prescription;
 import com.rc.leatherback.model.User;
 import com.rc.leatherback.service.PrescriptionService;
@@ -25,6 +26,7 @@ import com.rc.leatherback.service.PrescriptionService;
 @Path("/prescription")
 public class PrescriptionFacade {
     private static final Logger LOGGER = LoggerFactory.getLogger(PrescriptionFacade.class);
+    private static final int PAGE_SIZE = 10;
 
     private PrescriptionService service;
 
@@ -33,12 +35,19 @@ public class PrescriptionFacade {
     }
 
     @GET
+    @Path("/page/{index}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response list() {
+    public Response list(@PathParam("index") int pageIndex) {
         try {
-            List<Prescription> prescriptions = service.findPrescriptionsByPage(1, 1);
+            List<Prescription> prescriptions = service.findPrescriptionsByPage(pageIndex, PAGE_SIZE);
+            int totalNumberOfPrescriptions = service.getTotalNumberOfPrescriptions();
 
-            return Response.status(200).entity(prescriptions).build();
+            PageableDto<Prescription> responseData = new PageableDto<Prescription>();
+            responseData.setData(prescriptions);
+            responseData.setCurrentPage(pageIndex);
+            responseData.setTotalItems(totalNumberOfPrescriptions);
+
+            return Response.status(200).entity(responseData).build();
         } catch (ClassNotFoundException | SQLException exception) {
             LOGGER.error("Failed to find all prescriptions", exception);
             return Response.status(590).build();

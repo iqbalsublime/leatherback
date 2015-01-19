@@ -1,0 +1,139 @@
+<div class="row">
+	<div class="widget">
+		<div class="widget-header">
+		    <i class="icon-bar-chart"></i>
+		    <h3>Create a prescription</h3>
+		</div>
+		<div class="widget-content">
+			<div class="tab-pane active" id="formcontrols">
+				<form id="edit-profile" class="form-horizontal">
+					<fieldset>
+						<div class="control-group">											
+							<label class="control-label" for="firstname">Date</label>
+							<div class="controls">
+					            <p class="input-group">
+					              <input type="text" 
+					              		 class="form-control" 
+					              		 datepicker-popup="{{format}}" 
+					              		 ng-model="prescription.date" 
+					              		 is-open="opened" 
+					              		 min-date="minDate" 
+					              		 max-date="'2015-06-22'" 
+					              		 datepicker-options="dateOptions" 
+					              		 date-disabled="disabled(date, mode)" 
+					              		 ng-required="true" 
+					              		 close-text="Close" 
+					              		 readonly/>
+					              <span class="input-group-btn">
+					                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="icon-calendar"></i></button>
+					              </span>
+					            </p>
+							</div>
+						</div>
+						
+						<div class="control-group">
+							<label class="control-label" for="lotNumber">Lot Number</label>
+							<div class="controls">
+								<input type="text" ng-model="lotNumberHead" class="span2" id="lot-number-head">
+								<input type="text" ng-model="lotNumberBody" class="span2" id="lot-number-body">
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label" for="partNumber">Part Number</label>
+							<div class="controls">
+								<script type="text/ng-template" id="customTemplate.html">
+  									<a><span bind-html-unsafe="match.label | typeaheadHighlight:query"></span></a>
+								</script>
+        						<input type="text" 
+        								ng-model="prescription.partNumberHead"
+        								typeahead="c as c.partNumberHead for c in partNumberHeads | filter:$viewValue | limitTo:10" 
+        								typeahead-min-length='1' 
+        								typeahead-on-select='onSelectPart($item, $model, $label)' 
+        								typeahead-template-url="customTemplate.html" 
+        								class="span1">
+        						-
+        						<input type="text" ng-model="prescription.partNumberBody" class="span2" id="part-number-body">
+							</div>
+						</div>
+						
+						<div class="widget-content">
+			              <table class="table table-striped table-bordered">
+			                <thead>
+			                  <tr>
+			                  	<th> Item </th>
+			                    <th> Prescription </th>
+			                    <th> Amount </th>
+			                    <th> Price </th>
+			                    <th> Note </th>
+			                  </tr>
+			                </thead>
+			                <tbody>
+			                  <tr>
+			                    <td> 1 </td>
+			                    <td> <input type="text" class="span3" id="name-1" ng-model="names[0]"> </td>
+			                    <td> <input type="text" class="span2" id="amount-1" ng-model="amounts[0]"> KG </td>
+			                    <td> <input type="text" class="span2" id="price-1" ng-model="prices[0]"> </td>
+			                    <td> <input type="text" class="span4" id="note-1" ng-model="notes[0]"> </td>
+			                  </tr>
+			                  
+			                  <tr>
+			                    <td> 2 </td>
+			                    <td> <input type="text" class="span3" id="name-2" ng-model="names[1]"> </td>
+			                    <td> <input type="text" class="span2" id="amount-2" ng-model="amounts[1]"> KG </td>
+			                    <td> <input type="text" class="span2" id="price-2" ng-model="prices[1]"> </td>
+			                    <td> <input type="text" class="span4" id="note-2" ng-model="notes[1]"> </td>
+			                  </tr>
+			                  
+			                  <tr>
+			                    <td> 3 </td>
+			                    <td> <input type="text" class="span3" id="name-3" ng-model="names[2]"> </td>
+			                    <td> <input type="text" class="span2" id="amount-3" ng-model="amounts[2]"> KG </td>
+			                    <td> <input type="text" class="span2" id="price-3" ng-model="prices[2]"> </td>
+			                    <td> <input type="text" class="span4" id="note-3" ng-model="notes[2]"> </td>
+			                  </tr>
+			                </tbody>
+			              </table>
+			              
+			              <div class="span4">
+			              Total Amount: 
+			              </div>
+			              <div class="span4">
+			              Total Price: 
+			              </div>              
+			              
+			            </div>
+			            
+			            <hr>
+			            
+			            <div class="control-group">
+							<label class="control-label" for="firstname">Total Amount X</label>
+							<div class="controls">
+								<input type="text" class="span3" id="firstname"> Hand
+							</div>
+			            </div>
+			            
+			            <div class="control-group">
+							<label class="control-label" for="firstname">=</label>
+							<div class="controls">
+								<input type="text" class="span3" id="firstname"> KG
+							</div>
+			            </div>
+			            
+			            <div class="control-group">
+							<label class="control-label" for="firstname">Average</label>
+							<div class="controls">
+								<input type="text" class="span3" id="firstname"> (Price / Amount)
+							</div>
+			            </div>
+            
+						<div class="form-actions">
+							<button type="button" class="btn btn-primary" ng-click="submit()">Save</button> 
+							<button class="btn">Cancel</button>
+						</div> <!-- /form-actions -->
+					</fieldset>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

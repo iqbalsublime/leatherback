@@ -12,6 +12,7 @@ import com.rc.core.util.DateTimeUtil;
 import com.rc.leatherback.model.Prescription;
 
 public class PrescriptionDao {
+
     private static final String GET_BY_ID = "select * from table_prescription where id = ?;";
 
     public Prescription getById(Connection connection, long id) throws SQLException {
@@ -38,6 +39,25 @@ public class PrescriptionDao {
 
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(FIND_ALL);
+        while (resultSet.next()) {
+            prescriptions.add(bindData(resultSet));
+        }
+
+        resultSet.close();
+        statement.close();
+
+        return prescriptions;
+    }
+
+    private static final String FIND_ALL_PAGINATION = "select * from table_prescription limit ? offset ?;";
+
+    public List<Prescription> findAllPagination(Connection connection, int limit, int offset) throws SQLException {
+        List<Prescription> prescriptions = new ArrayList<Prescription>();
+
+        PreparedStatement statement = connection.prepareStatement(FIND_ALL_PAGINATION);
+        statement.setInt(1, limit);
+        statement.setInt(2, offset);
+        ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()) {
             prescriptions.add(bindData(resultSet));
         }
@@ -123,6 +143,20 @@ public class PrescriptionDao {
         try (PreparedStatement statement = connection.prepareStatement(DELETE)) {
             statement.setLong(1, id);
             statement.executeUpdate();
+        }
+    }
+
+    private static final String COUNT_ALL = "select count(*) from table_prescription;";
+
+    public int countAll(Connection connection) throws SQLException {
+        try (Statement statement = connection.createStatement()) {
+            try (ResultSet resultSet = statement.executeQuery(COUNT_ALL)) {
+                if (resultSet.next()) {
+                    return resultSet.getInt(1);
+                } else {
+                    return 0;
+                }
+            }
         }
     }
 

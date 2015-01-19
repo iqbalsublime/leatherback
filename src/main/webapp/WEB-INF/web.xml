@@ -16,7 +16,7 @@
 			<param-name>jersey.config.server.provider.packages</param-name>
 			<param-value>com.rc.leatherback.facade</param-value>
 		</init-param>
-		<load-on-startup>1</load-on-startup>
+		<load-on-startup>2</load-on-startup>
 	</servlet>
 
 	<servlet-mapping>

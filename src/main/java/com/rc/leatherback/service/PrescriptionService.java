@@ -45,7 +45,9 @@ public class PrescriptionService {
         try (Connection connection =
                 DriverManager.getConnection("jdbc:mysql://localhost:3306/leatherback_dev", "root", "rockey.chen")) {
 
-            List<Prescription> prescriptions = dao.findAll(connection);
+            int limit = pageSize;
+            int offset = pageSize * (pageIndex - 1);
+            List<Prescription> prescriptions = dao.findAllPagination(connection, limit, offset);
             for (Prescription prescription : prescriptions) {
                 List<PrescriptionDetail> details = detailDao.findByPrescriptionId(connection, prescription.getId());
                 prescription.setDetails(details);
@@ -160,6 +162,14 @@ public class PrescriptionService {
             throw exception;
         } finally {
             connection.close();
+        }
+    }
+
+    public int getTotalNumberOfPrescriptions() throws ClassNotFoundException, SQLException {
+        Class.forName("com.mysql.jdbc.Driver");
+        try (Connection connection =
+                DriverManager.getConnection("jdbc:mysql://localhost:3306/leatherback_dev", "root", "rockey.chen")) {
+            return dao.countAll(connection);
         }
     }
 }
