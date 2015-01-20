@@ -133,6 +133,7 @@
     <script src="${pageContext.request.contextPath}/resources/scripts/app.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/app-route.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/app-translation.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/scripts/app-directive.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/app-service.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/app-controller.js"></script>
 </body>
