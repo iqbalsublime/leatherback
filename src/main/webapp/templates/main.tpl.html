@@ -2,13 +2,74 @@
 	{{data.id}}
 	{{id}}
 	<div class="modal-header">
-		<h4 class="modal-title"><span class="glyphicon glyphicon-star"></span> Custom Dialog 2</h4>
+		<h4 class="modal-title"><span class="glyphicon glyphicon-star"></span> {{prescription.lotNumber}} </h4>
 	</div>
 	<div class="modal-body">
-		<label class="control-label" for="customValue">Custom Value:</label>
-		<input type="text" class="form-control" id="customValue" ng-model="data.val" ng-keyup="hitEnter($event)">
-		<span class="help-block">Using "dialogsProvider.useCopy(false)" in your applications config function will allow data passed to a custom dialog to retain its two-way binding with the scope of the calling controller.</span>
-	</div>
+		<div class="widget-content">
+			<div class="control-group">
+				<label class="control-label">Date</label>
+				<div class="controls">
+					{{prescription.date}}
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label" for="customValue">Lot Number</label>
+				<span class="help-block">{{prescription.lotNumber}}</span>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label" for="customValue">Part Number</label>
+				<span class="help-block">{{prescription.partNumber}}</span>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label" for="customValue">Total Amount</label>
+				<span class="help-block">{{prescription.totalAmount}}</span>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label" for="customValue">Total Price</label>
+				<span class="help-block">{{prescription.totalPrice}}</span>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label" for="customValue">Average Cost</label>
+				<span class="help-block">{{prescription.averageCost}}</span>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label" for="customValue">Hand</label>
+				<span class="help-block">{{prescription.hand}}</span>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label" for="customValue">Total Amount After Handed</label>
+				<span class="help-block">{{prescription.totalAmountAfterHanded}}</span>
+			</div>
+
+		  <table class="table table-striped table-bordered">
+			<thead>
+			  <tr>
+				<th> Item </th>
+				<th> Prescription </th>
+				<th> Amount </th>
+				<th> Price </th>
+				<th> Note </th>
+			  </tr>
+			</thead>
+			<tbody>
+			  <tr ng-repeat="detail in prescription.details">
+				<td> {{$index + 1}} </td>
+				<td> {{detail.prescriptionName}} </td>
+				<td> {{detail.amount}} KG </td>
+				<td> {{detail.price}} </td>
+				<td> {{detail.note}} </td>
+			  </tr>
+			</tbody>
+		  </table>
+		</div>
+
 	<div class="modal-footer">
 		<button type="button" class="btn btn-default" ng-click="done()">Done</button>
 	</div>
@@ -48,7 +109,7 @@
 								<td>{{prescription.totalAmountAfterHanded}}</td>
 								<td>{{prescription.averageCost}}</td>
 								<td class="td-actions">
-									<a class="btn btn-small btn-success" href="javascript:;">
+									<a class="btn btn-small btn-success" href="javascript:;" ng-click="edit(prescription.id)">
 										<i class="btn-icon-only icon-edit"> </i>Edit
 									</a>
 									<a class="btn btn-danger btn-small" href="javascript:;" ng-click="remove($index, prescription.id)">

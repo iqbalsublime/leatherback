@@ -31,10 +31,11 @@ leatherback.controller('mainCtrl', ['$scope','$location','prescriptionService','
     };
     
     $scope.show = function(id) {
-    	//$location.path(id);
-    	alert(id);
-    	var dlg = dialogs.create('/dialogs/custom2.html', 'showCtrl', id, {size:'lg'});
-
+    	var dlg = dialogs.create('/dialogs/custom2.html', 'showCtrl', id, {windowClass:'app-modal-window'});
+    }
+    
+    $scope.edit = function(id) {
+    	$location.path('/edit/' + id);
     }
 }]);
 
@@ -58,9 +59,8 @@ leatherback.controller('search.byPartNumberCtrl', ['$scope','$location', functio
 
 leatherback.controller('showCtrl', ['$scope', '$routeParams', '$location', 'prescriptionService', 'data',
                                     function($scope, $routeParams, $location, prescriptionService, data) {
-	alert(data);
     $scope.prescription = {};
-    prescriptionService.getById($routeParams.id).then(function(returnData) {
+    prescriptionService.getById(data).then(function(returnData) {
         $scope.prescription = returnData;
     });
 

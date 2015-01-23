@@ -14,6 +14,11 @@
 <link href="${pageContext.request.contextPath}/resources/styles/font-awesome.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/styles/angucomplete.css" rel="stylesheet" type="text/css">
 <link href="${pageContext.request.contextPath}/resources/styles/style.css" rel="stylesheet" type="text/css">
+<style>
+.app-modal-window .modal-dialog {
+	width: 500px;
+}
+</style>
 </head>
 
 <body>

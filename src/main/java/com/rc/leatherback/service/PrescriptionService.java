@@ -3,6 +3,7 @@ package com.rc.leatherback.service;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,161 +16,248 @@ import com.rc.leatherback.model.User;
 
 public class PrescriptionService {
 
-    private PrescriptionDao dao;
-    private PrescriptionDetailDao detailDao;
+	private PrescriptionDao dao;
+	private PrescriptionDetailDao detailDao;
 
-    public PrescriptionService() {
-        this.dao = new PrescriptionDao();
-        this.detailDao = new PrescriptionDetailDao();
-    }
+	public PrescriptionService() {
+		this.dao = new PrescriptionDao();
+		this.detailDao = new PrescriptionDetailDao();
+	}
 
-    public Prescription getPrescriptionById(long id) throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.jdbc.Driver");
-        try (Connection connection =
-                DriverManager.getConnection("jdbc:mysql://localhost:3306/leatherback_dev", "root", "rockey.chen")) {
+	public Prescription getPrescriptionById(long id) throws ClassNotFoundException, SQLException {
+		// Class.forName("com.mysql.jdbc.Driver");
+		// try (Connection connection =
+		// DriverManager.getConnection("jdbc:mysql://localhost:3306/leatherback_dev",
+		// "root",
+		// "rockey.chen")) {
+		//
+		// Prescription prescription = dao.getById(connection, id);
+		// if (prescription == null) {
+		// throw new
+		// PrescriptionNotFoundException(String.format("Prescription is not found by id: %s",
+		// id));
+		// }
+		//
+		// List<PrescriptionDetail> details =
+		// detailDao.findByPrescriptionId(connection, prescription.getId());
+		// prescription.setDetails(details);
+		//
+		// return prescription;
+		// }
 
-            Prescription prescription = dao.getById(connection, id);
-            if (prescription == null) {
-                throw new PrescriptionNotFoundException(String.format("Prescription is not found by id: %s", id));
-            }
+		Prescription prescription = new Prescription();
+		prescription.setId(1);
+		prescription.setLotNumber("20150123001");
+		prescription.setDate(new Date(2015, 1, 23));
+		prescription.setPartNumber("TS-ABC01");
+		prescription.setPartNumberHead("TS");
+		prescription.setPartNumberHead("ABC01");
+		prescription.setTotalAmount(12.5);
+		prescription.setTotalPrice(36.23);
+		prescription.setTotalAmountAfterHanded(48.281);
+		prescription.setHand(1.2);
 
-            List<PrescriptionDetail> details = detailDao.findByPrescriptionId(connection, prescription.getId());
-            prescription.setDetails(details);
+		List<PrescriptionDetail> details = new ArrayList<PrescriptionDetail>();
+		PrescriptionDetail detail = new PrescriptionDetail();
+		detail.setId(1);
+		detail.setPrescriptionId(1);
+		detail.setPrescriptionName("aa");
+		detail.setAmount(10);
+		detail.setPrice(38);
+		detail.setNote("test");
+		details.add(detail);
 
-            return prescription;
-        }
-    }
+		detail = new PrescriptionDetail();
+		detail.setId(2);
+		detail.setPrescriptionId(1);
+		detail.setPrescriptionName("abb");
+		detail.setAmount(11);
+		detail.setPrice(381);
+		detail.setNote("test 2");
+		details.add(detail);
 
-    public List<Prescription> findPrescriptionsByPage(int pageIndex, int pageSize) throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.jdbc.Driver");
-        try (Connection connection =
-                DriverManager.getConnection("jdbc:mysql://localhost:3306/leatherback_dev", "root", "rockey.chen")) {
+		prescription.setDetails(details);
 
-            int limit = pageSize;
-            int offset = pageSize * (pageIndex - 1);
-            List<Prescription> prescriptions = dao.findAllPagination(connection, limit, offset);
-            for (Prescription prescription : prescriptions) {
-                List<PrescriptionDetail> details = detailDao.findByPrescriptionId(connection, prescription.getId());
-                prescription.setDetails(details);
-            }
+		return prescription;
+	}
 
-            return prescriptions;
-        }
-    }
+	public List<Prescription> findPrescriptionsByPage(int pageIndex, int pageSize) throws ClassNotFoundException, SQLException {
+		// Class.forName("com.mysql.jdbc.Driver");
+		// try (Connection connection =
+		// DriverManager.getConnection("jdbc:mysql://localhost:3306/leatherback_dev",
+		// "root", "rockey.chen")) {
+		//
+		// int limit = pageSize;
+		// int offset = pageSize * (pageIndex - 1);
+		// List<Prescription> prescriptions = dao.findAllPagination(connection,
+		// limit, offset);
+		// for (Prescription prescription : prescriptions) {
+		// List<PrescriptionDetail> details =
+		// detailDao.findByPrescriptionId(connection, prescription.getId());
+		// prescription.setDetails(details);
+		// }
+		//
+		// return prescriptions;
+		// }
 
-    public void addPrescription(User loggedInUser, Prescription prescription) throws SQLException, ClassNotFoundException {
-        Date createDate = new Date();
+		List<Prescription> prescriptions = new ArrayList<Prescription>();
+		Prescription prescription = new Prescription();
+		prescription.setId(1);
+		prescription.setLotNumber("20150123001");
+		prescription.setDate(new Date(2015, 1, 23));
+		prescription.setPartNumber("TS-ABC01");
+		prescription.setPartNumberHead("TS");
+		prescription.setPartNumberHead("ABC01");
+		prescription.setTotalAmount(12.5);
+		prescription.setTotalPrice(36.23);
+		prescription.setTotalAmountAfterHanded(48.281);
+		prescription.setHand(1.2);
 
-        prescription.setPartNumber(String.format("%s-%s", prescription.getPartNumberHead(), prescription.getPartNumberBody()));
-        prescription.setCreatedBy(loggedInUser.getName());
-        prescription.setCreatedDate(createDate);
-        prescription.setModifiedBy(loggedInUser.getName());
-        prescription.setModifiedDate(createDate);
+		List<PrescriptionDetail> details = new ArrayList<PrescriptionDetail>();
+		PrescriptionDetail detail = new PrescriptionDetail();
+		detail.setId(1);
+		detail.setPrescriptionId(1);
+		detail.setPrescriptionName("aa");
+		detail.setAmount(10);
+		detail.setPrice(38);
+		detail.setNote("test");
+		details.add(detail);
 
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/leatherback_dev", "root", "rockey.chen");
-        try {
-            connection.setAutoCommit(false);
-            dao.add(connection, prescription);
-            for (PrescriptionDetail detail : prescription.getDetails()) {
-                detail.setPrescriptionId(prescription.getId());
-                detail.setCreatedBy(loggedInUser.getName());
-                detail.setCreatedDate(createDate);
-                detail.setModifiedBy(loggedInUser.getName());
-                detail.setModifiedDate(createDate);
+		detail = new PrescriptionDetail();
+		detail.setId(2);
+		detail.setPrescriptionId(1);
+		detail.setPrescriptionName("abb");
+		detail.setAmount(11);
+		detail.setPrice(381);
+		detail.setNote("test 2");
+		details.add(detail);
 
-                detailDao.add(connection, detail);
-            }
-            connection.commit();
-        } catch (SQLException exception) {
-            connection.rollback();
+		prescription.setDetails(details);
+		prescriptions.add(prescription);
 
-            throw exception;
-        } finally {
-            connection.close();
-        }
-    }
+		return prescriptions;
 
-    public void updatePrescription(User loggedInUser, long id, Prescription prescription) throws SQLException,
-            ClassNotFoundException {
-        Date modifyDate = new Date();
+	}
 
-        prescription.setPartNumber(String.format("%s-%s", prescription.getPartNumberHead(), prescription.getPartNumberBody()));
-        prescription.setModifiedBy(loggedInUser.getName());
-        prescription.setModifiedDate(modifyDate);
+	public void addPrescription(User loggedInUser, Prescription prescription) throws SQLException, ClassNotFoundException {
+		Date createDate = new Date();
 
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/leatherback_dev", "root", "rockey.chen");
-        try {
-            connection.setAutoCommit(false);
+		prescription.setPartNumber(String.format("%s-%s", prescription.getPartNumberHead(), prescription.getPartNumberBody()));
+		prescription.setCreatedBy(loggedInUser.getName());
+		prescription.setCreatedDate(createDate);
+		prescription.setModifiedBy(loggedInUser.getName());
+		prescription.setModifiedDate(createDate);
 
-            // Check whether parameter id is valid
-            Prescription original = dao.getById(connection, id);
-            if (original == null) {
-                throw new PrescriptionNotFoundException(String.format("Prescription is not found by id: %s", id));
-            }
-            // Update prescription
-            prescription.setId(original.getId());
-            dao.update(connection, prescription);
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/leatherback_dev", "root", "rockey.chen");
+		try {
+			connection.setAutoCommit(false);
+			dao.add(connection, prescription);
+			for (PrescriptionDetail detail : prescription.getDetails()) {
+				detail.setPrescriptionId(prescription.getId());
+				detail.setCreatedBy(loggedInUser.getName());
+				detail.setCreatedDate(createDate);
+				detail.setModifiedBy(loggedInUser.getName());
+				detail.setModifiedDate(createDate);
 
-            // The approach for updating details is to first delete the details of the prescription,
-            // and then add the new details of the prescription.
-            detailDao.removeByPrescriptionId(connection, original.getId());
-            for (PrescriptionDetail detail : prescription.getDetails()) {
-                detail.setPrescriptionId(prescription.getId());
-                // Use prescription's creation information to act as the original data
-                detail.setCreatedBy(original.getCreatedBy());
-                detail.setCreatedDate(original.getCreatedDate());
-                detail.setModifiedBy(loggedInUser.getName());
-                detail.setModifiedDate(modifyDate);
+				detailDao.add(connection, detail);
+			}
+			connection.commit();
+		} catch (SQLException exception) {
+			connection.rollback();
 
-                detailDao.add(connection, detail);
-            }
+			throw exception;
+		} finally {
+			connection.close();
+		}
+	}
 
-            connection.commit();
-        } catch (SQLException exception) {
-            connection.rollback();
+	public void updatePrescription(User loggedInUser, long id, Prescription prescription) throws SQLException,
+			ClassNotFoundException {
+		Date modifyDate = new Date();
 
-            throw exception;
-        } finally {
-            connection.close();
-        }
-    }
+		prescription.setPartNumber(String.format("%s-%s", prescription.getPartNumberHead(), prescription.getPartNumberBody()));
+		prescription.setModifiedBy(loggedInUser.getName());
+		prescription.setModifiedDate(modifyDate);
 
-    public void deletePrescription(long id) throws SQLException, ClassNotFoundException {
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/leatherback_dev", "root", "rockey.chen");
-        try {
-            connection.setAutoCommit(false);
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/leatherback_dev", "root", "rockey.chen");
+		try {
+			connection.setAutoCommit(false);
 
-            // Check whether parameter id is valid
-            Prescription original = dao.getById(connection, id);
-            if (original == null) {
-                throw new PrescriptionNotFoundException(String.format("Prescription is not found by id: %s", id));
-            }
-            // Delete prescription
-            dao.remove(connection, original.getId());
-            // Delete details
-            List<PrescriptionDetail> originalDetails = detailDao.findByPrescriptionId(connection, original.getId());
-            for (PrescriptionDetail originalDetail : originalDetails) {
-                detailDao.remove(connection, originalDetail.getId());
-            }
+			// Check whether parameter id is valid
+			Prescription original = dao.getById(connection, id);
+			if (original == null) {
+				throw new PrescriptionNotFoundException(String.format("Prescription is not found by id: %s", id));
+			}
+			// Update prescription
+			prescription.setId(original.getId());
+			dao.update(connection, prescription);
 
-            connection.commit();
-        } catch (SQLException exception) {
-            connection.rollback();
+			// The approach for updating details is to first delete the details
+			// of the prescription,
+			// and then add the new details of the prescription.
+			detailDao.removeByPrescriptionId(connection, original.getId());
+			for (PrescriptionDetail detail : prescription.getDetails()) {
+				detail.setPrescriptionId(prescription.getId());
+				// Use prescription's creation information to act as the
+				// original data
+				detail.setCreatedBy(original.getCreatedBy());
+				detail.setCreatedDate(original.getCreatedDate());
+				detail.setModifiedBy(loggedInUser.getName());
+				detail.setModifiedDate(modifyDate);
 
-            throw exception;
-        } finally {
-            connection.close();
-        }
-    }
+				detailDao.add(connection, detail);
+			}
 
-    public int getTotalNumberOfPrescriptions() throws ClassNotFoundException, SQLException {
-        Class.forName("com.mysql.jdbc.Driver");
-        try (Connection connection =
-                DriverManager.getConnection("jdbc:mysql://localhost:3306/leatherback_dev", "root", "rockey.chen")) {
-            return dao.countAll(connection);
-        }
-    }
+			connection.commit();
+		} catch (SQLException exception) {
+			connection.rollback();
+
+			throw exception;
+		} finally {
+			connection.close();
+		}
+	}
+
+	public void deletePrescription(long id) throws SQLException, ClassNotFoundException {
+		Class.forName("com.mysql.jdbc.Driver");
+		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/leatherback_dev", "root", "rockey.chen");
+		try {
+			connection.setAutoCommit(false);
+
+			// Check whether parameter id is valid
+			Prescription original = dao.getById(connection, id);
+			if (original == null) {
+				throw new PrescriptionNotFoundException(String.format("Prescription is not found by id: %s", id));
+			}
+			// Delete prescription
+			dao.remove(connection, original.getId());
+			// Delete details
+			List<PrescriptionDetail> originalDetails = detailDao.findByPrescriptionId(connection, original.getId());
+			for (PrescriptionDetail originalDetail : originalDetails) {
+				detailDao.remove(connection, originalDetail.getId());
+			}
+
+			connection.commit();
+		} catch (SQLException exception) {
+			connection.rollback();
+
+			throw exception;
+		} finally {
+			connection.close();
+		}
+	}
+
+	public int getTotalNumberOfPrescriptions() throws ClassNotFoundException, SQLException {
+		// Class.forName("com.mysql.jdbc.Driver");
+		// try (Connection connection =
+		// DriverManager.getConnection("jdbc:mysql://localhost:3306/leatherback_dev",
+		// "root",
+		// "rockey.chen")) {
+		// return dao.countAll(connection);
+		// }
+
+		return 1;
+	}
 }
