@@ -1,3 +1,18 @@
+<script type="text/ng-template" id="/dialogs/custom2.html">
+	{{data.id}}
+	{{id}}
+	<div class="modal-header">
+		<h4 class="modal-title"><span class="glyphicon glyphicon-star"></span> Custom Dialog 2</h4>
+	</div>
+	<div class="modal-body">
+		<label class="control-label" for="customValue">Custom Value:</label>
+		<input type="text" class="form-control" id="customValue" ng-model="data.val" ng-keyup="hitEnter($event)">
+		<span class="help-block">Using "dialogsProvider.useCopy(false)" in your applications config function will allow data passed to a custom dialog to retain its two-way binding with the scope of the calling controller.</span>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-default" ng-click="done()">Done</button>
+	</div>
+</script>
 <div class="row">
 	<div class="widget">
 		<div class="widget-header">
@@ -26,16 +41,23 @@
 						</thead>
 						<tbody>
 							<tr ng-repeat="prescription in prescriptions">
-								<td>{{prescription.date}}</td>
+								<td>{{prescription.id}}</td>
 								<td>{{prescription.lotNumber}}</td>
 								<td>{{prescription.partNumber}}</td>
 								<td>{{prescription.totalAmount}}</td>
 								<td>{{prescription.totalAmountAfterHanded}}</td>
 								<td>{{prescription.averageCost}}</td>
-								<td class="td-actions"><a class="btn btn-small btn-success"
-									href="javascript:;"><i class="btn-icon-only icon-ok"> </i></a><a
-									class="btn btn-danger btn-small" href="javascript:;"><i
-										class="btn-icon-only icon-remove"> </i></a></td>
+								<td class="td-actions">
+									<a class="btn btn-small btn-success" href="javascript:;">
+										<i class="btn-icon-only icon-edit"> </i>Edit
+									</a>
+									<a class="btn btn-danger btn-small" href="javascript:;" ng-click="remove($index, prescription.id)">
+										<i class="btn-icon-only icon-remove"> </i>Remove
+									</a>
+									<a class="btn btn-info btn-small" href="javascript:;" ng-click="show(prescription.id)">
+										<i class="btn-icon-only icon-list-alt "> </i>Details
+									</a>
+								</td>
 							</tr>
 						</tbody>
 					</table>

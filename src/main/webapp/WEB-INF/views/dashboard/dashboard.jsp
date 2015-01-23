@@ -126,15 +126,18 @@
     <script src="${pageContext.request.contextPath}/resources/scripts/bloodhound.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/angular-route.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/angular-resource.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/scripts/angular-sanitize.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/angular-translate.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/ui-bootstrap-tpls-0.12.0.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/scripts/angucomplete.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/scripts/dialogs-default-translations.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/scripts/dialogs.js"></script>
     
     <script src="${pageContext.request.contextPath}/resources/scripts/app.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/app-route.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/app-translation.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/app-directive.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/app-service.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/scripts/app-factory.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/app-controller.js"></script>
 </body>
 </html>

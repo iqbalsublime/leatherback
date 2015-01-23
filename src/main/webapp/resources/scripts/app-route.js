@@ -24,6 +24,17 @@ leatherback.config(function ($routeProvider) {
             templateUrl: '/templates/add.tpl.html',
             controller: 'addCtrl'
         })
+        
+        .when('/edit/:id', {
+            templateUrl: '/templates/edit.tpl.html',
+            controller: 'editCtrl'
+        })
+        
+        .when('/:id', {
+            templateUrl: '/templates/show.tpl.html',
+            controller: 'showCtrl'
+        })
+        
         .otherwise({
             redirectTo: '/'
         });

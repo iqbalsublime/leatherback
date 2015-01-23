@@ -10,51 +10,19 @@
 					<fieldset>
 						<div class="control-group">											
 							<label class="control-label" for="firstname">Date</label>
-							<div class="controls">
-					            <p class="input-group">
-					              <input type="text" 
-					              		 class="form-control" 
-					              		 datepicker-popup="{{format}}" 
-					              		 ng-model="prescription.date" 
-					              		 is-open="opened" 
-					              		 min-date="minDate" 
-					              		 max-date="'2015-06-22'" 
-					              		 datepicker-options="dateOptions" 
-					              		 date-disabled="disabled(date, mode)" 
-					              		 ng-required="true" 
-					              		 close-text="Close" 
-					              		 readonly/>
-					              <span class="input-group-btn">
-					                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="icon-calendar"></i></button>
-					              </span>
-					            </p>
-							</div>
+							<p class="form-control-static">{{prescription.date}}</p>
 						</div>
 						
 						<div class="control-group">
 							<label class="control-label" for="lotNumber">Lot Number</label>
-							<div class="controls">
-								<input type="text" ng-model="lotNumberHead" class="span2" id="lot-number-head">
-								<input type="text" ng-model="lotNumberBody" class="span2" id="lot-number-body">
+							<div class="control">
+								{{prescription.lotNumber}}
 							</div>
 						</div>
 
 						<div class="control-group">
 							<label class="control-label" for="partNumber">Part Number</label>
-							<div class="controls">
-								<script type="text/ng-template" id="customTemplate.html">
-  									<a><span bind-html-unsafe="match.label | typeaheadHighlight:query"></span></a>
-								</script>
-        						<input type="text" 
-        								ng-model="prescription.partNumberHead"
-        								typeahead="c as c.partNumberHead for c in partNumberHeads | filter:$viewValue | limitTo:10" 
-        								typeahead-min-length='1' 
-        								typeahead-on-select='onSelectPart($item, $model, $label)' 
-        								typeahead-template-url="customTemplate.html" 
-        								class="span1">
-        						-
-        						<input type="text" ng-model="prescription.partNumberBody" class="span2" id="part-number-body">
-							</div>
+							{{prescription.partNumber}}
 						</div>
 						
 						<div class="widget-content">
