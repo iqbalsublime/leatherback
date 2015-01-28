@@ -4,8 +4,28 @@ leatherback.service('prescriptionService', function($http, $q) {
 		getById: getById,
 		create: create,
 		update: update,
-		remove: remove
+		remove: remove,
+		findByLotNumber: findByLotNumber,
+		findByPartNumber: findByPartNumber
 	})
+	
+	function findByLotNumber(lotNumber, pageIndex) {
+		var request = $http({
+            method: 'get',
+            url: 'api/prescription/search/byLotNumber/' + lotNumber + '/page/' + pageIndex
+        });
+		
+		return( request.then( handleSuccess, handleError ) );
+	}
+	
+	function findByPartNumber(partNumber, pageIndex) {
+		var request = $http({
+            method: 'get',
+            url: 'api/prescription/search/byPartNumber/' + partNumber + '/page/' + pageIndex
+        });
+		
+		return( request.then( handleSuccess, handleError ) );
+	}
 	
 	function list(pageIndex) {
 		var request = $http({

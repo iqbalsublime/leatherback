@@ -38,7 +38,7 @@ public class PrescriptionDetailDao {
     public void add(Connection connection, PrescriptionDetail prescriptionDetail) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS)) {
             statement.setLong(1, prescriptionDetail.getPrescriptionId());
-            statement.setString(2, prescriptionDetail.getPrescriptionName());
+            statement.setString(2, prescriptionDetail.getName());
             statement.setDouble(3, prescriptionDetail.getAmount());
             statement.setDouble(4, prescriptionDetail.getPrice());
             statement.setString(5, prescriptionDetail.getNote());
@@ -75,7 +75,7 @@ public class PrescriptionDetailDao {
 
     public void update(Connection connection, PrescriptionDetail prescriptionDetail) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(UPDATE)) {
-            statement.setString(1, prescriptionDetail.getPrescriptionName());
+            statement.setString(1, prescriptionDetail.getName());
             statement.setDouble(2, prescriptionDetail.getAmount());
             statement.setDouble(3, prescriptionDetail.getPrice());
             statement.setString(4, prescriptionDetail.getNote());
@@ -109,7 +109,7 @@ public class PrescriptionDetailDao {
 
         prescriptionDetail.setId(resultSet.getLong("id"));
         prescriptionDetail.setPrescriptionId(resultSet.getLong("prescription_id"));
-        prescriptionDetail.setPrescriptionName(resultSet.getString("prescription_name"));
+        prescriptionDetail.setName(resultSet.getString("prescription_name"));
         prescriptionDetail.setAmount(resultSet.getDouble("amount"));
         prescriptionDetail.setPrice(resultSet.getDouble("price"));
         prescriptionDetail.setNote(resultSet.getString("note"));

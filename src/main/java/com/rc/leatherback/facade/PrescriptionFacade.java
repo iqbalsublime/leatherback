@@ -35,6 +35,46 @@ public class PrescriptionFacade {
     }
 
     @GET
+    @Path("/search/byLotNumber/{lotNumber}/page/{index}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response byLotNumber(@PathParam("lotNumber") String lotNumber, @PathParam("index") int pageIndex) {
+        try {
+            List<Prescription> prescriptions = service.findPrescriptionsByLotNumber(lotNumber, pageIndex, PAGE_SIZE);
+            int totalNumberOfPrescriptions = prescriptions.size();
+
+            PageableDto<Prescription> responseData = new PageableDto<Prescription>();
+            responseData.setData(prescriptions);
+            responseData.setCurrentPage(pageIndex);
+            responseData.setTotalItems(totalNumberOfPrescriptions);
+
+            return Response.status(200).entity(responseData).build();
+        } catch (ClassNotFoundException | SQLException exception) {
+            LOGGER.error("Failed to find all prescriptions", exception);
+            return Response.status(590).build();
+        }
+    }
+
+    @GET
+    @Path("/search/byPartNumber/{partNumber}/page/{index}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response byPartNumber(@PathParam("partNumber") String partNumber, @PathParam("index") int pageIndex) {
+        try {
+            List<Prescription> prescriptions = service.findPrescriptionsByPartNumber(partNumber, pageIndex, PAGE_SIZE);
+            int totalNumberOfPrescriptions = prescriptions.size();
+
+            PageableDto<Prescription> responseData = new PageableDto<Prescription>();
+            responseData.setData(prescriptions);
+            responseData.setCurrentPage(pageIndex);
+            responseData.setTotalItems(totalNumberOfPrescriptions);
+
+            return Response.status(200).entity(responseData).build();
+        } catch (ClassNotFoundException | SQLException exception) {
+            LOGGER.error("Failed to find all prescriptions", exception);
+            return Response.status(590).build();
+        }
+    }
+
+    @GET
     @Path("/page/{index}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response list(@PathParam("index") int pageIndex) {

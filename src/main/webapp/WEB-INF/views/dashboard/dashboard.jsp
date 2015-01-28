@@ -74,33 +74,10 @@
 							<span>Create a prescription</span>
 						</a>	    				
 					</li>
-					<li class="dropdown">
-						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"> 
-							<i class="icon-search"></i>
-							<span>{{ 'SEARCH' | translate }}</span> <bclass="caret"></b>
-						</a>
-						<ul class="dropdown-menu">
-							<li><a href="#/search/byLotNumber">By Lot Number</a></li>
-							<li><a href="#/search/byDate">By Date</a></li>
-							<li><a href="#/search/byPartNumber">By Part Number</a></li>
-						</ul>
-					</li>
-					<li>
-						<a href="reports.html">
-							<i class="icon-list-alt"></i>
-							<span>Delete a prescription</span>
-						</a>    				
-					</li>
-					<li>					
-						<a href="guidely.html">
-							<i class="icon-facetime-video"></i>
-							<span>Modify a prescription</span>
-						</a>  									
-					</li>
 	                <li>					
 						<a href="charts.html">
 							<i class="icon-bar-chart"></i>
-							<span>Print</span>
+							<span>Reports</span>
 						</a>  									
 					</li>
 	                <li>					
@@ -134,7 +111,6 @@
     <script src="${pageContext.request.contextPath}/resources/scripts/angular-sanitize.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/angular-translate.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/ui-bootstrap-tpls-0.12.0.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/scripts/dialogs-default-translations.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/dialogs.js"></script>
     
     <script src="${pageContext.request.contextPath}/resources/scripts/app.js"></script>

@@ -81,12 +81,33 @@
 		    <h3>Search The Prescriptions</h3>
 		</div>
 		<div class="widget-content">
-			<div class="tab-pane active" id="formcontrols">
-				<div class="well">
-                    <h4>DataTables Usage Information</h4>
-                    <p>DataTables is a very flexible, advanced tables plugin for jQuery. In SB Admin, we are using a specialized version of DataTables built for Bootstrap 3. We have also customized the table headings to use Font Awesome icons in place of images. For complete documentation on DataTables, visit their website at <a href="https://datatables.net/" target="_blank">https://datatables.net/</a>.</p>
-                    <a href="https://datatables.net/" target="_blank" class="btn btn-default btn-lg btn-block">View DataTables Documentation</a>
-                </div>			
+
+
+			  <accordion close-others="oneAtATime">
+			    <accordion-group is-open="status.open">
+			        <accordion-heading>
+			            Search <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+			        </accordion-heading>
+			        
+					<tabset>
+						<tab heading="Search By Lot Number">
+							<div class="control-group">
+								<input type="text" ng-model="search.byLogNumber" class="span3" placeholder="Please enter the lot number here"><br/>
+								<button ng-click="searchByLotNumber()" class="btn">Search</button>
+								<button ng-click="showAll()" class="btn">All</button>
+							</div>
+						</tab>
+						<tab heading="Search By Part Number">
+							<div class="control-group">
+								<input type="text" ng-model="search.byPartNumber" class="span3" placeholder="Please enter the part number here"><br/>
+								<button ng-click="searchByPartNumber()" class="btn">Search</button>
+								<button ng-click="showAll()" class="btn">All</button>
+							</div>
+						</tab>
+					</tabset>
+			    </accordion-group>
+			  </accordion>
+  		
 				<form id="edit-profile" class="form-horizontal">
 					<table class="table table-striped table-bordered">
 						<thead>
@@ -125,7 +146,7 @@
 					<pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true" rotate="false" num-pages="numPages"></pagination>
     				<pre>Page: {{currentPage}} / {{numPages}}</pre>
 				</form>
-			</div>
+
 		</div>
 	</div>
 </div>

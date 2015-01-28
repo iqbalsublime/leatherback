@@ -5,7 +5,7 @@ public class PrescriptionDetail extends AbstractEntity {
     private static final long serialVersionUID = 3628333218811528395L;
 
     private long prescriptionId;
-    private String prescriptionName;
+    private String name;
     private double amount;
     private double price;
     private String note;
@@ -18,12 +18,12 @@ public class PrescriptionDetail extends AbstractEntity {
         this.prescriptionId = prescriptionId;
     }
 
-    public String getPrescriptionName() {
-        return prescriptionName;
+    public String getName() {
+        return name;
     }
 
-    public void setPrescriptionName(String prescriptionName) {
-        this.prescriptionName = prescriptionName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public double getAmount() {
