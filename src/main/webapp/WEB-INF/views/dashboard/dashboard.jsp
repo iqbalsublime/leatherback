@@ -102,10 +102,7 @@
     
     <script src="${pageContext.request.contextPath}/resources/scripts/jquery.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/bootstrap.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/scripts/bootstrap-datepicker.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/angular.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/scripts/typeahead.bundle.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/scripts/bloodhound.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/angular-route.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/angular-resource.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/angular-sanitize.js"></script>
