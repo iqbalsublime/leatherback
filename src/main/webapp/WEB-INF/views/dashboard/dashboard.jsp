@@ -7,115 +7,60 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
-<link href="${pageContext.request.contextPath}/resources/styles/bootstrap.min.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/resources/styles/bootstrap-responsive.min.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/resources/styles/datepicker.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/resources/styles/google-fonts.css" rel="stylesheet" type="text/css">
-<link href="${pageContext.request.contextPath}/resources/styles/font-awesome.css" rel="stylesheet">
-<link href="${pageContext.request.contextPath}/resources/styles/angucomplete.css" rel="stylesheet" type="text/css">
-<link href="${pageContext.request.contextPath}/resources/styles/style.css" rel="stylesheet" type="text/css">
-<style>
-.app-modal-window .modal-dialog {
-	width: 500px;
-}
-</style>
+<link href="${pageContext.request.contextPath}/resources/styles/vendor/bootstrap.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/resources/styles/vendor/bootstrap-theme.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/resources/styles/app.css" rel="stylesheet">
 </head>
 
 <body>
-	<div class="navbar navbar-fixed-top">
-		<div class="navbar-inner">
-			<div class="container">
-				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</a>
-				<a class="brand" href="#/">
-					EVER POLYMER CO., LTD.				
-				</a>		
-				<div class="nav-collapse">
-					<ul class="nav pull-right">
-						<li class="dropdown">						
-							<a href="#">
-								Hi Rocky Chen
-							</a>
-						</li>
-						<li class="dropdown">						
-							<a href="#">
-								<i class="icon-cog"></i>
-								Change Password
-							</a>
-						</li>
-						<li class="dropdown">						
-							<a href="#">
-								<i class="icon-cog"></i>
-								Logout
-							</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	<div class="subnavbar">
-		<div class="subnavbar-inner">
-			<div class="container">
-				<ul class="mainnav">	
-					<li>
-						<a href="#/">
-							<i class="icon-list"></i>
-							<span>List all prescriptions</span>
-						</a>	    				
-					</li>
-					<li>
-						<a href="#/add">
-							<i class="icon-plus"></i>
-							<span>Create a prescription</span>
-						</a>	    				
-					</li>
-	                <li>					
-						<a href="charts.html">
-							<i class="icon-bar-chart"></i>
-							<span>Reports</span>
-						</a>  									
-					</li>
-	                <li>					
-						<a href="shortcodes.html">
-							<i class="icon-user"></i>
-							<span>Authorisation</span>
-						</a>  									
-					</li>
-	                <li>														
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
+   <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">{{ 'COMPANY_NAME' | translate }}</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="#/">{{ 'PRESCRIPTION_MANAGE' | translate }}</a></li>
+            <li><a href="#/report">{{ 'REPORT_MANAGE' | translate }}</a></li>
+            <li><a href="#/authorisation">{{ 'AUTHORISATION_MANAGE' | translate }}</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="../navbar-static-top/">{{ 'CHANGE_PASSWORD' | translate }}</a></li>
+            <li><a href="../navbar-static-top/">{{ 'LOG_OUT' | translate }}</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
 
-	<div id="main">
-		<div class="main-inner">
-	    	<div class="container" ng-view>
-	    	</div>
-	    </div>
+	<div class="container" ng-view>
+
     </div>
     
-    <script src="${pageContext.request.contextPath}/resources/scripts/jquery.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/scripts/bootstrap.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/scripts/angular.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/scripts/angular-route.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/scripts/angular-resource.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/scripts/angular-sanitize.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/scripts/angular-translate.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/scripts/ui-bootstrap-tpls-0.12.0.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/scripts/dialogs.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/scripts/vendor/jquery-2.1.3.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/scripts/vendor/bootstrap.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/scripts/vendor/angular.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/scripts/vendor/angular-route.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/scripts/vendor/angular-resource.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/scripts/vendor/angular-sanitize.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/scripts/vendor/angular-loader.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/scripts/vendor/angular-translate.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/scripts/vendor/ui-bootstrap-tpls-0.12.0.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/scripts/vendor/ui-utils.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/scripts/vendor/i18n/angular-locale_zh-tw.js"></script>
     
     <script src="${pageContext.request.contextPath}/resources/scripts/app.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/app-route.js"></script>
-    <script src="${pageContext.request.contextPath}/resources/scripts/app-translation.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/app-directive.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/app-service.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/app-factory.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/app-controller.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/scripts/app-translation.js"></script>
 </body>
 </html>

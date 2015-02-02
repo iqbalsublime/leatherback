@@ -49,4 +49,10 @@ public class PrescriptionDetail extends AbstractEntity {
     public void setNote(String note) {
         this.note = note;
     }
+
+    @Override
+    public String toString() {
+        return "PrescriptionDetail{" + "id=" + id + "prescriptionId=" + prescriptionId + "name=" + name + " amount=" + amount
+                        + "price=" + price + " note=" + note + '}';
+    }
 }

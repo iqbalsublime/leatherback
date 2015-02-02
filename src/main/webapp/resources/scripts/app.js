@@ -1,6 +1,7 @@
 var leatherback = angular.module('leatherback', [
     'ngRoute', 
+    'ngLocale',
     'ui.bootstrap',
-    'dialogs.main',
+    'ui.utils',
     'pascalprecht.translate'
  ]);

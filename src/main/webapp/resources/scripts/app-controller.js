@@ -1,10 +1,5 @@
-leatherback.controller('mainCtrl', ['$scope','$location','prescriptionService','dialogs', '$modal',
-                                    function($scope, $location, prescriptionService, dialogs, $modal) {
-	
-	$scope.status = {
-		isFirstOpen: true,
-	    isFirstDisabled: false
-	};
+leatherback.controller('mainCtrl', ['$scope','$location','prescriptionService','$modal',
+                                    function($scope, $location, prescriptionService, $modal) {
 	
 	$scope.maxSize = 5;
 	$scope.currentPage = 1;
@@ -22,27 +17,17 @@ leatherback.controller('mainCtrl', ['$scope','$location','prescriptionService','
         $scope.currentPage = currentPage;
     };
     
-    $scope.search = {};
-    $scope.searchByLotNumber = function() {
-    	prescriptionService.findByLotNumber($scope.search.byLogNumber, 1).then(function(returnData) {
-    		$scope.prescriptions = returnData.data;
-    		$scope.setPageStatus(returnData.totalItems, returnData.currentPage);
-    	});
-    };
+    $scope.add = function() {
+    	$location.path('/add');
+    }
     
-    $scope.searchByPartNumber = function() {
-    	prescriptionService.findByPartNumber($scope.search.byPartNumber, 1).then(function(returnData) {
-    		$scope.prescriptions = returnData.data;
-    		$scope.setPageStatus(returnData.totalItems, returnData.currentPage);
-    	});
-    };
+    $scope.search = function() {
+    	$location.path('/search');
+    }
     
-    $scope.showAll = function() {
-    	prescriptionService.list(1).then(function(returnData) {
-            $scope.prescriptions = returnData.data;
-            $scope.setPageStatus(returnData.totalItems, returnData.currentPage);
-        });
-    };
+    $scope.edit = function(id) {
+    	$location.path('/edit/' + id);
+    }
     
     $scope.remove = function(index, id) {
     	var dlg = dialogs.confirm();
@@ -61,26 +46,10 @@ leatherback.controller('mainCtrl', ['$scope','$location','prescriptionService','
     $scope.show = function(id) {
     	var dlg = dialogs.create('/dialogs/custom2.html', 'showCtrl', id, {windowClass:'app-modal-window'});
     }
-    
-    $scope.edit = function(id) {
-    	$location.path('/edit/' + id);
-    }
 }]);
 
 
-leatherback.controller('search.byLotNumberCtrl', ['$scope','$location', function($scope, $location) {
-	$scope.message = "Hello AngularJs";
-
-}]);
-
-
-leatherback.controller('search.byDateCtrl', ['$scope','$location', function($scope, $location) {
-	$scope.message = "Hello AngularJs";
-
-}]);
-
-
-leatherback.controller('search.byPartNumberCtrl', ['$scope','$location', function($scope, $location) {
+leatherback.controller('reportCtrl', ['$scope','$location', function($scope, $location) {
 	$scope.message = "Hello AngularJs";
 
 }]);
@@ -94,8 +63,8 @@ leatherback.controller('showCtrl', ['$scope', '$location', 'prescriptionService'
 
 }]);
 
-leatherback.controller('addCtrl', ['$scope','$location', '$filter', 'prescriptionService', 'partNumberFactory', 'calculator', 
-                                   function($scope, $location, $filter, prescriptionService, partNumberFactory, calculator) {
+leatherback.controller('addCtrl', ['$scope','$location', '$filter', '$window', 'prescriptionService', 'partNumberFactory', 'calculator', 
+                                   function($scope, $location, $filter, $window, prescriptionService, partNumberFactory, calculator) {
 	
 	$scope.partNumberHeads = partNumberFactory.heads;
 	
@@ -119,7 +88,7 @@ leatherback.controller('addCtrl', ['$scope','$location', '$filter', 'prescriptio
 	$scope.prescription.averageCost = 0;
 	
 	$scope.$watch('prescription.date', function() {
-		$scope.lotNumberHead = $filter('date')($scope.prescription.date, 'yyyyMMdd');
+		$scope.prescription.lotNumber = $filter('date')($scope.prescription.date, 'yyyyMMdd');
 	})
 	
 	// initialise
@@ -146,7 +115,6 @@ leatherback.controller('addCtrl', ['$scope','$location', '$filter', 'prescriptio
 		if(typeof $scope.prescription.partNumberHead.partNumberHead != 'undefined') {
 			$scope.prescription.partNumberHead = $scope.prescription.partNumberHead.partNumberHead;
 		}
-		$scope.prescription.lotNumber = $scope.lotNumberHead + $scope.lotNumberBody;
 		
 		$scope.prescription.details = [];
 		for(var index = 0; index <= 19; index++) {
@@ -166,10 +134,14 @@ leatherback.controller('addCtrl', ['$scope','$location', '$filter', 'prescriptio
             $location.path('/');
         });
 	};
+	
+	$scope.cancel = function() {
+		$window.history.back();
+	};
 }]);
 
-leatherback.controller('editCtrl', ['$scope', '$routeParams','$location', '$filter', 'prescriptionService', 'partNumberFactory', 'calculator', 
-                                   function($scope, $routeParams, $location, $filter, prescriptionService, partNumberFactory, calculator) {
+leatherback.controller('editCtrl', ['$scope', '$routeParams','$location', '$filter', '$window', 'prescriptionService', 'partNumberFactory', 'calculator', 
+                                   function($scope, $routeParams, $location, $filter, $window, prescriptionService, partNumberFactory, calculator) {
 	
 	$scope.partNumberHeads = partNumberFactory.heads;
 	
@@ -226,7 +198,6 @@ leatherback.controller('editCtrl', ['$scope', '$routeParams','$location', '$filt
 		if(typeof $scope.prescription.partNumberHead.partNumberHead != 'undefined') {
 			$scope.prescription.partNumberHead = $scope.prescription.partNumberHead.partNumberHead;
 		}
-		$scope.prescription.lotNumber = $scope.lotNumberHead + $scope.lotNumberBody;
 		
 		$scope.prescription.details = [];
 		for(var index = 0; index <= 19; index++) {
@@ -246,8 +217,8 @@ leatherback.controller('editCtrl', ['$scope', '$routeParams','$location', '$filt
             $location.path('/');
         });
 	};
-}]);
-
-var initDetail = function() {
 	
-};
+	$scope.cancel = function() {
+		$window.history.back();
+	};
+}]);

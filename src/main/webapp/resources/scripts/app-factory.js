@@ -15,13 +15,13 @@ leatherback.factory('calculator', function() {
 		$scope.prescription.totalAmount = 0;
 		$scope.prescription.totalPrice = 0;
 		for(var index = 0; index <= 19; index++) {
-			if($scope.amounts[index] != '' && !isNaN($scope.amounts[index])) {
+			if($scope.amounts[index] != '' && !angular.isNumber($scope.amounts[index])) {
 				$scope.prescription.totalAmount += parseFloat($scope.amounts[index]);
 			}
 		}
 		
 		for(var index = 0; index <= 19; index++) {
-			if($scope.prices[index] != '' && !isNaN($scope.prices[index])) {
+			if($scope.prices[index] != '' && !angular.isNumber($scope.prices[index])) {
 				$scope.prescription.totalPrice += parseFloat($scope.prices[index]);
 			}
 		}

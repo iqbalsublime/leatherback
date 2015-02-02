@@ -1,8 +1,11 @@
 package com.rc.leatherback.facade;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -11,8 +14,12 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
+
+import net.sf.jasperreports.engine.JRException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +35,8 @@ public class PrescriptionFacade {
     private static final Logger LOGGER = LoggerFactory.getLogger(PrescriptionFacade.class);
     private static final int PAGE_SIZE = 10;
 
+    @Context
+    private ServletContext context;
     private PrescriptionService service;
 
     public PrescriptionFacade() {
@@ -153,4 +162,72 @@ public class PrescriptionFacade {
             return Response.status(590).build();
         }
     }
+
+    @GET
+    @Path("/report")
+    // @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    @Produces({ "application/pdf" })
+    public Response getFile() throws JRException, IOException {
+        String reportLocation = context.getRealPath("/WEB-INF");
+
+        File file = service.generateReport(reportLocation);
+        ResponseBuilder response = Response.ok(file);
+        response.header("Content-Disposition", "attachment; filename=report.pdf");
+        return response.build();
+    }
+
+    // protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    // throws ServletException, IOException {
+    //
+    // // set header as pdf
+    // response.setContentType("application/pdf");
+    //
+    // // set input and output stream
+    // ServletOutputStream servletOutputStream = response.getOutputStream();
+    // ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    // FileInputStream fis;
+    // BufferedInputStream bufferedInputStream;
+    //
+    // try {
+    // // get report location
+    // ServletContext context = getServletContext();
+    // String reportLocation = context.getRealPath("WEB-INF");
+    //
+    // // get report
+    // fis = new FileInputStream(reportLocation + "/reportTest.jasper");
+    // bufferedInputStream = new BufferedInputStream(fis);
+    //
+    // // fetch data from database
+    // Session session = HibernateUtil.getSessionFactory().openSession();
+    // List<Master> masters = (List<Master>) session.createCriteria(Master.class).list();
+    // session.close();
+    //
+    // // log it
+    // for (Master master : masters) {
+    // logger.debug(master.toString());
+    // }
+    //
+    // // fill it
+    // JRBeanCollectionDataSource jrbcds = new JRBeanCollectionDataSource(masters);
+    // JasperReport jasperReport = (JasperReport) JRLoader.loadObject(bufferedInputStream);
+    // JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, new HashMap(), jrbcds);
+    //
+    // // export to pdf
+    // JasperExportManager.exportReportToPdfStream(jasperPrint, baos);
+    //
+    // response.setContentLength(baos.size());
+    // baos.writeTo(servletOutputStream);
+    //
+    // // close it
+    // fis.close();
+    // bufferedInputStream.close();
+    //
+    // } catch (Exception ex) {
+    // logger.error(ex.getMessage(), ex);
+    // } finally {
+    // servletOutputStream.flush();
+    // servletOutputStream.close();
+    // baos.close();
+    // }
+    // }
 }

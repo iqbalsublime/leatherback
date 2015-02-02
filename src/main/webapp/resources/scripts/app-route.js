@@ -5,19 +5,9 @@ leatherback.config(function ($routeProvider) {
             controller: 'mainCtrl'
         })
         
-        .when('/search/byLotNumber', {
-            templateUrl: '/templates/search/byLotNumber.tpl.html',
-            controller: 'search.byLotNumberCtrl'
-        })
-        
-        .when('/search/byDate', {
-            templateUrl: '/templates/search/byDate.tpl.html',
-            controller: 'search.byDateCtrl'
-        })
-        
-        .when('/search/byPartNumber', {
-            templateUrl: '/templates/search/byPartNumber.tpl.html',
-            controller: 'search.byPartNumberCtrl'
+        .when('/report', {
+            templateUrl: '/templates/report.tpl.html',
+            controller: 'reportCtrl'
         })
         
         .when('/add', {
