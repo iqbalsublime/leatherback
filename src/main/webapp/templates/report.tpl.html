@@ -1,15 +1,15 @@
-<h3>{{ 'ADD_A_PRESCRIPTION' | translate }}</h3>
+<h3>{{ 'REPORT_OUTPUT' | translate }}</h3>
 <div class="col-md-12 well">
 	<form class="form-horizontal">
 	  <div class="form-group">
-	    <label for="inputEmail3" class="col-sm-2 control-label">{{ 'DATE' | translate }}</label>
+	    <label for="inputEmail3" class="col-sm-2 control-label">{{ 'START_DATE' | translate }}</label>
 	    <div class="col-sm-5">
 	    	<p class="input-group">
 		       <input type="text" 
 	            		 class="form-control" 
 	            		 datepicker-popup="{{format}}" 
-	            		 ng-model="prescription.date" 
-	            		 is-open="opened" 
+	            		 ng-model="reportQuery.startDate" 
+	            		 is-open="opened1" 
 	            		 min-date="minDate" 
 	            		 max-date="'2015-06-22'" 
 	            		 datepicker-options="dateOptions" 
@@ -18,7 +18,30 @@
 	            		 close-text="Close" 
 	            		 readonly/>
 		       <span class="input-group-btn">
-		         <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+		         <button type="button" class="btn btn-default" ng-click="open($event, 'opened1')"><i class="glyphicon glyphicon-calendar"></i></button>
+		       </span>
+	        </p>
+	    </div>
+	  </div>
+	  
+	  <div class="form-group">
+	    <label for="inputEmail3" class="col-sm-2 control-label">{{ 'END_DATE' | translate }}</label>
+	    <div class="col-sm-5">
+	    	<p class="input-group">
+		       <input type="text" 
+	            		 class="form-control" 
+	            		 datepicker-popup="{{format}}" 
+	            		 ng-model="reportQuery.endDate" 
+	            		 is-open="opened2" 
+	            		 min-date="minDate" 
+	            		 max-date="'2015-06-22'" 
+	            		 datepicker-options="dateOptions" 
+	            		 date-disabled="disabled(date, mode)" 
+	            		 ng-required="true" 
+	            		 close-text="Close" 
+	            		 readonly/>
+		       <span class="input-group-btn">
+		         <button type="button" class="btn btn-default" ng-click="open($event, 'opened2')"><i class="glyphicon glyphicon-calendar"></i></button>
 		       </span>
 	        </p>
 	    </div>
@@ -26,7 +49,7 @@
 	  <div class="form-group">
 	    <label for="inputPassword3" class="col-sm-2 control-label">{{ 'LOT_NUMBER' | translate }}</label>
 	    <div class="col-sm-5">
-	      <input type="text" ng-model="prescription.lotNumber" class="form-control" id="lot-number">
+	      <input type="text" ng-model="reportQuery.lotNumber" class="form-control" id="lot-number">
 	    </div>
 	  </div>
 	  <div class="form-group">
@@ -36,7 +59,7 @@
 			<a><span bind-html-unsafe="match.label | typeaheadHighlight:query"></span></a>
 		</script>
 			<input type="text" 
-					ng-model="prescription.partNumberHead"
+					ng-model="reportQuery.partNumberHead"
 					typeahead="c as c.partNumberHead for c in partNumberHeads | filter:$viewValue | limitTo:10" 
 					typeahead-min-length='1' 
 					typeahead-on-select='onSelectPart($item, $model, $label)' 
@@ -44,27 +67,17 @@
 					class="form-control">
 	    </div>
 	    <div class="col-sm-3">
-	      <input type="text" ng-model="prescription.partNumberBody" class="form-control" id="part-number-body">	
+	      <input type="text" ng-model="reportQuery.partNumberBody" class="form-control" id="part-number-body">	
 	    </div>
 	  </div>
-	  <hr />
-         
-	  <div class="form-inline">
-	  		{{ 'TOTAL_AMOUNT' | translate }}&nbsp;&nbsp;&nbsp;x
-	  		<input type="text" class="form-control" id="hand" ng-model="prescription.hand"> {{ 'HAND' | translate }}
-			=
-			<input type="text" class="form-control" id="totalAmountAfterHanded" ng-model="prescription.totalAmountAfterHanded" readonly> KG
-	  </div>
-	  
 	  <div class="form-group">
-	  </div>
-	  
-	  <div class="form-inline">
-		    {{ 'AVERAGE_COST' | translate }}
-		    <input type="text" class="form-control" id="averageCost" ng-model="prescription.averageCost" readonly> {{ 'FORMULA_AVERAGE_COST' | translate }}
-	  </div>
-	
-	  <div class="form-group">
+	   <div class="col-sm-offset-2 col-sm-10">
+	     <div class="checkbox">
+	       <label>
+	         <input type="checkbox" ng-mode="reportQuery.showPrice"> {{ 'SHOW_PRICE' | translate }}
+	       </label>
+	     </div>
+	   </div>
 	  </div>
 	  <hr />
 	  <div class="form-group">

@@ -49,8 +49,25 @@ leatherback.controller('mainCtrl', ['$scope','$location','prescriptionService','
 }]);
 
 
-leatherback.controller('reportCtrl', ['$scope','$location', function($scope, $location) {
-	$scope.message = "Hello AngularJs";
+leatherback.controller('reportCtrl', ['$scope','$location', 'partNumberFactory', function($scope, $location, partNumberFactory) {
+	$scope.reportQuery = {};
+	
+	$scope.partNumberHeads = partNumberFactory.heads;
+	
+	$scope.open = function($event, opened) {
+	    $event.preventDefault();
+	    $event.stopPropagation();
+	    $scope[opened] = true;
+	};
+
+	$scope.dateOptions = {
+	    formatYear: 'yy',
+	    startingDay: 0
+	};
+	
+//	var today = new Date();
+//	$scope.reportQuery.endDate = today;
+//	$scope.reportQuery.startDate = today.setDate(today.getDate() - 1);
 
 }]);
 

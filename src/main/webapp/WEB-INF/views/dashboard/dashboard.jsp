@@ -28,7 +28,7 @@
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li><a href="#/">{{ 'PRESCRIPTION_MANAGE' | translate }}</a></li>
-            <li><a href="#/report">{{ 'REPORT_MANAGE' | translate }}</a></li>
+            <li><a href="#/report">{{ 'REPORT_OUTPUT' | translate }}</a></li>
             <li><a href="#/authorisation">{{ 'AUTHORISATION_MANAGE' | translate }}</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">

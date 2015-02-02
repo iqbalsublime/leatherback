@@ -6,3 +6,7 @@ body {
 .well {
 	background: #ffffff;
 }
+
+.well .well-color {
+	background: #fffffa;
+}

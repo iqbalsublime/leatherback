@@ -2,11 +2,13 @@ leatherback.config(function($translateProvider) {
 	$translateProvider.translations('en', {
 		COMPANY_NAME: 'EVER POLYMER CO., LTD.',
 		PRESCRIPTION_MANAGE: 'Prescription',
-		REPORT_MANAGE: 'Report',
+		REPORT_OUTPUT: 'Report',
 		AUTHORISATION_MANAGE: 'Authorisation',
 		CHANGE_PASSWORD: 'Change Password',
 		LOG_OUT: 'Log out',
 		DATE: 'Date',
+		START_DATE: 'Start Date',
+		END_DATE: 'End Date',
 		LOT_NUMBER: 'Lot Number',
 		PART_NUMBER: 'Part Number',
 		TOTAL_AMOUNT: 'Total Amount',
@@ -32,17 +34,20 @@ leatherback.config(function($translateProvider) {
 	  	HAND: 'Hand',
 	  	CONFIRM: 'Submit',
 	  	CANCEL: 'Cancel',
-	  	FORMULA_AVERAGE_COST: '(Price / Amount)'
+	  	FORMULA_AVERAGE_COST: '(Price / Amount)',
+	  	SHOW_PRICE: 'Show price on the report'
 	})
 	
 	.translations('zh', {
 		COMPANY_NAME: 'EVER POLYMER CO., LTD.',
 		PRESCRIPTION_MANAGE: '配方單管理',
-		REPORT_MANAGE: '報表輸出',
+		REPORT_OUTPUT: '報表輸出',
 		AUTHORISATION_MANAGE: '權限管理',
 		CHANGE_PASSWORD: '變更登入密碼',
 		LOG_OUT: '登出',
 		DATE: '日期',
+		START_DATE: '開始日期',
+		END_DATE: '結束日期',
 		LOT_NUMBER: '批號',
 		PART_NUMBER: '成品料號',
 		TOTAL_AMOUNT: '總數量',
@@ -68,7 +73,8 @@ leatherback.config(function($translateProvider) {
 	  	HAND: '手',
 	  	CONFIRM: '確定',
 	  	CANCEL: '取消',
-	  	FORMULA_AVERAGE_COST: '(單價 / 數量)'
+	  	FORMULA_AVERAGE_COST: '(單價 / 數量)',
+	  	SHOW_PRICE: '顯示單價'
 	})
     
 	$translateProvider.preferredLanguage('zh');
