@@ -49,7 +49,7 @@ leatherback.controller('mainCtrl', ['$scope','$location','prescriptionService','
 }]);
 
 
-leatherback.controller('reportCtrl', ['$scope','$location', 'partNumberFactory', function($scope, $location, partNumberFactory) {
+leatherback.controller('reportCtrl', ['$scope','$location', 'partNumberFactory', 'reportService', function($scope, $location, partNumberFactory, reportService) {
 	$scope.reportQuery = {};
 	
 	$scope.partNumberHeads = partNumberFactory.heads;
@@ -69,6 +69,12 @@ leatherback.controller('reportCtrl', ['$scope','$location', 'partNumberFactory',
 //	$scope.reportQuery.endDate = today;
 //	$scope.reportQuery.startDate = today.setDate(today.getDate() - 1);
 
+	$scope.submit = function() {
+		reportService.query($scope.reportQuery).then(function(returnData) {
+            $location.path('/');
+        });
+	};
+	
 }]);
 
 leatherback.controller('showCtrl', ['$scope', '$location', 'prescriptionService', 'data',

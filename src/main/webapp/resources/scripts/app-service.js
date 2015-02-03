@@ -1,3 +1,39 @@
+leatherback.service('reportService', function($http, $q) {
+		return ( {
+			query:query
+		});
+		
+		function query(reportQuery) {
+			var request = $http({
+	            method: 'post',
+	            url: 'api/report/query',
+	            data: reportQuery,
+	            headers : {
+	                'Content-Type' : 'application/json; charset=utf-8',
+	                'Accept' : 'application/json'
+	            }
+	        });
+			
+			return( request.then( handleSuccess, handleError ) );
+		}
+		
+		function handleError(response) {
+	        if (
+	            !angular.isObject(response.data) ||
+	            !response.data.message
+	            ) {
+
+	            return($q.reject('An unknown error occurred.'));
+	        }
+
+	        return($q.reject(response.data.message));
+	    }
+
+	    function handleSuccess(response) {
+	        return(response.data);
+	    }
+});
+
 leatherback.service('prescriptionService', function($http, $q) {
 	return ({
 		list: list,
@@ -7,7 +43,7 @@ leatherback.service('prescriptionService', function($http, $q) {
 		remove: remove,
 		findByLotNumber: findByLotNumber,
 		findByPartNumber: findByPartNumber
-	})
+	});
 	
 	function findByLotNumber(lotNumber, pageIndex) {
 		var request = $http({

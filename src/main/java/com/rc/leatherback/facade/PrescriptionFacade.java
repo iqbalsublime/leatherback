@@ -1,7 +1,5 @@
 package com.rc.leatherback.facade;
 
-import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -17,9 +15,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
-
-import net.sf.jasperreports.engine.JRException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,45 +38,49 @@ public class PrescriptionFacade {
 		this.service = new PrescriptionService();
 	}
 
-	@GET
-	@Path("/search/byLotNumber/{lotNumber}/page/{index}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response byLotNumber(@PathParam("lotNumber") String lotNumber, @PathParam("index") int pageIndex) {
-		try {
-			List<Prescription> prescriptions = service.findPrescriptionsByLotNumber(lotNumber, pageIndex, PAGE_SIZE);
-			int totalNumberOfPrescriptions = prescriptions.size();
-
-			PageableDto<Prescription> responseData = new PageableDto<Prescription>();
-			responseData.setData(prescriptions);
-			responseData.setCurrentPage(pageIndex);
-			responseData.setTotalItems(totalNumberOfPrescriptions);
-
-			return Response.status(200).entity(responseData).build();
-		} catch (ClassNotFoundException | SQLException exception) {
-			LOGGER.error("Failed to find all prescriptions", exception);
-			return Response.status(590).build();
-		}
-	}
-
-	@GET
-	@Path("/search/byPartNumber/{partNumber}/page/{index}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response byPartNumber(@PathParam("partNumber") String partNumber, @PathParam("index") int pageIndex) {
-		try {
-			List<Prescription> prescriptions = service.findPrescriptionsByPartNumber(partNumber, pageIndex, PAGE_SIZE);
-			int totalNumberOfPrescriptions = prescriptions.size();
-
-			PageableDto<Prescription> responseData = new PageableDto<Prescription>();
-			responseData.setData(prescriptions);
-			responseData.setCurrentPage(pageIndex);
-			responseData.setTotalItems(totalNumberOfPrescriptions);
-
-			return Response.status(200).entity(responseData).build();
-		} catch (ClassNotFoundException | SQLException exception) {
-			LOGGER.error("Failed to find all prescriptions", exception);
-			return Response.status(590).build();
-		}
-	}
+	// @GET
+	// @Path("/search/byLotNumber/{lotNumber}/page/{index}")
+	// @Produces(MediaType.APPLICATION_JSON)
+	// public Response byLotNumber(@PathParam("lotNumber") String lotNumber,
+	// @PathParam("index") int pageIndex) {
+	// try {
+	// List<Prescription> prescriptions =
+	// service.findPrescriptionsByLotNumber(lotNumber, pageIndex, PAGE_SIZE);
+	// int totalNumberOfPrescriptions = prescriptions.size();
+	//
+	// PageableDto<Prescription> responseData = new PageableDto<Prescription>();
+	// responseData.setData(prescriptions);
+	// responseData.setCurrentPage(pageIndex);
+	// responseData.setTotalItems(totalNumberOfPrescriptions);
+	//
+	// return Response.status(200).entity(responseData).build();
+	// } catch (ClassNotFoundException | SQLException exception) {
+	// LOGGER.error("Failed to find all prescriptions", exception);
+	// return Response.status(590).build();
+	// }
+	// }
+	//
+	// @GET
+	// @Path("/search/byPartNumber/{partNumber}/page/{index}")
+	// @Produces(MediaType.APPLICATION_JSON)
+	// public Response byPartNumber(@PathParam("partNumber") String partNumber,
+	// @PathParam("index") int pageIndex) {
+	// try {
+	// List<Prescription> prescriptions =
+	// service.findPrescriptionsByPartNumber(partNumber, pageIndex, PAGE_SIZE);
+	// int totalNumberOfPrescriptions = prescriptions.size();
+	//
+	// PageableDto<Prescription> responseData = new PageableDto<Prescription>();
+	// responseData.setData(prescriptions);
+	// responseData.setCurrentPage(pageIndex);
+	// responseData.setTotalItems(totalNumberOfPrescriptions);
+	//
+	// return Response.status(200).entity(responseData).build();
+	// } catch (ClassNotFoundException | SQLException exception) {
+	// LOGGER.error("Failed to find all prescriptions", exception);
+	// return Response.status(590).build();
+	// }
+	// }
 
 	@GET
 	@Path("/page/{index}")
@@ -161,18 +160,5 @@ public class PrescriptionFacade {
 			LOGGER.error("Failed to delete prescription", exception);
 			return Response.status(590).build();
 		}
-	}
-
-	@GET
-	@Path("/report")
-	// @Produces(MediaType.APPLICATION_OCTET_STREAM)
-	@Produces({ "application/pdf" })
-	public Response getFile() throws JRException, IOException {
-		String reportLocation = context.getRealPath("/WEB-INF");
-
-		File file = service.generateReport(reportLocation);
-		ResponseBuilder response = Response.ok(file);
-		response.header("Content-Disposition", "attachment; filename=report.pdf");
-		return response.build();
 	}
 }
