@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.rc.core.util.DateTimeUtil;
@@ -197,6 +198,216 @@ public class PrescriptionDao {
 				}
 			}
 		}
+	}
+
+	private static final String COUNT_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER = "select count(id) from table_prescription where date between ? and ? and lot_number like ? and part_number like ?;";
+
+	public int countByDateAndLotNumberAndPartNumber(Connection connection, Date startDate, Date endDate, String lotNumber,
+			String partNumber) throws SQLException {
+
+		int countResult = 0;
+
+		PreparedStatement statement = connection.prepareStatement(COUNT_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER);
+		statement.setDate(1, DateTimeUtil.convertToSqlDate(startDate));
+		statement.setDate(2, DateTimeUtil.convertToSqlDate(endDate));
+		statement.setString(3, lotNumber);
+		statement.setString(4, partNumber);
+		ResultSet resultSet = statement.executeQuery();
+		if (resultSet.next()) {
+			countResult = resultSet.getInt(1);
+		}
+
+		resultSet.close();
+		statement.close();
+
+		return countResult;
+	}
+
+	private static final String COUNT_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER_HEAD = "select count(id) from table_prescription where date between ? and ? and lot_number like ? and part_number_head like ?;";
+
+	public int countByDateAndLotNumberAndPartNumberHead(Connection connection, Date startDate, Date endDate, String lotNumber,
+			String partNumberHead) throws SQLException {
+
+		int countResult = 0;
+
+		PreparedStatement statement = connection.prepareStatement(COUNT_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER_HEAD);
+		statement.setDate(1, DateTimeUtil.convertToSqlDate(startDate));
+		statement.setDate(2, DateTimeUtil.convertToSqlDate(endDate));
+		statement.setString(3, lotNumber);
+		statement.setString(4, partNumberHead);
+		ResultSet resultSet = statement.executeQuery();
+		if (resultSet.next()) {
+			countResult = resultSet.getInt(1);
+		}
+
+		resultSet.close();
+		statement.close();
+
+		return countResult;
+	}
+
+	private static final String COUNT_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER_BODY = "select count(id) from table_prescription where date between ? and ? and lot_number like ? and part_number_body like ?;";
+
+	public int countByDateAndLotNumberAndPartNumberBody(Connection connection, Date startDate, Date endDate, String lotNumber,
+			String partNumberBody) throws SQLException {
+
+		int countResult = 0;
+
+		PreparedStatement statement = connection.prepareStatement(COUNT_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER_BODY);
+		statement.setDate(1, DateTimeUtil.convertToSqlDate(startDate));
+		statement.setDate(2, DateTimeUtil.convertToSqlDate(endDate));
+		statement.setString(3, lotNumber);
+		statement.setString(4, partNumberBody);
+		ResultSet resultSet = statement.executeQuery();
+		if (resultSet.next()) {
+			countResult = resultSet.getInt(1);
+		}
+
+		resultSet.close();
+		statement.close();
+
+		return countResult;
+	}
+
+	private static final String FIND_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER = "select * from table_prescription where date between ? and ? and lot_number like ? and part_number like ?;";
+
+	public List<Prescription> findByDateAndLotNumberAndPartNumber(Connection connection, Date startDate, Date endDate,
+			String lotNumber, String partNumber) throws SQLException {
+
+		List<Prescription> prescriptions = new ArrayList<Prescription>();
+
+		PreparedStatement statement = connection.prepareStatement(FIND_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER);
+		statement.setDate(1, DateTimeUtil.convertToSqlDate(startDate));
+		statement.setDate(2, DateTimeUtil.convertToSqlDate(endDate));
+		statement.setString(3, lotNumber);
+		statement.setString(4, partNumber);
+		ResultSet resultSet = statement.executeQuery();
+		while (resultSet.next()) {
+			prescriptions.add(bindData(resultSet));
+		}
+
+		resultSet.close();
+		statement.close();
+
+		return prescriptions;
+	}
+
+	private static final String FIND_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER_HEAD = "select * from table_prescription where date between ? and ? and lot_number like ? and part_number_head like ?;";
+
+	public List<Prescription> findByDateAndLotNumberAndPartNumberHead(Connection connection, Date startDate, Date endDate,
+			String lotNumber, String partNumberHead) throws SQLException {
+
+		List<Prescription> prescriptions = new ArrayList<Prescription>();
+
+		PreparedStatement statement = connection.prepareStatement(FIND_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER_HEAD);
+		statement.setDate(1, DateTimeUtil.convertToSqlDate(startDate));
+		statement.setDate(2, DateTimeUtil.convertToSqlDate(endDate));
+		statement.setString(3, lotNumber);
+		statement.setString(4, partNumberHead);
+		ResultSet resultSet = statement.executeQuery();
+		while (resultSet.next()) {
+			prescriptions.add(bindData(resultSet));
+		}
+
+		resultSet.close();
+		statement.close();
+
+		return prescriptions;
+	}
+
+	private static final String FIND_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER_BODY = "select * from table_prescription where date between ? and ? and lot_number like ? and part_number_body like ?;";
+
+	public List<Prescription> findByDateAndLotNumberAndPartNumberBody(Connection connection, Date startDate, Date endDate,
+			String lotNumber, String partNumberBody) throws SQLException {
+
+		List<Prescription> prescriptions = new ArrayList<Prescription>();
+
+		PreparedStatement statement = connection.prepareStatement(FIND_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER_BODY);
+		statement.setDate(1, DateTimeUtil.convertToSqlDate(startDate));
+		statement.setDate(2, DateTimeUtil.convertToSqlDate(endDate));
+		statement.setString(3, lotNumber);
+		statement.setString(4, partNumberBody);
+		ResultSet resultSet = statement.executeQuery();
+		while (resultSet.next()) {
+			prescriptions.add(bindData(resultSet));
+		}
+
+		resultSet.close();
+		statement.close();
+
+		return prescriptions;
+	}
+
+	private static final String FIND_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER_PAGINATION = "select * from table_prescription where date between ? and ? and lot_number like ? and part_number like ? limit ? offset ?;";
+
+	public List<Prescription> findByDateAndLotNumberAndPartNumber(Connection connection, Date startDate, Date endDate,
+			String lotNumber, String partNumber, int limit, int offset) throws SQLException {
+		List<Prescription> prescriptions = new ArrayList<Prescription>();
+
+		PreparedStatement statement = connection.prepareStatement(FIND_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER_PAGINATION);
+		statement.setDate(1, DateTimeUtil.convertToSqlDate(startDate));
+		statement.setDate(2, DateTimeUtil.convertToSqlDate(endDate));
+		statement.setString(3, lotNumber);
+		statement.setString(4, partNumber);
+		statement.setInt(5, limit);
+		statement.setInt(6, offset);
+		ResultSet resultSet = statement.executeQuery();
+		while (resultSet.next()) {
+			prescriptions.add(bindData(resultSet));
+		}
+
+		resultSet.close();
+		statement.close();
+
+		return prescriptions;
+	}
+
+	private static final String FIND_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER_HEAD_PAGINATION = "select * from table_prescription where date between ? and ? and lot_number like ? and part_number_head like ? limit ? offset ?;";
+
+	public List<Prescription> findByDateAndLotNumberAndPartNumberHead(Connection connection, Date startDate, Date endDate,
+			String lotNumber, String partNumberHead, int limit, int offset) throws SQLException {
+		List<Prescription> prescriptions = new ArrayList<Prescription>();
+
+		PreparedStatement statement = connection.prepareStatement(FIND_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER_HEAD_PAGINATION);
+		statement.setDate(1, DateTimeUtil.convertToSqlDate(startDate));
+		statement.setDate(2, DateTimeUtil.convertToSqlDate(endDate));
+		statement.setString(3, lotNumber);
+		statement.setString(4, partNumberHead);
+		statement.setInt(5, limit);
+		statement.setInt(6, offset);
+		ResultSet resultSet = statement.executeQuery();
+		while (resultSet.next()) {
+			prescriptions.add(bindData(resultSet));
+		}
+
+		resultSet.close();
+		statement.close();
+
+		return prescriptions;
+	}
+
+	private static final String FIND_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER_BODY_PAGINATION = "select * from table_prescription where date between ? and ? and lot_number like ? and part_number_body like ? limit ? offset ?;";
+
+	public List<Prescription> findByDateAndLotNumberAndPartNumberBody(Connection connection, Date startDate, Date endDate,
+			String lotNumber, String partNumberBody, int limit, int offset) throws SQLException {
+		List<Prescription> prescriptions = new ArrayList<Prescription>();
+
+		PreparedStatement statement = connection.prepareStatement(FIND_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER_BODY_PAGINATION);
+		statement.setDate(1, DateTimeUtil.convertToSqlDate(startDate));
+		statement.setDate(2, DateTimeUtil.convertToSqlDate(endDate));
+		statement.setString(3, lotNumber);
+		statement.setString(4, partNumberBody);
+		statement.setInt(5, limit);
+		statement.setInt(6, offset);
+		ResultSet resultSet = statement.executeQuery();
+		while (resultSet.next()) {
+			prescriptions.add(bindData(resultSet));
+		}
+
+		resultSet.close();
+		statement.close();
+
+		return prescriptions;
 	}
 
 	private Prescription bindData(ResultSet resultSet) throws SQLException {

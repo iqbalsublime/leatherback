@@ -9,6 +9,7 @@ public class ReportQuery implements Serializable {
 	private Date startDate;
 	private Date endDate;
 	private String lotNumber;
+	private String partNumber;
 	private String partNumberHead;
 	private String partNumberBody;
 	private boolean showPrice;
@@ -35,6 +36,14 @@ public class ReportQuery implements Serializable {
 
 	public void setLotNumber(String lotNumber) {
 		this.lotNumber = lotNumber;
+	}
+
+	public String getPartNumber() {
+		return partNumber;
+	}
+
+	public void setPartNumber(String partNumber) {
+		this.partNumber = partNumber;
 	}
 
 	public String getPartNumberHead() {

@@ -9,27 +9,31 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 
 public class DateTimeUtil {
-    private static final String UTC_TIME_ZONE = "Etc/UTC";
+	private static final String UTC_TIME_ZONE = "Etc/UTC";
 
-    public static String toString(Date date, String format) {
-        DateFormat dateFormat = new SimpleDateFormat(format);
+	public static String toString(Date date, String format) {
+		DateFormat dateFormat = new SimpleDateFormat(format);
 
-        return dateFormat.format(date);
-    }
+		return dateFormat.format(date);
+	}
 
-    public static Date toDate(String dateString, String format) throws ParseException {
-        DateFormat dateFormat = new SimpleDateFormat(format);
+	public static Date toDate(String dateString, String format) throws ParseException {
+		DateFormat dateFormat = new SimpleDateFormat(format);
 
-        return dateFormat.parse(dateString);
-    }
+		return dateFormat.parse(dateString);
+	}
 
-    public static Date toUtcTime(Date localTime) {
-        ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(localTime.toInstant(), ZoneId.of(UTC_TIME_ZONE));
+	public static Date toUtcTime(Date localTime) {
+		ZonedDateTime zonedDateTime = ZonedDateTime.ofInstant(localTime.toInstant(), ZoneId.of(UTC_TIME_ZONE));
 
-        return Date.from(zonedDateTime.toInstant());
-    }
+		return Date.from(zonedDateTime.toInstant());
+	}
 
-    public static java.sql.Timestamp convertToSqlTimestamp(Date date) {
-        return new Timestamp(date.getTime());
-    }
+	public static java.sql.Timestamp convertToSqlTimestamp(Date date) {
+		return new Timestamp(date.getTime());
+	}
+
+	public static java.sql.Date convertToSqlDate(Date date) {
+		return new java.sql.Date(date.getTime());
+	}
 }

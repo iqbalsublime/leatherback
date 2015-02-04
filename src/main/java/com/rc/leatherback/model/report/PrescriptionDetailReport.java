@@ -1,49 +1,57 @@
 package com.rc.leatherback.model.report;
 
 public class PrescriptionDetailReport {
-    private String item;
-    private String prescription;
-    private String amount;
-    private String price;
-    private String note;
+	private String item;
+	private String prescription;
+	private String amount;
+	private String price;
+	private String note;
 
-    public String getItem() {
-        return item;
-    }
+	public PrescriptionDetailReport(int item, String prescription, double amount, double price, String note) {
+		this.item = String.valueOf(item);
+		this.prescription = prescription;
+		this.amount = String.valueOf(amount);
+		this.price = String.valueOf(price);
+		this.note = note;
+	}
 
-    public void setItem(int item) {
-        this.item = String.valueOf(item);
-    }
+	public String getItem() {
+		return item;
+	}
 
-    public String getPrescription() {
-        return prescription;
-    }
+	public void setItem(int item) {
+		this.item = String.valueOf(item);
+	}
 
-    public void setPrescription(String prescription) {
-        this.prescription = prescription;
-    }
+	public String getPrescription() {
+		return prescription;
+	}
 
-    public String getAmount() {
-        return amount;
-    }
+	public void setPrescription(String prescription) {
+		this.prescription = prescription;
+	}
 
-    public void setAmount(double amount) {
-        this.amount = String.valueOf(amount);
-    }
+	public String getAmount() {
+		return amount;
+	}
 
-    public String getPrice() {
-        return price;
-    }
+	public void setAmount(double amount) {
+		this.amount = String.valueOf(amount);
+	}
 
-    public void setPrice(double price) {
-        this.amount = String.valueOf(price);
-    }
+	public String getPrice() {
+		return price;
+	}
 
-    public String getNote() {
-        return note;
-    }
+	public void setPrice(double price) {
+		this.amount = String.valueOf(price);
+	}
 
-    public void setNote(String note) {
-        this.note = note;
-    }
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
+	}
 }
