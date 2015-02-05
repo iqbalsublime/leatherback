@@ -1,3 +1,60 @@
+<script type="text/ng-template" id="showDetails.html">
+	<div class="modal-header">
+		<h3 class="modal-title">{{ 'LOT_NUMBER' | translate }}: {{prescription.lotNumber}}</h3>
+	</div>
+	<div class="modal-body">
+		<div class="container">
+		<h4 class="row">
+			{{ 'DATE' | translate }}: {{prescription.date}}
+		</h4>
+		<h4 class="row">
+			{{ 'PART_NUMBER' | translate }}: {{prescription.partNumber}}
+		</h4>
+		<h4 class="row">
+			{{ 'TOTAL_AMOUNT' | translate }}: {{prescription.totalAmount}} KG
+		</h4>
+		<h4 class="row">
+			{{ 'TOTAL_PRICE' | translate }}: {{prescription.totalPrice}}
+		</h4>
+		<h4 class="row">
+			{{ 'TOTAL_AMOUNT_AFTER_HANDED' | translate }}: {{prescription.totalAmountAfterHanded}}
+		</h4>
+		<h4 class="row">
+			{{ 'AVERAGE_COST' | translate }}: {{prescription.averageCost}}
+		</h4>
+		</div>
+		<hr />
+		<div class="row">
+			<div class="table-responsive">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>{{ 'ITEM' | translate }}</th>
+						<th>{{ 'PRESCRIPTION_NAME' | translate }}</th>
+						<th>{{ 'AMOUNT' | translate }}</th>
+						<th>{{ 'PRICE' | translate }}</th>
+						<th>{{ 'NOTE' | translate }}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="detail in prescription.details">
+						<td> {{$index + 1}} </td>
+						<td> {{detail.name}} </td>
+						<td> {{detail.amount}} KG </td>
+						<td> {{detail.price}} </td>
+						<td> {{detail.note}} </td>
+					</tr>
+				</tbody>
+			</table>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" ng-click="ok()">OK</button>
+		<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+	</div>
+</script>
+    
 <h3>{{ 'ADD_A_PRESCRIPTION' | translate }}</h3>
 	<div class="col-md-12 well">
 		<div class="row">

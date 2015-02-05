@@ -82,8 +82,67 @@
 	  <hr />
 	  <div class="form-group">
 	    <div class="col-sm-offset-2 col-sm-10">
-	      <button type="submit" class="btn btn-primary" ng-click="submit()">{{ 'SEARCH' | translate }}</button>
+	      <button type="submit" class="btn btn-primary" ng-click="search()">{{ 'SEARCH' | translate }}</button>
+	      <button type="submit" class="btn btn-danger" ng-click="clear()">{{ 'SEARCH_CLEAR' | translate }}</button>
 	    </div>
 	  </div>
 	</form>
+</div>
+
+<div class="col-md-12 well animate-show" ng-show="searched">
+	<div class="row">
+	  <div class="col-xs-12 col-sm-6 col-md-8">
+	  	<button type="button" class="btn btn-warning" ng-click="exportTo()">{{ 'EXPORT_REPORT' | translate }}</button>
+	  </div>
+	  <div class="col-xs-6 col-md-4">
+	  	<pagination 
+	  		total-items="totalItems" 
+	  		ng-model="currentPage" 
+	  		max-size="maxSize" 
+	  		class="pagination-sm" 
+	  		boundary-links="true" 
+	  		rotate="false" 
+	  		num-pages="numPages"
+	  		first-text="{{ 'FIRST_PAGE' | translate }}"
+	  		previous-text="{{ 'PREVIOUS_PAGE' | translate }}"
+	  		next-text="{{ 'NEXT_PAGE' | translate }}"
+	  		last-text="{{ 'LAST_PAGE' | translate }}"></pagination>
+	  </div>
+	</div>
+	
+       <table class="table table-striped table-bordered">
+         <thead>
+           <tr>
+			<th>{{ 'DATE' | translate }}</th>
+			<th>{{ 'LOT_NUMBER' | translate }}</th>
+			<th>{{ 'PART_NUMBER' | translate }}</th>
+			<th>{{ 'TOTAL_AMOUNT' | translate }}</th>
+			<th>{{ 'TOTAL_AMOUNT_AFTER_HANDED' | translate }}</th>
+			<th>{{ 'AVERAGE_COST' | translate }}</th>
+           </tr>
+         </thead>
+         <tbody>
+		<tr ng-repeat="prescription in prescriptions">
+			<td>{{prescription.date}}</td>
+			<td>{{prescription.lotNumber}}</td>
+			<td>{{prescription.partNumber}}</td>
+			<td>{{prescription.totalAmount}}</td>
+			<td>{{prescription.totalAmountAfterHanded}}</td>
+			<td>{{prescription.averageCost}}</td>
+		</tr>
+         </tbody>
+       </table>
+	<pagination 
+	  		total-items="totalItems" 
+	  		ng-model="currentPage" 
+	  		max-size="maxSize" 
+	  		class="pagination-sm" 
+	  		boundary-links="true" 
+	  		rotate="false" 
+	  		num-pages="numPages"
+	  		first-text="{{ 'FIRST_PAGE' | translate }}"
+	  		previous-text="{{ 'PREVIOUS_PAGE' | translate }}"
+	  		next-text="{{ 'NEXT_PAGE' | translate }}"
+	  		last-text="{{ 'LAST_PAGE' | translate }}"></pagination>
+	<pre>{{ 'PAGE' | translate }}: {{currentPage}} / {{numPages}}</pre>
 </div>

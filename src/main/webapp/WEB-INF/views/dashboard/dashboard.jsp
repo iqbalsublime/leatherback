@@ -7,7 +7,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
-<link href="${pageContext.request.contextPath}/resources/styles/vendor/bootstrap.css" rel="stylesheet">
+ <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/styles/vendor/bootstrap-theme.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/styles/app.css" rel="stylesheet">
 </head>

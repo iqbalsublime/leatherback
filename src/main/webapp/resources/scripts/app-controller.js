@@ -1,5 +1,5 @@
-leatherback.controller('mainCtrl', ['$scope','$location','prescriptionService','$modal',
-                                    function($scope, $location, prescriptionService, $modal) {
+leatherback.controller('mainCtrl', ['$scope','$location','prescriptionService','$modal', 'pagination', 
+                                    function($scope, $location, prescriptionService, $modal, pagination) {
 	
 	$scope.maxSize = 5;
 	$scope.currentPage = 1;
@@ -8,14 +8,9 @@ leatherback.controller('mainCtrl', ['$scope','$location','prescriptionService','
     $scope.$watch('currentPage', function() {
     	prescriptionService.list($scope.currentPage).then(function(returnData) {
             $scope.prescriptions = returnData.data;
-            $scope.setPageStatus(returnData.totalItems, returnData.currentPage);
+            pagination.setPageStatus($scope, returnData.totalItems, returnData.currentPage);
         });
     });
-    
-    $scope.setPageStatus = function(totalItems, currentPage) {
-        $scope.totalItems = totalItems;
-        $scope.currentPage = currentPage;
-    };
     
     $scope.add = function() {
     	$location.path('/add');
@@ -35,23 +30,75 @@ leatherback.controller('mainCtrl', ['$scope','$location','prescriptionService','
 		   	prescriptionService.remove(id).then(function(returnData) {
 		    	prescriptionService.list($scope.currentPage).then(function(returnData) {
 		            $scope.prescriptions = returnData.data;
-		            $scope.setPageStatus(returnData.totalItems, returnData.currentPage);
+		            pagination.setPageStatus($scope, returnData.totalItems, returnData.currentPage);
 		        });
 	        });
 		},function(btn){
 			$scope.confirmed = 'You confirmed "No."';
 		});
     };
-    
+
     $scope.show = function(id) {
-    	var dlg = dialogs.create('/dialogs/custom2.html', 'showCtrl', id, {windowClass:'app-modal-window'});
+    	var modalInstance = $modal.open({
+    	      templateUrl: 'showDetails.html',
+    	      controller: 'showCtrl',
+    	      size: 'lg',
+    	      resolve: {
+    	        id: function () {
+    	          return id;
+    	        }
+    	      }
+    	    });
+
+    	    modalInstance.result.then(function (selectedItem) {
+    	      $scope.selected = selectedItem;
+    	    }, function () {
+    	      $log.info('Modal dismissed at: ' + new Date());
+    	    });
     }
 }]);
 
+leatherback.controller('showCtrl', ['$scope', '$location', '$modalInstance', 'prescriptionService', 'id',
+                                    function($scope, $location, $modalInstance, prescriptionService, id) {
+    $scope.prescription = {};
+    prescriptionService.getById(id).then(function(returnData) {
+        $scope.prescription = returnData;
+    });
 
-leatherback.controller('reportCtrl', ['$scope','$location', 'partNumberFactory', 'reportService', function($scope, $location, partNumberFactory, reportService) {
-	$scope.reportQuery = {};
+	$scope.ok = function () {
+	    $modalInstance.close($scope.selected.item);
+	};
 	
+	$scope.cancel = function () {
+	    $modalInstance.dismiss('cancel');
+	};
+}]);
+
+
+leatherback.controller('ModalInstanceCtrl', function ($scope, $modalInstance, items) {
+
+	  $scope.items = items;
+	  $scope.selected = {
+	    item: $scope.items[0]
+	  };
+
+	  $scope.ok = function () {
+	    $modalInstance.close($scope.selected.item);
+	  };
+
+	  $scope.cancel = function () {
+	    $modalInstance.dismiss('cancel');
+	  };
+	});
+
+
+leatherback.controller('reportCtrl', ['$scope','$location', '$window', 'partNumberFactory', 'reportService', 'pagination', 
+                                      function($scope, $location, $window, partNumberFactory, reportService, pagination) {
+	
+	$scope.reportQuery = {};
+	$scope.searched = false;
+	$scope.maxSize = 5;
+	$scope.currentPage = 1;
 	$scope.partNumberHeads = partNumberFactory.heads;
 	
 	$scope.open = function($event, opened) {
@@ -69,22 +116,50 @@ leatherback.controller('reportCtrl', ['$scope','$location', 'partNumberFactory',
 //	$scope.reportQuery.endDate = today;
 //	$scope.reportQuery.startDate = today.setDate(today.getDate() - 1);
 
-	$scope.submit = function() {
-		reportService.query($scope.reportQuery).then(function(returnData) {
-            $location.path('/');
+    $scope.prescriptions = [];
+//    $scope.$watch('currentPage', function() {
+//    	reportService.query($scope.reportQuery, $scope.currentPage).then(function(returnData) {
+//            $scope.prescriptions = returnData.data;
+//            pagination.setPageStatus($scope, returnData.totalItems, returnData.currentPage);
+//        });
+//    });
+    
+	$scope.search = function() {
+		if((typeof $scope.reportQuery.partNumberHead != 'undefined') && (typeof $scope.reportQuery.partNumberHead.partNumberHead != 'undefined')) {
+			$scope.reportQuery.partNumberHead = $scope.reportQuery.partNumberHead.partNumberHead;
+		}
+		
+		reportService.query($scope.reportQuery, $scope.currentPage).then(function(returnData) {
+            $scope.prescriptions = returnData.data;
+            pagination.setPageStatus($scope, returnData.totalItems, returnData.currentPage);
+            $scope.searched = true;
         });
 	};
 	
+	$scope.clear = function() {
+		$scope.prescriptions = [];
+		$scope.reportQuery.startDate = '';
+		$scope.reportQuery.endDate = '';
+		$scope.reportQuery.lotNumber = '';
+		$scope.reportQuery.partNumberHead = '';
+		$scope.reportQuery.partNumberBody = '';
+		$scope.reportQuery.showPrice = false
+		$scope.searched = false;
+	}
+	
+	$scope.exportTo = function() {
+		if((typeof $scope.reportQuery.partNumberHead != 'undefined') && (typeof $scope.reportQuery.partNumberHead.partNumberHead != 'undefined')) {
+			$scope.reportQuery.partNumberHead = $scope.reportQuery.partNumberHead.partNumberHead;
+		}
+		
+		reportService.exportTo($scope.reportQuery).then(function(returnData) {
+            $scope.searched = true;
+            $window.open('api/report/pdf/download/' + returnData.drawerKey);
+        });
+	}
 }]);
 
-leatherback.controller('showCtrl', ['$scope', '$location', 'prescriptionService', 'data',
-                                    function($scope, $location, prescriptionService, data) {
-    $scope.prescription = {};
-    prescriptionService.getById(data).then(function(returnData) {
-        $scope.prescription = returnData;
-    });
 
-}]);
 
 leatherback.controller('addCtrl', ['$scope','$location', '$filter', '$window', 'prescriptionService', 'partNumberFactory', 'calculator', 
                                    function($scope, $location, $filter, $window, prescriptionService, partNumberFactory, calculator) {
@@ -193,6 +268,18 @@ leatherback.controller('editCtrl', ['$scope', '$routeParams','$location', '$filt
 		$scope.prices[index] = 0;
 	}
 	
+	$scope.$watch('prescription.date', function() {
+		$scope.lotNumberHead = $filter('date')($scope.prescription.date, 'yyyyMMdd');
+	})
+	
+
+	$scope.$watchGroup(['amounts[0]', 'amounts[1]', 'amounts[2]', 'amounts[3]', 'amounts[4]', 'amounts[5]', 'amounts[6]', 'amounts[7]', 'amounts[8]', 'amounts[9]', 'amounts[10]', 'amounts[11]', 'amounts[12]', 'amounts[13]', 'amounts[14]', 'amounts[15]', 'amounts[16]', 'amounts[17]', 'amounts[18]', 'amounts[19]'
+	                    ,'prices[0]', 'prices[1]', 'prices[2]', 'prices[3]', 'prices[4]', 'prices[5]', 'prices[6]', 'prices[7]', 'prices[8]', 'prices[9]', 'prices[10]', 'prices[11]', 'prices[12]', 'prices[13]', 'prices[14]', 'prices[15]', 'prices[16]', 'prices[17]', 'prices[18]', 'prices[19]'
+	                    , 'prescription.hand'], function() {
+		calculator.calculate($scope);
+	});
+	
+	
 	$scope.prescription = {};
     prescriptionService.getById($routeParams.id).then(function(returnData) {
         $scope.prescription = returnData;
@@ -205,17 +292,7 @@ leatherback.controller('editCtrl', ['$scope', '$routeParams','$location', '$filt
     		$scope.notes[index] = $scope.prescription.details[index].note;
     	}
     });
-	
-	$scope.$watch('prescription.date', function() {
-		$scope.lotNumberHead = $filter('date')($scope.prescription.date, 'yyyyMMdd');
-	})
-	
 
-	$scope.$watchGroup(['amounts[0]', 'amounts[1]', 'amounts[2]', 'amounts[3]', 'amounts[4]', 'amounts[5]', 'amounts[6]', 'amounts[7]', 'amounts[8]', 'amounts[9]', 'amounts[10]', 'amounts[11]', 'amounts[12]', 'amounts[13]', 'amounts[14]', 'amounts[15]', 'amounts[16]', 'amounts[17]', 'amounts[18]', 'amounts[19]'
-	                    ,'prices[0]', 'prices[1]', 'prices[2]', 'prices[3]', 'prices[4]', 'prices[5]', 'prices[6]', 'prices[7]', 'prices[8]', 'prices[9]', 'prices[10]', 'prices[11]', 'prices[12]', 'prices[13]', 'prices[14]', 'prices[15]', 'prices[16]', 'prices[17]', 'prices[18]', 'prices[19]'
-	                    , 'prescription.hand'], function() {
-		calculator.calculate($scope);
-	});
 	
 	$scope.submit = function() {
 		if(typeof $scope.prescription.partNumberHead.partNumberHead != 'undefined') {

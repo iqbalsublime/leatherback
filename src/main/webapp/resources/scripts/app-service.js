@@ -1,12 +1,27 @@
 leatherback.service('reportService', function($http, $q) {
 		return ( {
-			query:query
+			query:query,
+			exportTo: exportTo
 		});
 		
-		function query(reportQuery) {
+		function query(reportQuery, pageIndex) {
 			var request = $http({
 	            method: 'post',
-	            url: 'api/report/query',
+	            url: 'api/report/query/' + pageIndex,
+	            data: reportQuery,
+	            headers : {
+	                'Content-Type' : 'application/json; charset=utf-8',
+	                'Accept' : 'application/json'
+	            }
+	        });
+			
+			return( request.then( handleSuccess, handleError ) );
+		}
+		
+		function exportTo(reportQuery) {
+			var request = $http({
+	            method: 'post',
+	            url: 'api/report/pdf',
 	            data: reportQuery,
 	            headers : {
 	                'Content-Type' : 'application/json; charset=utf-8',

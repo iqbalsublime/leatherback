@@ -13,6 +13,7 @@ public class ReportQuery implements Serializable {
 	private String partNumberHead;
 	private String partNumberBody;
 	private boolean showPrice;
+	private int searchBy;
 
 	public Date getStartDate() {
 		return startDate;
@@ -68,6 +69,14 @@ public class ReportQuery implements Serializable {
 
 	public void setShowPrice(boolean showPrice) {
 		this.showPrice = showPrice;
+	}
+
+	public int getSearchBy() {
+		return searchBy;
+	}
+
+	public void setSearchBy(int searchBy) {
+		this.searchBy = searchBy;
 	}
 
 }

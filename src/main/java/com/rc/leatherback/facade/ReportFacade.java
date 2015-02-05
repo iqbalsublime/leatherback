@@ -2,10 +2,12 @@ package com.rc.leatherback.facade;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -20,8 +22,10 @@ import net.sf.jasperreports.engine.JRException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.rc.leatherback.exception.ReportNotFoundException;
 import com.rc.leatherback.facade.dto.PageableDto;
 import com.rc.leatherback.facade.dto.ReportQuery;
+import com.rc.leatherback.facade.dto.ReportResultDto;
 import com.rc.leatherback.model.Prescription;
 import com.rc.leatherback.service.ReportService;
 
@@ -42,31 +46,53 @@ public class ReportFacade {
 	@POST
 	@Path("/query/{index}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response query(@PathParam("index") int pageIndex, ReportQuery query) {
-		List<Prescription> prescriptions = service.query(query.getStartDate(), query.getEndDate(), query.getLotNumber(),
-				query.getPartNumberHead(), query.getPartNumberBody(), pageIndex, PAGE_SIZE);
+	public Response query(ReportQuery query, @PathParam("index") int pageIndex) {
+		try {
+			List<Prescription> prescriptions = service.query(query, pageIndex, PAGE_SIZE);
+			int totalNumberOfPrescriptions = service.getTotalNumberOfQueryResult(query);
 
-		int totalNumberOfPrescriptions = service.getTotalNumberOfQueryResult(query.getStartDate(), query.getEndDate(),
-				query.getLotNumber(), query.getPartNumberHead(), query.getPartNumberBody(), pageIndex, PAGE_SIZE);
+			PageableDto<Prescription> responseData = new PageableDto<Prescription>();
+			responseData.setData(prescriptions);
+			responseData.setCurrentPage(pageIndex);
+			responseData.setTotalItems(totalNumberOfPrescriptions);
 
-		PageableDto<Prescription> responseData = new PageableDto<Prescription>();
-		responseData.setData(prescriptions);
-		responseData.setCurrentPage(pageIndex);
-		responseData.setTotalItems(totalNumberOfPrescriptions);
-
-		return Response.status(200).entity(responseData).build();
+			return Response.status(200).entity(responseData).build();
+		} catch (ClassNotFoundException | SQLException exception) {
+			LOGGER.error("Failed to create prescription", exception);
+			return Response.status(590).build();
+		}
 	}
 
 	@POST
 	@Path("/pdf")
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces({ "application/pdf" })
-	public Response generateReport(ReportQuery query) throws JRException, IOException {
-		String reportLocation = context.getRealPath("/WEB-INF");
+	public Response generateReport(ReportQuery query) {
+		try {
+			String reportLocation = context.getRealPath("/WEB-INF");
+			String drawerKey = service.generateReport(query, reportLocation);
+			ReportResultDto responseData = new ReportResultDto();
+			responseData.setDrawerKey(drawerKey);
 
-		File file = service.generateReport(reportLocation);
-		ResponseBuilder response = Response.ok(file);
-		response.header("Content-Disposition", "attachment; filename=report.pdf");
-		return response.build();
+			return Response.status(200).entity(responseData).build();
+		} catch (JRException | IOException | ClassNotFoundException | SQLException exception) {
+			LOGGER.error("Failed to create prescription", exception);
+			return Response.status(590).build();
+		}
+	}
+
+	@GET
+	@Path("/pdf/download/{key}")
+	@Produces({ "application/pdf" })
+	public Response downloadReport(@PathParam("key") String drawerKey) {
+		try {
+			File file = service.downloadReport(drawerKey);
+			ResponseBuilder response = Response.ok(file);
+			response.header("Content-Disposition", "attachment; filename=report.pdf");
+
+			return response.build();
+		} catch (ReportNotFoundException exception) {
+			LOGGER.error("Failed to create prescription", exception);
+			return Response.status(590).build();
+		}
 	}
 }

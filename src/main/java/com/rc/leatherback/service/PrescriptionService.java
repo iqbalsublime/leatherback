@@ -1,11 +1,11 @@
 package com.rc.leatherback.service;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+import com.rc.leatherback.DatabaseContext;
 import com.rc.leatherback.data.PrescriptionDao;
 import com.rc.leatherback.data.PrescriptionDetailDao;
 import com.rc.leatherback.exception.PrescriptionNotFoundException;
@@ -14,10 +14,6 @@ import com.rc.leatherback.model.PrescriptionDetail;
 import com.rc.leatherback.model.User;
 
 public class PrescriptionService {
-	private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
-	private static final String DB_URL = "jdbc:mysql://localhost:3306/leatherback_dev";
-	private static final String DB_USER = "root";
-	private static final String DB_PASSWORD = "rockey.chen";
 
 	private PrescriptionDao dao;
 	private PrescriptionDetailDao detailDao;
@@ -28,9 +24,7 @@ public class PrescriptionService {
 	}
 
 	public Prescription getPrescriptionById(long id) throws ClassNotFoundException, SQLException {
-		Class.forName(DB_DRIVER);
-		try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
-
+		try (Connection connection = DatabaseContext.getConnection()) {
 			Prescription prescription = dao.getById(connection, id);
 			if (prescription == null) {
 				throw new PrescriptionNotFoundException(String.format("Prescription is not found by id: %s", id));
@@ -44,9 +38,7 @@ public class PrescriptionService {
 	}
 
 	public List<Prescription> findPrescriptionsByPage(int pageIndex, int pageSize) throws ClassNotFoundException, SQLException {
-		Class.forName(DB_DRIVER);
-		try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
-
+		try (Connection connection = DatabaseContext.getConnection()) {
 			int limit = pageSize;
 			int offset = pageSize * (pageIndex - 1);
 			List<Prescription> prescriptions = dao.findAllPagination(connection, limit, offset);
@@ -61,9 +53,8 @@ public class PrescriptionService {
 
 	public List<Prescription> findPrescriptionsByLotNumber(String lotNumber, int pageIndex, int pageSize)
 			throws ClassNotFoundException, SQLException {
-		Class.forName(DB_DRIVER);
-		try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
 
+		try (Connection connection = DatabaseContext.getConnection()) {
 			int limit = pageSize;
 			int offset = pageSize * (pageIndex - 1);
 			List<Prescription> prescriptions = dao.findByLotNumberPagination(connection, lotNumber, limit, offset);
@@ -78,9 +69,8 @@ public class PrescriptionService {
 
 	public List<Prescription> findPrescriptionsByPartNumber(String partNumber, int pageIndex, int pageSize)
 			throws ClassNotFoundException, SQLException {
-		Class.forName(DB_DRIVER);
-		try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
 
+		try (Connection connection = DatabaseContext.getConnection()) {
 			int limit = pageSize;
 			int offset = pageSize * (pageIndex - 1);
 			List<Prescription> prescriptions = dao.findByPartNumberPagination(connection, partNumber, limit, offset);
@@ -102,8 +92,7 @@ public class PrescriptionService {
 		prescription.setModifiedBy(loggedInUser.getName());
 		prescription.setModifiedDate(createDate);
 
-		Class.forName(DB_DRIVER);
-		Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+		Connection connection = DatabaseContext.getConnection();
 		try {
 			connection.setAutoCommit(false);
 			dao.add(connection, prescription);
@@ -134,8 +123,7 @@ public class PrescriptionService {
 		prescription.setModifiedBy(loggedInUser.getName());
 		prescription.setModifiedDate(modifyDate);
 
-		Class.forName(DB_DRIVER);
-		Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+		Connection connection = DatabaseContext.getConnection();
 		try {
 			connection.setAutoCommit(false);
 
@@ -175,8 +163,7 @@ public class PrescriptionService {
 	}
 
 	public void deletePrescription(long id) throws SQLException, ClassNotFoundException {
-		Class.forName(DB_DRIVER);
-		Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+		Connection connection = DatabaseContext.getConnection();
 		try {
 			connection.setAutoCommit(false);
 
@@ -204,8 +191,7 @@ public class PrescriptionService {
 	}
 
 	public int getTotalNumberOfPrescriptions() throws ClassNotFoundException, SQLException {
-		Class.forName(DB_DRIVER);
-		try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+		try (Connection connection = DatabaseContext.getConnection()) {
 			return dao.countAll(connection);
 		}
 	}

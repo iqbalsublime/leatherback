@@ -18,6 +18,8 @@ leatherback.config(function($translateProvider) {
 		ADD_A_PRESCRIPTION: 'Add a Prescription',
 		EDIT_A_PRESCRIPTION: 'Modify a Prescription',
 		SEARCH_PRESCRIPTIONS: 'Search Prescriptions',
+		SEARCH: 'Search',
+		SEARCH_CLEAR: 'Clear The Search Result',
 		MODIFY: 'Modify',
 	  	DELETE: 'Delete',
 	  	DETAILS: 'Details',
@@ -35,7 +37,8 @@ leatherback.config(function($translateProvider) {
 	  	CONFIRM: 'Submit',
 	  	CANCEL: 'Cancel',
 	  	FORMULA_AVERAGE_COST: '(Price / Amount)',
-	  	SHOW_PRICE: 'Show price on the report'
+	  	SHOW_PRICE: 'Show price on the report',
+	  	EXPORT_REPORT: 'Export to a report'
 	})
 	
 	.translations('zh', {
@@ -57,6 +60,8 @@ leatherback.config(function($translateProvider) {
 		ADD_A_PRESCRIPTION: '新增配方單',
 		EDIT_A_PRESCRIPTION: '修改配方單',
 		SEARCH_PRESCRIPTIONS: '搜尋配方單',
+		SEARCH: '搜尋',
+		SEARCH_CLEAR: '清除搜尋結果',
 	  	MODIFY: '修改',
 	  	DELETE: '刪除',
 	  	DETAILS: '詳細',
@@ -74,7 +79,8 @@ leatherback.config(function($translateProvider) {
 	  	CONFIRM: '確定',
 	  	CANCEL: '取消',
 	  	FORMULA_AVERAGE_COST: '(單價 / 數量)',
-	  	SHOW_PRICE: '顯示單價'
+	  	SHOW_PRICE: '顯示單價',
+	  	EXPORT_REPORT: '輸出報表'
 	})
     
 	$translateProvider.preferredLanguage('zh');
