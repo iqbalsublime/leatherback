@@ -117,13 +117,14 @@ leatherback.controller('reportCtrl', ['$scope','$location', '$window', 'partNumb
 //	$scope.reportQuery.startDate = today.setDate(today.getDate() - 1);
 
     $scope.prescriptions = [];
-//    $scope.$watch('currentPage', function() {
-//    	reportService.query($scope.reportQuery, $scope.currentPage).then(function(returnData) {
-//            $scope.prescriptions = returnData.data;
-//            pagination.setPageStatus($scope, returnData.totalItems, returnData.currentPage);
-//        });
-//    });
+    $scope.$watch('currentPage', function() {
+    	reportService.query($scope.reportQuery, $scope.currentPage).then(function(returnData) {
+            $scope.prescriptions = returnData.data;
+            pagination.setPageStatus($scope, returnData.totalItems, returnData.currentPage);
+        });
+    });
     
+    $scope.searchResultCount = 0;
 	$scope.search = function() {
 		if((typeof $scope.reportQuery.partNumberHead != 'undefined') && (typeof $scope.reportQuery.partNumberHead.partNumberHead != 'undefined')) {
 			$scope.reportQuery.partNumberHead = $scope.reportQuery.partNumberHead.partNumberHead;
@@ -133,6 +134,7 @@ leatherback.controller('reportCtrl', ['$scope','$location', '$window', 'partNumb
             $scope.prescriptions = returnData.data;
             pagination.setPageStatus($scope, returnData.totalItems, returnData.currentPage);
             $scope.searched = true;
+            $scope.searchResultCount = returnData.totalItems;
         });
 	};
 	
@@ -145,7 +147,7 @@ leatherback.controller('reportCtrl', ['$scope','$location', '$window', 'partNumb
 		$scope.reportQuery.partNumberBody = '';
 		$scope.reportQuery.showPrice = false
 		$scope.searched = false;
-	}
+	};
 	
 	$scope.exportTo = function() {
 		if((typeof $scope.reportQuery.partNumberHead != 'undefined') && (typeof $scope.reportQuery.partNumberHead.partNumberHead != 'undefined')) {
@@ -156,7 +158,7 @@ leatherback.controller('reportCtrl', ['$scope','$location', '$window', 'partNumb
             $scope.searched = true;
             $window.open('api/report/pdf/download/' + returnData.drawerKey);
         });
-	}
+	};
 }]);
 
 
