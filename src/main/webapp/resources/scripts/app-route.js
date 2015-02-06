@@ -25,6 +25,11 @@ leatherback.config(function ($routeProvider) {
             controller: 'showCtrl'
         })
         
+        .when('/changePassword', {
+            templateUrl: '/templates/changePassword.tpl.html',
+            controller: 'changePasswordCtrl'        	
+        })
+        
         .otherwise({
             redirectTo: '/'
         });

@@ -324,3 +324,8 @@ leatherback.controller('editCtrl', ['$scope', '$routeParams','$location', '$filt
 		$window.history.back();
 	};
 }]);
+
+leatherback.controller('changePasswordCtrl', ['$scope','$location','prescriptionService','$modal', 'pagination', 
+                                    function($scope, $location, prescriptionService, $modal, pagination) {
+
+}]);
