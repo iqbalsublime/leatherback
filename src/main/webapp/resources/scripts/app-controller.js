@@ -48,13 +48,13 @@ leatherback.controller('mainCtrl', ['$scope','$location','prescriptionService','
     	          return id;
     	        }
     	      }
-    	    });
+    	});
 
-    	    modalInstance.result.then(function (selectedItem) {
-    	      $scope.selected = selectedItem;
-    	    }, function () {
-    	      $log.info('Modal dismissed at: ' + new Date());
-    	    });
+//    	modalInstance.result.then(function (selectedItem) {
+//    	      $scope.selected = selectedItem;
+//    	}, function () {
+//    	      $log.info('Modal dismissed at: ' + new Date());
+//    	});
     }
 }]);
 
@@ -65,32 +65,15 @@ leatherback.controller('showCtrl', ['$scope', '$location', '$modalInstance', 'pr
         $scope.prescription = returnData;
     });
 
-	$scope.ok = function () {
-	    $modalInstance.close($scope.selected.item);
-	};
+//	$scope.ok = function () {
+//	    $modalInstance.close($scope.selected.item);
+//	};
 	
-	$scope.cancel = function () {
-	    $modalInstance.dismiss('cancel');
+	$scope.close = function () {
+	    //$modalInstance.dismiss('cancel');
+		$modalInstance.close();
 	};
 }]);
-
-
-leatherback.controller('ModalInstanceCtrl', function ($scope, $modalInstance, items) {
-
-	  $scope.items = items;
-	  $scope.selected = {
-	    item: $scope.items[0]
-	  };
-
-	  $scope.ok = function () {
-	    $modalInstance.close($scope.selected.item);
-	  };
-
-	  $scope.cancel = function () {
-	    $modalInstance.dismiss('cancel');
-	  };
-	});
-
 
 leatherback.controller('reportCtrl', ['$scope','$location', '$window', 'partNumberFactory', 'reportService', 'pagination', 
                                       function($scope, $location, $window, partNumberFactory, reportService, pagination) {
@@ -325,7 +308,20 @@ leatherback.controller('editCtrl', ['$scope', '$routeParams','$location', '$filt
 	};
 }]);
 
-leatherback.controller('changePasswordCtrl', ['$scope','$location','prescriptionService','$modal', 'pagination', 
-                                    function($scope, $location, prescriptionService, $modal, pagination) {
-
-}]);
+leatherback.controller('passwordCtrl', ['$scope', '$location', '$filter', 'userService', 
+                                    function($scope, $location, $filter, userService) {
+	$scope.alerts = [];
+	
+	$scope.closeAlert = function(index) {
+	    $scope.alerts.splice(index, 1);
+	};
+	  
+	$scope.password = {};
+ 	$scope.submit = function() {
+ 		userService.changePassword($scope.password).then(function(returnData) {
+ 			$scope.alerts.push({type: 'success', msg: $filter('translate')('SUCCESSFULLY_CHANGED')});
+ 			$scope.password.newPassword = "";
+ 			$scope.newPasswordConfirm = "";
+         });
+ 	};
+ }]);

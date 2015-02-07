@@ -5,6 +5,11 @@ leatherback.config(function ($routeProvider) {
             controller: 'mainCtrl'
         })
         
+        .when('/password', {
+            templateUrl: '/templates/password.tpl.html',
+            controller: 'passwordCtrl'        	
+        })
+        
         .when('/report', {
             templateUrl: '/templates/report.tpl.html',
             controller: 'reportCtrl'
@@ -23,11 +28,6 @@ leatherback.config(function ($routeProvider) {
         .when('/:id', {
             templateUrl: '/templates/show.tpl.html',
             controller: 'showCtrl'
-        })
-        
-        .when('/changePassword', {
-            templateUrl: '/templates/changePassword.tpl.html',
-            controller: 'changePasswordCtrl'        	
         })
         
         .otherwise({

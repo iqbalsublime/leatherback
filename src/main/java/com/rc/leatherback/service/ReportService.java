@@ -23,7 +23,7 @@ import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import org.apache.commons.lang3.StringUtils;
 
 import com.rc.core.util.DateTimeUtil;
-import com.rc.leatherback.DatabaseContext;
+import com.rc.leatherback.data.DatabaseContext;
 import com.rc.leatherback.data.PrescriptionDao;
 import com.rc.leatherback.data.PrescriptionDetailDao;
 import com.rc.leatherback.exception.ReportNotFoundException;

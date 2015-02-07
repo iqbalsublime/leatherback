@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
-import com.rc.leatherback.DatabaseContext;
+import com.rc.leatherback.data.DatabaseContext;
 import com.rc.leatherback.data.PrescriptionDao;
 import com.rc.leatherback.data.PrescriptionDetailDao;
 import com.rc.leatherback.exception.PrescriptionNotFoundException;

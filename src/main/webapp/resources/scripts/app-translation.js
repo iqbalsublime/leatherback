@@ -38,7 +38,13 @@ leatherback.config(function($translateProvider) {
 	  	CANCEL: 'Cancel',
 	  	FORMULA_AVERAGE_COST: '(Price / Amount)',
 	  	SHOW_PRICE: 'Show price on the report',
-	  	EXPORT_REPORT: 'Export to a report'
+	  	EXPORT_REPORT: 'Export to a report',
+	  	NEW_PASSWORD: 'New Password',
+	  	NEW_PASSWORD_AGAIN: 'New Password Again',
+	  	MSG_NEW_PASSWORD: 'Please enter your new password',
+	  	MSG_NEW_PASSWORD_AGAIN: 'Please enter your new password again',
+	  	SUCCESSFULLY_CHANGED: 'Successfully changed.',
+	  	CLOSE: 'Close'
 	})
 	
 	.translations('zh', {
@@ -80,7 +86,13 @@ leatherback.config(function($translateProvider) {
 	  	CANCEL: '取消',
 	  	FORMULA_AVERAGE_COST: '(單價 / 數量)',
 	  	SHOW_PRICE: '顯示單價',
-	  	EXPORT_REPORT: '輸出報表'
+	  	EXPORT_REPORT: '輸出報表',
+	  	NEW_PASSWORD: '新密碼',
+	  	NEW_PASSWORD_AGAIN: '確認新密碼',
+	  	MSG_NEW_PASSWORD: '請輸入新密碼',
+	  	MSG_NEW_PASSWORD_AGAIN: '請再次輸入新密碼',
+	  	SUCCESSFULLY_CHANGED: '變更成功',
+	  	CLOSE: '關閉'
 	})
     
 	$translateProvider.preferredLanguage('zh');

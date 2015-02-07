@@ -32,7 +32,7 @@
             <li><a href="#/authorisation">{{ 'AUTHORISATION_MANAGE' | translate }}</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="../navbar-static-top/">{{ 'CHANGE_PASSWORD' | translate }}</a></li>
+            <li><a href="#/password">{{ 'CHANGE_PASSWORD' | translate }}</a></li>
             <li><a href="../navbar-static-top/">{{ 'LOG_OUT' | translate }}</a></li>
           </ul>
         </div><!--/.nav-collapse -->

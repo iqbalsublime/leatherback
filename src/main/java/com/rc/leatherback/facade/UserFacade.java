@@ -1,12 +1,16 @@
 package com.rc.leatherback.facade;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
+import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -16,11 +20,13 @@ import org.slf4j.LoggerFactory;
 
 import com.rc.leatherback.exception.AuthenticatedFailedException;
 import com.rc.leatherback.exception.FailedToUpdatePasswordException;
+import com.rc.leatherback.facade.dto.PageableDto;
 import com.rc.leatherback.facade.dto.PasswordDto;
+import com.rc.leatherback.model.Prescription;
 import com.rc.leatherback.model.User;
 import com.rc.leatherback.service.UserService;
 
-@Path("/user")
+//@Path("/user")
 public class UserFacade {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserFacade.class);
 
@@ -30,8 +36,8 @@ public class UserFacade {
 		this.service = new UserService();
 	}
 
-	@POST
-	@Path("/changePassword")
+	@PUT
+	@Path("/user/changePassword")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response query(@Context HttpServletRequest req, PasswordDto passwordDto) {
 		try {
@@ -52,5 +58,32 @@ public class UserFacade {
 			LOGGER.error("Failed to change user password", exception);
 			return Response.status(590).build();
 		}
+	}
+
+	@GET
+	@Path("/users")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response list() {
+		try {
+			List<User> users = service.findAllUsers();
+			int totalNumberOfPrescriptions = service.getTotalNumberOfPrescriptions();
+
+			PageableDto<Prescription> responseData = new PageableDto<Prescription>();
+			responseData.setData(prescriptions);
+			responseData.setCurrentPage(pageIndex);
+			responseData.setTotalItems(totalNumberOfPrescriptions);
+
+			return Response.status(200).entity(responseData).build();
+		} catch (ClassNotFoundException | SQLException exception) {
+			LOGGER.error("Failed to find all prescriptions", exception);
+			return Response.status(590).build();
+		}
+	}
+
+	@GET
+	@Path("/user/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response show(@PathParam("id") long userId) {
+		return null;
 	}
 }
