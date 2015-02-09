@@ -70,15 +70,6 @@
 	      <input type="text" ng-model="reportQuery.partNumberBody" class="form-control" id="part-number-body">	
 	    </div>
 	  </div>
-	  <div class="form-group">
-	   <div class="col-sm-offset-2 col-sm-10">
-	     <div class="checkbox">
-	       <label>
-	         <input type="checkbox" ng-mode="reportQuery.showPrice"> {{ 'SHOW_PRICE' | translate }}
-	       </label>
-	     </div>
-	   </div>
-	  </div>
 	  <hr />
 	  <div class="form-group">
 	    <div class="col-sm-offset-2 col-sm-10">
@@ -91,7 +82,12 @@
 
 <div class="col-md-12 well animate-show" ng-show="searched">
 	<div class="row">
-	  <div class="col-xs-12 col-sm-6 col-md-8">
+	  <div class="col-xs-12 col-sm-6 col-md-8 form-inline">
+		<div class="checkbox">
+	       <label>
+	         <input type="checkbox" ng-model="reportQuery.showPrice"> {{ 'SHOW_PRICE' | translate }}
+	       </label>
+	    </div>
 	  	<button type="button" class="btn btn-warning" ng-click="exportTo()">{{ 'EXPORT_REPORT' | translate }}</button>
 	  </div>
 	  <div class="col-xs-6 col-md-4">

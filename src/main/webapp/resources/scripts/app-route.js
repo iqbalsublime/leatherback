@@ -10,6 +10,16 @@ leatherback.config(function ($routeProvider) {
             controller: 'passwordCtrl'        	
         })
         
+        .when('/users', {
+            templateUrl: '/templates/user/list.tpl.html',
+            controller: 'listUsersCtrl'
+        })
+        
+        .when('/user/:id', {
+            templateUrl: '/templates/user/form.tpl.html',
+            controller: 'editUserCtrl'
+        })
+        
         .when('/report', {
             templateUrl: '/templates/report.tpl.html',
             controller: 'reportCtrl'

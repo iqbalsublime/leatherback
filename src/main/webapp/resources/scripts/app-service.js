@@ -1,22 +1,3 @@
-//var abstractService = (function($q) {
-//	return ({
-//		handleError: handleError,
-//		handleSuccess: handleSuccess
-//	});
-//	
-//	function handleError(response) {
-//        if (!angular.isObject(response.data) || !response.data.message) {
-//            return($q.reject('An unknown error occurred.'));
-//        }
-//
-//        return($q.reject(response.data.message));
-//    }
-//
-//    function handleSuccess(response) {
-//        return(response.data);
-//    }
-//}());
-
 leatherback.service('abstractService', function($http, $q) {
 	return ({
 		handleError: handleError,
@@ -39,8 +20,28 @@ leatherback.service('abstractService', function($http, $q) {
 
 leatherback.service('userService', function($http, $q, abstractService) {
 	return({
-		changePassword: changePassword
+		changePassword: changePassword,
+		list: list,
+		getById: getById
 	});
+	
+	function list() {
+		var request = $http({
+            method: 'get',
+            url: 'api/users'
+        });
+		
+		return(request.then(abstractService.handleSuccess, abstractService.handleError));
+	}
+	
+	function getById(id) {
+		var request = $http({
+            method: 'get',
+            url: 'api/user/' + id
+        });
+		
+		return(request.then(abstractService.handleSuccess, abstractService.handleError));
+	}
 	
 	function changePassword(password) {
 		var request = $http({
@@ -90,8 +91,6 @@ leatherback.service('reportService', function($http, $q, abstractService) {
 			
 			return(request.then(abstractService.handleSuccess, abstractService.handleError));
 		}
-		
-
 });
 
 leatherback.service('prescriptionService', function($http, $q, abstractService) {

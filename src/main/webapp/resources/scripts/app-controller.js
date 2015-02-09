@@ -1,6 +1,6 @@
 leatherback.controller('mainCtrl', ['$scope','$location','prescriptionService','$modal', 'pagination', 
                                     function($scope, $location, prescriptionService, $modal, pagination) {
-	
+
 	$scope.maxSize = 5;
 	$scope.currentPage = 1;
 	
@@ -14,15 +14,15 @@ leatherback.controller('mainCtrl', ['$scope','$location','prescriptionService','
     
     $scope.add = function() {
     	$location.path('/add');
-    }
+    };
     
     $scope.search = function() {
     	$location.path('/search');
-    }
+    };
     
     $scope.edit = function(id) {
     	$location.path('/edit/' + id);
-    }
+    };
     
     $scope.remove = function(index, id) {
     	var dlg = dialogs.confirm();
@@ -49,13 +49,7 @@ leatherback.controller('mainCtrl', ['$scope','$location','prescriptionService','
     	        }
     	      }
     	});
-
-//    	modalInstance.result.then(function (selectedItem) {
-//    	      $scope.selected = selectedItem;
-//    	}, function () {
-//    	      $log.info('Modal dismissed at: ' + new Date());
-//    	});
-    }
+    };
 }]);
 
 leatherback.controller('showCtrl', ['$scope', '$location', '$modalInstance', 'prescriptionService', 'id',
@@ -65,12 +59,7 @@ leatherback.controller('showCtrl', ['$scope', '$location', '$modalInstance', 'pr
         $scope.prescription = returnData;
     });
 
-//	$scope.ok = function () {
-//	    $modalInstance.close($scope.selected.item);
-//	};
-	
 	$scope.close = function () {
-	    //$modalInstance.dismiss('cancel');
 		$modalInstance.close();
 	};
 }]);
@@ -136,7 +125,7 @@ leatherback.controller('reportCtrl', ['$scope','$location', '$window', 'partNumb
 		if((typeof $scope.reportQuery.partNumberHead != 'undefined') && (typeof $scope.reportQuery.partNumberHead.partNumberHead != 'undefined')) {
 			$scope.reportQuery.partNumberHead = $scope.reportQuery.partNumberHead.partNumberHead;
 		}
-		
+		console.log($scope.reportQuery.showPrice);
 		reportService.exportTo($scope.reportQuery).then(function(returnData) {
             $scope.searched = true;
             $window.open('api/report/pdf/download/' + returnData.drawerKey);
@@ -172,7 +161,7 @@ leatherback.controller('addCtrl', ['$scope','$location', '$filter', '$window', '
 	
 	$scope.$watch('prescription.date', function() {
 		$scope.prescription.lotNumber = $filter('date')($scope.prescription.date, 'yyyyMMdd');
-	})
+	});
 	
 	// initialise
 	$scope.names = [];
@@ -255,7 +244,7 @@ leatherback.controller('editCtrl', ['$scope', '$routeParams','$location', '$filt
 	
 	$scope.$watch('prescription.date', function() {
 		$scope.lotNumberHead = $filter('date')($scope.prescription.date, 'yyyyMMdd');
-	})
+	});
 	
 
 	$scope.$watchGroup(['amounts[0]', 'amounts[1]', 'amounts[2]', 'amounts[3]', 'amounts[4]', 'amounts[5]', 'amounts[6]', 'amounts[7]', 'amounts[8]', 'amounts[9]', 'amounts[10]', 'amounts[11]', 'amounts[12]', 'amounts[13]', 'amounts[14]', 'amounts[15]', 'amounts[16]', 'amounts[17]', 'amounts[18]', 'amounts[19]'
@@ -323,5 +312,37 @@ leatherback.controller('passwordCtrl', ['$scope', '$location', '$filter', 'userS
  			$scope.password.newPassword = "";
  			$scope.newPasswordConfirm = "";
          });
+ 	};
+}]);
+
+leatherback.controller('listUsersCtrl', ['$scope','$location','userService', 
+                                    function($scope, $location, userService) {
+    $scope.users = [];
+    userService.list().then(function(returnData) {
+        $scope.users = returnData;
+    });
+    
+    $scope.edit = function(id) {
+    	$location.path('/user/' + id);
+    };
+}]);
+
+leatherback.controller('editUserCtrl', ['$scope', '$routeParams','$location', 'userService', 
+                                    function($scope, $routeParams, $location, userService) {
+ 	
+ 	$scope.user = {};
+ 	userService.getById($routeParams.id).then(function(returnData) {
+         $scope.user = returnData;
+     });
+
+ 	
+ 	$scope.submit = function() {
+ 		userService.update($routeParams.id, $scope.user).then(function(returnData) {
+             $location.path('/users');
+         });
+ 	};
+ 	
+ 	$scope.cancel = function() {
+ 		$window.history.back();
  	};
  }]);

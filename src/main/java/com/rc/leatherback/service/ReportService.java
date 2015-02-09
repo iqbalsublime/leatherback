@@ -35,227 +35,246 @@ import com.rc.leatherback.model.report.PrescriptionReport;
 
 public class ReportService {
 
-	private PrescriptionDao prescriptionDao;
-	private PrescriptionDetailDao detailDao;
+    private PrescriptionDao prescriptionDao;
+    private PrescriptionDetailDao detailDao;
 
-	public ReportService() {
-		this.prescriptionDao = new PrescriptionDao();
-		this.detailDao = new PrescriptionDetailDao();
-	}
+    public ReportService() {
+        this.prescriptionDao = new PrescriptionDao();
+        this.detailDao = new PrescriptionDetailDao();
+    }
 
-	public List<Prescription> query(ReportQuery reportQuery, int pageIndex, int pageSize) throws ClassNotFoundException,
-			SQLException {
+    public List<Prescription> query(ReportQuery reportQuery, int pageIndex, int pageSize) throws ClassNotFoundException,
+                    SQLException {
 
-		return getPrescriptions(reportQuery, pageIndex, pageSize);
-	}
+        return getPrescriptions(reportQuery, pageIndex, pageSize);
+    }
 
-	public int getTotalNumberOfQueryResult(ReportQuery reportQuery) throws ClassNotFoundException, SQLException {
-		return countPrescriptions(reportQuery);
-	}
+    public int getTotalNumberOfQueryResult(ReportQuery reportQuery) throws ClassNotFoundException, SQLException {
+        return countPrescriptions(reportQuery);
+    }
 
-	/**
-	 * 
-	 * @param reportQuery
-	 * @param reportLocation
-	 * @return A drawer key of the reports cabinet.
-	 * @throws JRException
-	 * @throws IOException
-	 * @throws ClassNotFoundException
-	 * @throws SQLException
-	 */
-	public String generateReport(ReportQuery reportQuery, String reportLocation) throws JRException, IOException,
-			ClassNotFoundException, SQLException {
-		// load JasperDesign from XML and compile it into JasperReport
-		JasperDesign jasperDesign = JRXmlLoader.load(reportLocation + "/report.jrxml");
-		JasperDesign jasperSubDesign = JRXmlLoader.load(reportLocation + "/sub_report.jrxml");
+    /**
+     * 
+     * @param reportQuery
+     * @param reportLocation
+     * @return A drawer key of the reports cabinet.
+     * @throws JRException
+     * @throws IOException
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
+    public String generateReport(ReportQuery reportQuery, String reportLocation) throws JRException, IOException,
+                    ClassNotFoundException, SQLException {
+        // load JasperDesign from XML and compile it into JasperReport
+        JasperDesign jasperDesign = JRXmlLoader.load(reportLocation + "/report.jrxml");
+        JasperDesign jasperSubDesign = JRXmlLoader.load(reportLocation + "/sub_report.jrxml");
 
-		JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
-		JasperReport jasperSubReport = JasperCompileManager.compileReport(jasperSubDesign);
+        Map fieldsMap = jasperDesign.getFieldsMap();
+        jasperDesign.
 
-		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("SubReportParam", jasperSubReport);
+        JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+        JasperReport jasperSubReport = JasperCompileManager.compileReport(jasperSubDesign);
 
-		List<Prescription> prescriptions = getPrescriptions(reportQuery);
-		List<PrescriptionReport> reports = transferToReport(prescriptions);
-		JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(reports);
-		// fill JasperPrint using fillReport() method
-		JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, beanColDataSource);
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("SubReportParam", jasperSubReport);
 
-		File report = File.createTempFile("report-", ".pdf");
-		JasperExportManager.exportReportToPdfFile(jasperPrint, report.getPath());
+        List<Prescription> prescriptions = getPrescriptions(reportQuery);
+        List<PrescriptionReport> reports = transferToReport(prescriptions);
+        JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(reports);
+        // fill JasperPrint using fillReport() method
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, beanColDataSource);
 
-		String drawerKey = ReportArchiveService.keepReport(report);
+        File report = File.createTempFile("report-", ".pdf");
+        JasperExportManager.exportReportToPdfFile(jasperPrint, report.getPath());
 
-		return drawerKey;
-	}
+        String drawerKey = ReportArchiveService.keepReport(report);
 
-	public File downloadReport(String drawerKey) {
-		try {
-			File report = ReportArchiveService.getReport(drawerKey);
-			ReportArchiveService.destroyReport(drawerKey);
+        return drawerKey;
+    }
 
-			return report;
-		} catch (ReportNotFoundException exception) {
-			throw exception;
-		}
-	}
+    public File downloadReport(String drawerKey) {
+        try {
+            File report = ReportArchiveService.getReport(drawerKey);
+            ReportArchiveService.destroyReport(drawerKey);
 
-	private List<Prescription> getPrescriptions(final ReportQuery reportQuery) throws ClassNotFoundException, SQLException {
-		ReportQuery determinatedQuery = determinateQueryCondition(reportQuery);
-		try (Connection connection = DatabaseContext.getConnection()) {
-			List<Prescription> prescriptions = new ArrayList<Prescription>();
+            return report;
+        } catch (ReportNotFoundException exception) {
+            throw exception;
+        }
+    }
 
-			switch (determinatedQuery.getSearchBy()) {
-			case 1:
-				prescriptions = prescriptionDao.findByDateAndLotNumberAndPartNumber(connection, determinatedQuery.getStartDate(),
-						determinatedQuery.getEndDate(), determinatedQuery.getLotNumber(), determinatedQuery.getPartNumber());
-				break;
-			case 2:
-				prescriptions = prescriptionDao.findByDateAndLotNumberAndPartNumberHead(connection,
-						determinatedQuery.getStartDate(), determinatedQuery.getEndDate(), determinatedQuery.getLotNumber(),
-						determinatedQuery.getPartNumberHead());
-				break;
-			case 3:
-				prescriptions = prescriptionDao.findByDateAndLotNumberAndPartNumberBody(connection,
-						determinatedQuery.getStartDate(), determinatedQuery.getEndDate(), determinatedQuery.getLotNumber(),
-						determinatedQuery.getPartNumberBody());
-				break;
+    private List<Prescription> getPrescriptions(final ReportQuery reportQuery) throws ClassNotFoundException, SQLException {
+        ReportQuery determinatedQuery = determinateQueryCondition(reportQuery);
+        try (Connection connection = DatabaseContext.getConnection()) {
+            List<Prescription> prescriptions = new ArrayList<Prescription>();
 
-			}
+            switch (determinatedQuery.getSearchBy()) {
+                case 1:
+                    prescriptions =
+                                    prescriptionDao.findByDateAndLotNumberAndPartNumber(connection,
+                                                    determinatedQuery.getStartDate(), determinatedQuery.getEndDate(),
+                                                    determinatedQuery.getLotNumber(), determinatedQuery.getPartNumber());
+                    break;
+                case 2:
+                    prescriptions =
+                                    prescriptionDao.findByDateAndLotNumberAndPartNumberHead(connection,
+                                                    determinatedQuery.getStartDate(), determinatedQuery.getEndDate(),
+                                                    determinatedQuery.getLotNumber(), determinatedQuery.getPartNumberHead());
+                    break;
+                case 3:
+                    prescriptions =
+                                    prescriptionDao.findByDateAndLotNumberAndPartNumberBody(connection,
+                                                    determinatedQuery.getStartDate(), determinatedQuery.getEndDate(),
+                                                    determinatedQuery.getLotNumber(), determinatedQuery.getPartNumberBody());
+                    break;
 
-			for (Prescription prescription : prescriptions) {
-				List<PrescriptionDetail> details = detailDao.findByPrescriptionId(connection, prescription.getId());
-				prescription.setDetails(details);
-			}
+            }
 
-			return prescriptions;
-		}
-	}
+            for (Prescription prescription : prescriptions) {
+                List<PrescriptionDetail> details = detailDao.findByPrescriptionId(connection, prescription.getId());
+                prescription.setDetails(details);
+            }
 
-	private List<Prescription> getPrescriptions(final ReportQuery reportQuery, int pageIndex, int pageSize)
-			throws ClassNotFoundException, SQLException {
+            return prescriptions;
+        }
+    }
 
-		ReportQuery determinatedQuery = determinateQueryCondition(reportQuery);
-		try (Connection connection = DatabaseContext.getConnection()) {
-			int limit = pageSize;
-			int offset = pageSize * (pageIndex - 1);
-			List<Prescription> prescriptions = new ArrayList<Prescription>();
+    private List<Prescription> getPrescriptions(final ReportQuery reportQuery, int pageIndex, int pageSize)
+                    throws ClassNotFoundException, SQLException {
 
-			switch (determinatedQuery.getSearchBy()) {
-			case 1:
-				prescriptions = prescriptionDao.findByDateAndLotNumberAndPartNumber(connection, determinatedQuery.getStartDate(),
-						determinatedQuery.getEndDate(), determinatedQuery.getLotNumber(), determinatedQuery.getPartNumber(),
-						limit, offset);
-				break;
-			case 2:
-				prescriptions = prescriptionDao.findByDateAndLotNumberAndPartNumberHead(connection,
-						determinatedQuery.getStartDate(), determinatedQuery.getEndDate(), determinatedQuery.getLotNumber(),
-						determinatedQuery.getPartNumberHead(), limit, offset);
-				break;
-			case 3:
-				prescriptions = prescriptionDao.findByDateAndLotNumberAndPartNumberBody(connection,
-						determinatedQuery.getStartDate(), determinatedQuery.getEndDate(), determinatedQuery.getLotNumber(),
-						determinatedQuery.getPartNumberBody(), limit, offset);
-				break;
+        ReportQuery determinatedQuery = determinateQueryCondition(reportQuery);
+        try (Connection connection = DatabaseContext.getConnection()) {
+            int limit = pageSize;
+            int offset = pageSize * (pageIndex - 1);
+            List<Prescription> prescriptions = new ArrayList<Prescription>();
 
-			}
+            switch (determinatedQuery.getSearchBy()) {
+                case 1:
+                    prescriptions =
+                                    prescriptionDao.findByDateAndLotNumberAndPartNumber(connection,
+                                                    determinatedQuery.getStartDate(), determinatedQuery.getEndDate(),
+                                                    determinatedQuery.getLotNumber(), determinatedQuery.getPartNumber(), limit,
+                                                    offset);
+                    break;
+                case 2:
+                    prescriptions =
+                                    prescriptionDao.findByDateAndLotNumberAndPartNumberHead(connection,
+                                                    determinatedQuery.getStartDate(), determinatedQuery.getEndDate(),
+                                                    determinatedQuery.getLotNumber(), determinatedQuery.getPartNumberHead(),
+                                                    limit, offset);
+                    break;
+                case 3:
+                    prescriptions =
+                                    prescriptionDao.findByDateAndLotNumberAndPartNumberBody(connection,
+                                                    determinatedQuery.getStartDate(), determinatedQuery.getEndDate(),
+                                                    determinatedQuery.getLotNumber(), determinatedQuery.getPartNumberBody(),
+                                                    limit, offset);
+                    break;
 
-			for (Prescription prescription : prescriptions) {
-				List<PrescriptionDetail> details = detailDao.findByPrescriptionId(connection, prescription.getId());
-				prescription.setDetails(details);
-			}
+            }
 
-			return prescriptions;
-		}
-	}
+            for (Prescription prescription : prescriptions) {
+                List<PrescriptionDetail> details = detailDao.findByPrescriptionId(connection, prescription.getId());
+                prescription.setDetails(details);
+            }
 
-	private int countPrescriptions(final ReportQuery reportQuery) throws ClassNotFoundException, SQLException {
-		int countResult = 0;
-		ReportQuery determinatedQuery = determinateQueryCondition(reportQuery);
-		try (Connection connection = DatabaseContext.getConnection()) {
-			switch (determinatedQuery.getSearchBy()) {
-			case 1:
-				countResult = prescriptionDao.countByDateAndLotNumberAndPartNumber(connection, determinatedQuery.getStartDate(),
-						determinatedQuery.getEndDate(), determinatedQuery.getLotNumber(), determinatedQuery.getPartNumber());
-				break;
-			case 2:
-				countResult = prescriptionDao.countByDateAndLotNumberAndPartNumberHead(connection,
-						determinatedQuery.getStartDate(), determinatedQuery.getEndDate(), determinatedQuery.getLotNumber(),
-						determinatedQuery.getPartNumberHead());
-				break;
-			case 3:
-				countResult = prescriptionDao.countByDateAndLotNumberAndPartNumberBody(connection,
-						determinatedQuery.getStartDate(), determinatedQuery.getEndDate(), determinatedQuery.getLotNumber(),
-						determinatedQuery.getPartNumberBody());
-				break;
-			}
+            return prescriptions;
+        }
+    }
 
-			return countResult;
-		}
-	}
+    private int countPrescriptions(final ReportQuery reportQuery) throws ClassNotFoundException, SQLException {
+        int countResult = 0;
+        ReportQuery determinatedQuery = determinateQueryCondition(reportQuery);
+        try (Connection connection = DatabaseContext.getConnection()) {
+            switch (determinatedQuery.getSearchBy()) {
+                case 1:
+                    countResult =
+                                    prescriptionDao.countByDateAndLotNumberAndPartNumber(connection,
+                                                    determinatedQuery.getStartDate(), determinatedQuery.getEndDate(),
+                                                    determinatedQuery.getLotNumber(), determinatedQuery.getPartNumber());
+                    break;
+                case 2:
+                    countResult =
+                                    prescriptionDao.countByDateAndLotNumberAndPartNumberHead(connection,
+                                                    determinatedQuery.getStartDate(), determinatedQuery.getEndDate(),
+                                                    determinatedQuery.getLotNumber(), determinatedQuery.getPartNumberHead());
+                    break;
+                case 3:
+                    countResult =
+                                    prescriptionDao.countByDateAndLotNumberAndPartNumberBody(connection,
+                                                    determinatedQuery.getStartDate(), determinatedQuery.getEndDate(),
+                                                    determinatedQuery.getLotNumber(), determinatedQuery.getPartNumberBody());
+                    break;
+            }
 
-	private ReportQuery determinateQueryCondition(final ReportQuery reportQuery) {
-		ReportQuery determinatedQuery = new ReportQuery();
+            return countResult;
+        }
+    }
 
-		if (reportQuery.getStartDate() == null) {
-			Calendar startDateCalendar = Calendar.getInstance();
-			startDateCalendar.set(1920, 1, 1);
-			determinatedQuery.setStartDate(startDateCalendar.getTime());
-		} else {
-			determinatedQuery.setStartDate(DateTimeUtil.getTheBeginingOfDate(reportQuery.getStartDate()));
-		}
+    private ReportQuery determinateQueryCondition(final ReportQuery reportQuery) {
+        ReportQuery determinatedQuery = new ReportQuery();
 
-		if (reportQuery.getEndDate() == null) {
-			Calendar endDateCalendar = Calendar.getInstance();
-			endDateCalendar.set(2030, 12, 31);
-			determinatedQuery.setEndDate(endDateCalendar.getTime());
-		} else {
-			determinatedQuery.setEndDate(DateTimeUtil.getTheEndOfDate(reportQuery.getEndDate()));
-		}
+        if (reportQuery.getStartDate() == null) {
+            Calendar startDateCalendar = Calendar.getInstance();
+            startDateCalendar.set(1920, 1, 1);
+            determinatedQuery.setStartDate(startDateCalendar.getTime());
+        } else {
+            determinatedQuery.setStartDate(DateTimeUtil.getTheBeginingOfDate(reportQuery.getStartDate()));
+        }
 
-		if (StringUtils.isEmpty(reportQuery.getLotNumber())) {
-			determinatedQuery.setLotNumber("%");
-		} else {
-			determinatedQuery.setLotNumber("%" + reportQuery.getLotNumber() + "%");
-		}
+        if (reportQuery.getEndDate() == null) {
+            Calendar endDateCalendar = Calendar.getInstance();
+            endDateCalendar.set(2030, 12, 31);
+            determinatedQuery.setEndDate(endDateCalendar.getTime());
+        } else {
+            determinatedQuery.setEndDate(DateTimeUtil.getTheEndOfDate(reportQuery.getEndDate()));
+        }
 
-		// 1: by partNumber, 2: by partNumberHead, 3: by partNumberBody
-		if (StringUtils.isEmpty(reportQuery.getPartNumberHead()) && StringUtils.isEmpty(reportQuery.getPartNumberBody())) {
-			determinatedQuery.setSearchBy(1);
-			determinatedQuery.setPartNumber("%");
-		} else if (!StringUtils.isEmpty(reportQuery.getPartNumberHead()) && StringUtils.isEmpty(reportQuery.getPartNumberBody())) {
-			determinatedQuery.setSearchBy(2);
-			determinatedQuery.setPartNumberHead("%" + reportQuery.getPartNumberHead() + "%");
-		} else if (StringUtils.isEmpty(reportQuery.getPartNumberHead()) && !StringUtils.isEmpty(reportQuery.getPartNumberBody())) {
-			determinatedQuery.setSearchBy(3);
-			determinatedQuery.setPartNumberBody("%" + reportQuery.getPartNumberBody() + "%");
-		} else {
-			determinatedQuery.setSearchBy(1);
-			determinatedQuery.setPartNumber(String.format("%s-%s", reportQuery.getPartNumberHead(),
-					reportQuery.getPartNumberBody()));
-		}
+        if (StringUtils.isEmpty(reportQuery.getLotNumber())) {
+            determinatedQuery.setLotNumber("%");
+        } else {
+            determinatedQuery.setLotNumber("%" + reportQuery.getLotNumber() + "%");
+        }
 
-		return determinatedQuery;
-	}
+        // 1: by partNumber, 2: by partNumberHead, 3: by partNumberBody
+        if (StringUtils.isEmpty(reportQuery.getPartNumberHead()) && StringUtils.isEmpty(reportQuery.getPartNumberBody())) {
+            determinatedQuery.setSearchBy(1);
+            determinatedQuery.setPartNumber("%");
+        } else if (!StringUtils.isEmpty(reportQuery.getPartNumberHead()) && StringUtils.isEmpty(reportQuery.getPartNumberBody())) {
+            determinatedQuery.setSearchBy(2);
+            determinatedQuery.setPartNumberHead("%" + reportQuery.getPartNumberHead() + "%");
+        } else if (StringUtils.isEmpty(reportQuery.getPartNumberHead()) && !StringUtils.isEmpty(reportQuery.getPartNumberBody())) {
+            determinatedQuery.setSearchBy(3);
+            determinatedQuery.setPartNumberBody("%" + reportQuery.getPartNumberBody() + "%");
+        } else {
+            determinatedQuery.setSearchBy(1);
+            determinatedQuery.setPartNumber(String.format("%s-%s", reportQuery.getPartNumberHead(),
+                            reportQuery.getPartNumberBody()));
+        }
 
-	private List<PrescriptionReport> transferToReport(List<Prescription> prescriptions) {
-		List<PrescriptionReport> reports = new ArrayList<PrescriptionReport>();
+        return determinatedQuery;
+    }
 
-		for (Prescription prescription : prescriptions) {
-			PrescriptionReport report = new PrescriptionReport(prescription.getLotNumber(), prescription.getDate(),
-					prescription.getPartNumber(), prescription.getTotalAmount(), prescription.getTotalPrice(),
-					prescription.getAverageCost());
+    private List<PrescriptionReport> transferToReport(List<Prescription> prescriptions) {
+        List<PrescriptionReport> reports = new ArrayList<PrescriptionReport>();
 
-			int itemIndex = 1;
-			for (PrescriptionDetail detail : prescription.getDetails()) {
-				PrescriptionDetailReport reportDetail = new PrescriptionDetailReport(itemIndex, detail.getName(),
-						detail.getAmount(), detail.getPrice(), detail.getNote());
-				report.addDetail(reportDetail);
-			}
+        for (Prescription prescription : prescriptions) {
+            PrescriptionReport report =
+                            new PrescriptionReport(prescription.getLotNumber(), prescription.getDate(),
+                                            prescription.getPartNumber(), prescription.getTotalAmount(),
+                                            prescription.getTotalPrice(), prescription.getAverageCost());
 
-			reports.add(report);
-		}
+            int itemIndex = 1;
+            for (PrescriptionDetail detail : prescription.getDetails()) {
+                PrescriptionDetailReport reportDetail =
+                                new PrescriptionDetailReport(itemIndex, detail.getName(), detail.getAmount(), detail.getPrice(),
+                                                detail.getNote());
+                report.addDetail(reportDetail);
+            }
 
-		return reports;
-	}
+            reports.add(report);
+        }
+
+        return reports;
+    }
 }

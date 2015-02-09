@@ -29,11 +29,11 @@
           <ul class="nav navbar-nav">
             <li><a href="#/">{{ 'PRESCRIPTION_MANAGE' | translate }}</a></li>
             <li><a href="#/report">{{ 'REPORT_OUTPUT' | translate }}</a></li>
-            <li><a href="#/authorisation">{{ 'AUTHORISATION_MANAGE' | translate }}</a></li>
+            <li><a href="#/users">{{ 'AUTHORISATION_MANAGE' | translate }}</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#/password">{{ 'CHANGE_PASSWORD' | translate }}</a></li>
-            <li><a href="../navbar-static-top/">{{ 'LOG_OUT' | translate }}</a></li>
+            <li><a href="logout">{{ 'LOG_OUT' | translate }}</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
