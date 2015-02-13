@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.0.1.final using JasperReports Library version 6.0.0  -->
-<!-- 2015-02-01T15:37:13 -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sub_report" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" >
+<!-- 2015-02-12T00:28:18 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sub_report" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="69a99583-9f1f-47b4-bf02-23f00b3ba638">
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -16,42 +16,53 @@
 	<columnHeader>
 		<band height="40" splitType="Stretch">
 			<staticText>
-				<reportElement x="-20" y="0" width="100" height="30" />
+				<reportElement x="0" y="14" width="80" height="20" uuid="6d99d83c-ccd0-48f4-a214-ad1ee8947058"/>
 				<textElement>
 					<font size="12"/>
 				</textElement>
-				<text><![CDATA[Item]]></text>
+				<text><![CDATA[項次]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="80" y="0" width="100" height="30" />
+				<reportElement x="80" y="14" width="100" height="20" uuid="46b7034a-b764-4e9d-b717-47d63839e2ab">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
 				<textElement>
 					<font size="12"/>
 				</textElement>
-				<text><![CDATA[Prescription]]></text>
+				<text><![CDATA[配方]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="180" y="0" width="100" height="30" />
+				<reportElement x="180" y="14" width="100" height="20" uuid="275e22f6-0efa-46e7-a9b2-eb4ecf09a757">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
 				<textElement>
 					<font size="12"/>
 				</textElement>
-				<text><![CDATA[Amount]]></text>
+				<text><![CDATA[數量]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="280" y="0" width="100" height="30" />
+				<reportElement x="280" y="14" width="100" height="20" uuid="1d5b0ead-b691-4bbf-a8fc-d7d27bed8ed1">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
 				<textElement>
 					<font size="12"/>
 				</textElement>
-				<text><![CDATA[Price]]></text>
+				<text><![CDATA[單價]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="380" y="0" width="100" height="30" />
+				<reportElement x="380" y="14" width="100" height="20" uuid="2a395939-1677-4479-92e1-0e58aed22a58">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
 				<textElement>
 					<font size="12"/>
 				</textElement>
-				<text><![CDATA[Note]]></text>
+				<text><![CDATA[備註]]></text>
 			</staticText>
 			<line>
-				<reportElement x="-20" y="36" width="595" height="1" >
+				<reportElement x="-20" y="36" width="595" height="1" uuid="dbcb2925-d756-450f-8265-d87e2c5b8bb3">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -59,25 +70,25 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="125" splitType="Stretch">
+		<band height="21" splitType="Stretch">
 			<textField>
-				<reportElement x="-20" y="0" width="100" height="30" />
+				<reportElement x="0" y="0" width="100" height="20" uuid="3eb9771f-41c0-4e53-81c0-1ef29831704e"/>
 				<textFieldExpression><![CDATA[$F{item}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="80" y="0" width="100" height="30" />
+				<reportElement x="80" y="0" width="100" height="20" uuid="60e3c115-652d-42f5-b89f-adc45b2e963a"/>
 				<textFieldExpression><![CDATA[$F{prescription}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="180" y="0" width="100" height="30" />
+				<reportElement x="180" y="0" width="100" height="20" uuid="cfaecff9-34a1-4336-97c1-95aa13f7f7f6"/>
 				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="280" y="0" width="100" height="30" />
+				<reportElement x="280" y="0" width="100" height="20" uuid="c9ea0713-7e92-43aa-80ca-75b0fd720a1e"/>
 				<textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="380" y="0" width="100" height="30" />
+				<reportElement x="380" y="0" width="100" height="20" uuid="46b78db8-3a50-4a7e-9b86-bfbe75bf0def"/>
 				<textFieldExpression><![CDATA[$F{note}]]></textFieldExpression>
 			</textField>
 		</band>
