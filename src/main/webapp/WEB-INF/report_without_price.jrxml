@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.1.final using JasperReports Library version 6.0.0  -->
+<!-- 2015-02-14T17:45:37 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4ecd39f8-d533-418d-a33a-e64f8099a5a8">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="SubReportParam" class="net.sf.jasperreports.engine.JasperReport" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="lotNumber" class="java.lang.String"/>
+	<field name="date" class="java.lang.String"/>
+	<field name="partNumber" class="java.lang.String"/>
+	<field name="totalAmount" class="java.lang.String"/>
+	<field name="hand" class="java.lang.String"/>
+	<field name="totalAmountAfterHanded" class="java.lang.String"/>
+	<field name="details" class="java.util.List"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="13" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="19" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="16" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="229" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="5" width="80" height="15" uuid="5477bebc-b075-40ac-b7aa-1cadea4de280"/>
+				<textElement>
+					<font fontName="AR PL UMing TW" size="12"/>
+				</textElement>
+				<text><![CDATA[日期]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="26" width="80" height="20" uuid="84a7e39b-4be3-4613-b8a1-b33cbf563f08">
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="80" y="5" width="100" height="15" uuid="8cdbbb2a-c304-4d0b-8339-c2ce30658d78"/>
+				<textElement>
+					<font fontName="AR PL UMing TW" size="12"/>
+				</textElement>
+				<text><![CDATA[批號]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="80" y="26" width="100" height="20" uuid="050d7bb7-f52d-48b9-911b-30c225a29030"/>
+				<textFieldExpression><![CDATA[$F{lotNumber}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="180" y="5" width="100" height="15" uuid="b2851171-348f-4909-b1fb-4c96ac09956b"/>
+				<textElement>
+					<font fontName="AR PL UMing TW" size="12"/>
+				</textElement>
+				<text><![CDATA[成品料號]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="180" y="26" width="100" height="20" uuid="a9c25a86-cf31-4fdb-b45a-6e74135fcdca"/>
+				<textFieldExpression><![CDATA[$F{partNumber}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="280" y="5" width="100" height="15" uuid="bc0e7c90-e90a-4507-8dd0-9e554e9e1a80"/>
+				<textElement>
+					<font fontName="AR PL UMing TW" size="12"/>
+				</textElement>
+				<text><![CDATA[總數量]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="280" y="26" width="100" height="20" uuid="0b9b0513-5349-45c9-9b35-0dec10e8c2db"/>
+				<textFieldExpression><![CDATA[$F{totalAmount}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="380" y="5" width="100" height="15" uuid="11af766b-cf7f-4d5e-8768-62d8173969e6"/>
+				<textElement>
+					<font fontName="AR PL UMing TW" size="12"/>
+				</textElement>
+				<text><![CDATA[手]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="380" y="26" width="100" height="20" uuid="24ee9a02-cfaf-4146-b4ce-1a146b0e1879"/>
+				<textFieldExpression><![CDATA[$F{hand}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="480" y="6" width="95" height="14" uuid="4276a0c7-c940-4b04-bfea-bd3374198b16"/>
+				<textElement>
+					<font fontName="AR PL UMing TW" size="12"/>
+				</textElement>
+				<text><![CDATA[數量 x 手]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="480" y="26" width="95" height="20" uuid="5ba95ac0-67bc-44f1-b330-ac7a8f6bb678"/>
+				<textFieldExpression><![CDATA[$F{totalAmountAfterHanded}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="-20" y="22" width="595" height="1" uuid="e4c2cbb0-23c2-4686-84d0-8b6166f00a76">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="-20" y="44" width="595" height="1" uuid="19c9260a-71a6-471d-ad91-c5bf8e1b50dd">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+			<subreport>
+				<reportElement x="-20" y="45" width="595" height="55" uuid="10ef3c78-4f52-4d4a-b356-d344560748a6"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{details})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SubReportParam}]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="22" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="21" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="19" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -25,7 +25,7 @@ import com.rc.leatherback.facade.dto.PasswordDto;
 import com.rc.leatherback.model.User;
 import com.rc.leatherback.service.UserService;
 
-// @Path("/user")
+@Path("")
 public class UserFacade {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserFacade.class);
 
@@ -61,7 +61,7 @@ public class UserFacade {
 
     @GET
     @Path("/users")
-    @Produces(MediaType.APPLICATION_JSON)
+    // @Produces(MediaType.APPLICATION_JSON)
     public Response list() {
         try {
             List<User> users = service.findAllUsers();

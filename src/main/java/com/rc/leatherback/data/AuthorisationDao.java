@@ -10,7 +10,7 @@ import com.rc.leatherback.model.Authorisation;
 
 public class AuthorisationDao {
 
-    private static final String GET_BY_USER_ID = "select * from table_authroisation where user_id = ?;";
+    private static final String GET_BY_USER_ID = "select * from table_authorisation where user_id = ?;";
 
     public Authorisation getByUserId(Connection connection, long userId) throws SQLException {
         Authorisation authorisation = null;
@@ -53,6 +53,12 @@ public class AuthorisationDao {
         authorisation.setCreatedDate(resultSet.getTimestamp("created_date"));
         authorisation.setModifiedBy(resultSet.getString("modified_by"));
         authorisation.setModifiedDate(resultSet.getTimestamp("modified_date"));
+        authorisation.setAccessUserModule(resultSet.getBoolean("access_user_module"));
+        authorisation.setAccessReportModule(resultSet.getBoolean("access_report_module"));
+        authorisation.setCreatePrescription(resultSet.getBoolean("create_prescription"));
+        authorisation.setDeletePrescription(resultSet.getBoolean("delete_prescription"));
+        authorisation.setModifyPrescription(resultSet.getBoolean("modify_prescription"));
+        authorisation.setListPrescription(resultSet.getBoolean("list_prescription"));
 
         return authorisation;
     }

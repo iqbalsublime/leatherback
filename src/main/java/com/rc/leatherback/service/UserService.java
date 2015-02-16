@@ -41,7 +41,13 @@ public class UserService {
 
     public List<User> findAllUsers() throws ClassNotFoundException, SQLException {
         try (Connection connection = DatabaseContext.getConnection()) {
-            return userDao.findAllUsers(connection);
+            List<User> users = userDao.findAllUsers(connection);
+            for (User user : users) {
+                Authorisation authorisation = authorisationDao.getByUserId(connection, user.getId());
+                user.setAuthorisation(authorisation);
+            }
+
+            return users;
         }
     }
 

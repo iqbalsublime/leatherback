@@ -1,61 +1,4 @@
-<script type="text/ng-template" id="showDetails.html">
-	<div class="modal-header">
-		<h3 class="modal-title">{{ 'LOT_NUMBER' | translate }}: {{prescription.lotNumber}}</h3>
-	</div>
-	<div class="modal-body">
-		<div class="container">
-		<h4 class="row">
-			{{ 'DATE' | translate }}: {{prescription.date}}
-		</h4>
-		<h4 class="row">
-			{{ 'PART_NUMBER' | translate }}: {{prescription.partNumber}}
-		</h4>
-		<h4 class="row">
-			{{ 'TOTAL_AMOUNT' | translate }}: {{prescription.totalAmount}} KG
-		</h4>
-		<h4 class="row">
-			{{ 'TOTAL_PRICE' | translate }}: {{prescription.totalPrice}}
-		</h4>
-		<h4 class="row">
-			{{ 'TOTAL_AMOUNT_AFTER_HANDED' | translate }}: {{prescription.totalAmountAfterHanded}}
-		</h4>
-		<h4 class="row">
-			{{ 'AVERAGE_COST' | translate }}: {{prescription.averageCost}}
-		</h4>
-		</div>
-		<hr />
-		<div class="row">
-			<div class="table-responsive">
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th>{{ 'ITEM' | translate }}</th>
-						<th>{{ 'PRESCRIPTION_NAME' | translate }}</th>
-						<th>{{ 'AMOUNT' | translate }}</th>
-						<th>{{ 'PRICE' | translate }}</th>
-						<th>{{ 'NOTE' | translate }}</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="detail in prescription.details">
-						<td> {{$index + 1}} </td>
-						<td> {{detail.name}} </td>
-						<td> {{detail.amount}} KG </td>
-						<td> {{detail.price}} </td>
-						<td> {{detail.note}} </td>
-					</tr>
-				</tbody>
-			</table>
-			</div>
-		</div>
-	</div>
-	<div class="modal-footer">
-		<button class="btn btn-primary" ng-click="ok()">OK</button>
-		<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-	</div>
-</script>
-    
-<h3>{{ 'ADD_A_PRESCRIPTION' | translate }}</h3>
+<h3>{{ 'AUTHORISATION_MANAGE' | translate }}</h3>
 	<div class="col-md-12 well">
 		<div class="row">
 		  <div class="col-xs-6 col-md-4">
@@ -77,27 +20,29 @@
         <table class="table table-striped table-bordered">
           <thead>
             <tr>
-				<th>{{ 'DATE' | translate }}</th>
-				<th>{{ 'LOT_NUMBER' | translate }}</th>
-				<th>{{ 'PART_NUMBER' | translate }}</th>
-				<th>{{ 'TOTAL_AMOUNT' | translate }}</th>
-				<th>{{ 'TOTAL_AMOUNT_AFTER_HANDED' | translate }}</th>
-				<th>{{ 'AVERAGE_COST' | translate }}</th>
+				<th>{{ 'NAME' | translate }}</th>
+				<th>{{ 'AUTHORISATION_MANAGE' | translate }}</th>
+				<th>{{ 'REPORT_OUTPUT' | translate }}</th>
+				<th>{{ 'PRESCRIPTION_CREATION_AUTH' | translate }}</th>
+				<th>{{ 'PRESCRIPTION_MODIFICATION_AUTH' | translate }}</th>
+				<th>{{ 'PRESCRIPTION_DELETION_AUTH' | translate }}</th>
+				<th>{{ 'PRESCRIPTION_LIST_AUTH' | translate }}</th>
 				<th></th>
             </tr>
           </thead>
           <tbody>
-			<tr ng-repeat="prescription in prescriptions">
-				<td>{{prescription.date}}</td>
-				<td>{{prescription.lotNumber}}</td>
-				<td>{{prescription.partNumber}}</td>
-				<td>{{prescription.totalAmount}}</td>
-				<td>{{prescription.totalAmountAfterHanded}}</td>
-				<td>{{prescription.averageCost}}</td>
+			<tr ng-repeat="user in users">
+				<td>{{user.name}}</td>
+				<td class="text-center"><i class="glyphicon" ng-class="{'glyphicon-ok':user.authorisation.accessUserModule,'glyphicon-remove':!user.authorisation.accessUserModule}"></i></td>
+				<td class="text-center"><i class="glyphicon" ng-class="{'glyphicon-ok':user.authorisation.accessReportModule,'glyphicon-remove':!user.authorisation.accessReportModule}"></i></td>
+				<td class="text-center"><i class="glyphicon" ng-class="{'glyphicon-ok':user.authorisation.createPrescription,'glyphicon-remove':!user.authorisation.createPrescription}"></i></td>
+				<td class="text-center"><i class="glyphicon" ng-class="{'glyphicon-ok':user.authorisation.deletePrescription,'glyphicon-remove':!user.authorisation.deletePrescription}"></i></td>
+				<td class="text-center"><i class="glyphicon" ng-class="{'glyphicon-ok':user.authorisation.modifyPrescription,'glyphicon-remove':!user.authorisation.modifyPrescription}"></i></td>
+				<td class="text-center"><i class="glyphicon" ng-class="{'glyphicon-ok':user.authorisation.listPrescription,'glyphicon-remove':!user.authorisation.listPrescription}"></i></td>
 				<td>
-					<button type="button" class="btn btn-success" ng-click="edit(prescription.id)">{{ 'MODIFY' | translate }}</button>
-					<button type="button" class="btn btn-danger" ng-click="remove($index, prescription.id)">{{ 'DELETE' | translate }}</button>
-					<button type="button" class="btn btn-info" ng-click="show(prescription.id)">{{ 'DETAILS' | translate }}</button>
+					<button type="button" class="btn btn-success" ng-click="edit(user.id)">{{ 'MODIFY' | translate }}</button>
+					<button type="button" class="btn btn-danger" ng-click="remove($index, user.id)">{{ 'DELETE' | translate }}</button>
+					<button type="button" class="btn btn-info" ng-click="show(user.id)">{{ 'DETAILS' | translate }}</button>
 				</td>
 			</tr>
           </tbody>

@@ -44,7 +44,13 @@ leatherback.config(function($translateProvider) {
 	  	MSG_NEW_PASSWORD: 'Please enter your new password',
 	  	MSG_NEW_PASSWORD_AGAIN: 'Please enter your new password again',
 	  	SUCCESSFULLY_CHANGED: 'Successfully changed.',
-	  	CLOSE: 'Close'
+	  	CLOSE: 'Close',
+	  	MODIFY_USER: 'Modify a user',
+	  	NAME: 'Name',
+	  	PRESCRIPTION_CREATION_AUTH: 'Prescription creation authorisation',
+	  	PRESCRIPTION_MODIFICATION_AUTH: 'Prescription modification authorisation',
+	  	PRESCRIPTION_DELETION_AUTH: 'Prescription deletion authorisation',
+	  	PRESCRIPTION_LIST_AUTH: 'Prescription list authorisation'
 	})
 	
 	.translations('zh', {
@@ -92,7 +98,14 @@ leatherback.config(function($translateProvider) {
 	  	MSG_NEW_PASSWORD: '請輸入新密碼',
 	  	MSG_NEW_PASSWORD_AGAIN: '請再次輸入新密碼',
 	  	SUCCESSFULLY_CHANGED: '變更成功',
-	  	CLOSE: '關閉'
+	  	CLOSE: '關閉',
+	  	MODIFY_USER: '修改使用者',
+	  	NAME: '姓名',
+	  	PRESCRIPTION_CREATION_AUTH: '新增配方',
+	  	PRESCRIPTION_MODIFICATION_AUTH: '修改配方',
+	  	PRESCRIPTION_DELETION_AUTH: '刪除配方',
+	  	PRESCRIPTION_LIST_AUTH: '配方查詢'
+
 	})
     
 	$translateProvider.preferredLanguage('zh');

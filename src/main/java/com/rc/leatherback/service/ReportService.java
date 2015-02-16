@@ -66,8 +66,18 @@ public class ReportService {
     public String generateReport(ReportQuery reportQuery, String reportLocation) throws JRException, IOException,
                     ClassNotFoundException, SQLException {
         // load JasperDesign from XML and compile it into JasperReport
-        JasperDesign jasperDesign = JRXmlLoader.load(reportLocation + "/report.jrxml");
-        JasperDesign jasperSubDesign = JRXmlLoader.load(reportLocation + "/sub_report.jrxml");
+        String reportTemplateFileName = "/report%s.jrxml";
+        String subReportTemplateFileName = "/sub_report%s.jrxml";
+        if (reportQuery.isShowPrice()) {
+            reportTemplateFileName = String.format(reportTemplateFileName, "");
+            subReportTemplateFileName = String.format(subReportTemplateFileName, "");
+        } else {
+            reportTemplateFileName = String.format(reportTemplateFileName, "_without_price");
+            subReportTemplateFileName = String.format(subReportTemplateFileName, "_without_price");
+        }
+
+        JasperDesign jasperDesign = JRXmlLoader.load(reportLocation + reportTemplateFileName);
+        JasperDesign jasperSubDesign = JRXmlLoader.load(reportLocation + subReportTemplateFileName);
 
         JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
         JasperReport jasperSubReport = JasperCompileManager.compileReport(jasperSubDesign);
@@ -259,7 +269,8 @@ public class ReportService {
             PrescriptionReport report =
                             new PrescriptionReport(prescription.getLotNumber(), prescription.getDate(),
                                             prescription.getPartNumber(), prescription.getTotalAmount(),
-                                            prescription.getTotalPrice(), prescription.getAverageCost());
+                                            prescription.getTotalPrice(), prescription.getAverageCost(), prescription.getHand(),
+                                            prescription.getTotalAmountAfterHanded());
 
             int itemIndex = 1;
             for (PrescriptionDetail detail : prescription.getDetails()) {
