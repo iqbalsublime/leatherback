@@ -50,7 +50,10 @@ leatherback.config(function($translateProvider) {
 	  	PRESCRIPTION_CREATION_AUTH: 'Prescription creation authorisation',
 	  	PRESCRIPTION_MODIFICATION_AUTH: 'Prescription modification authorisation',
 	  	PRESCRIPTION_DELETION_AUTH: 'Prescription deletion authorisation',
-	  	PRESCRIPTION_LIST_AUTH: 'Prescription list authorisation'
+	  	PRESCRIPTION_LIST_AUTH: 'Prescription list authorisation',
+	  	USERNAME: 'Username',
+	  	FUNCTIONS_AUTHORISATION: 'Functions Authorisation',
+	  	PRESCRIPTION_AUTHORISATION: 'Prescription Authorisation'
 	})
 	
 	.translations('zh', {
@@ -104,7 +107,10 @@ leatherback.config(function($translateProvider) {
 	  	PRESCRIPTION_CREATION_AUTH: '新增配方',
 	  	PRESCRIPTION_MODIFICATION_AUTH: '修改配方',
 	  	PRESCRIPTION_DELETION_AUTH: '刪除配方',
-	  	PRESCRIPTION_LIST_AUTH: '配方查詢'
+	  	PRESCRIPTION_LIST_AUTH: '配方查詢',
+	  	USERNAME: '帳號',
+	  	FUNCTIONS_AUTHORISATION: '功能權限',
+	  	PRESCRIPTION_AUTHORISATION: '配方單權限'
 
 	})
     
