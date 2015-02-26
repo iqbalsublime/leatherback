@@ -36,13 +36,11 @@
 				<td class="text-center"><i class="glyphicon" ng-class="{'glyphicon-ok':user.authorisation.accessUserModule,'glyphicon-remove':!user.authorisation.accessUserModule}"></i></td>
 				<td class="text-center"><i class="glyphicon" ng-class="{'glyphicon-ok':user.authorisation.accessReportModule,'glyphicon-remove':!user.authorisation.accessReportModule}"></i></td>
 				<td class="text-center"><i class="glyphicon" ng-class="{'glyphicon-ok':user.authorisation.createPrescription,'glyphicon-remove':!user.authorisation.createPrescription}"></i></td>
-				<td class="text-center"><i class="glyphicon" ng-class="{'glyphicon-ok':user.authorisation.deletePrescription,'glyphicon-remove':!user.authorisation.deletePrescription}"></i></td>
 				<td class="text-center"><i class="glyphicon" ng-class="{'glyphicon-ok':user.authorisation.modifyPrescription,'glyphicon-remove':!user.authorisation.modifyPrescription}"></i></td>
+				<td class="text-center"><i class="glyphicon" ng-class="{'glyphicon-ok':user.authorisation.deletePrescription,'glyphicon-remove':!user.authorisation.deletePrescription}"></i></td>
 				<td class="text-center"><i class="glyphicon" ng-class="{'glyphicon-ok':user.authorisation.listPrescription,'glyphicon-remove':!user.authorisation.listPrescription}"></i></td>
 				<td>
 					<button type="button" class="btn btn-success" ng-click="edit(user.id)">{{ 'MODIFY' | translate }}</button>
-					<button type="button" class="btn btn-danger" ng-click="remove($index, user.id)">{{ 'DELETE' | translate }}</button>
-					<button type="button" class="btn btn-info" ng-click="show(user.id)">{{ 'DETAILS' | translate }}</button>
 				</td>
 			</tr>
           </tbody>

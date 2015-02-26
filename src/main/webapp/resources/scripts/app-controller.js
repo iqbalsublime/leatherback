@@ -327,19 +327,25 @@ leatherback.controller('listUsersCtrl', ['$scope','$location','userService',
     };
 }]);
 
-leatherback.controller('editUserCtrl', ['$scope', '$routeParams','$location', 'userService', 
-                                    function($scope, $routeParams, $location, userService) {
+leatherback.controller('editUserCtrl', ['$scope', '$routeParams','$location', '$window', 'userService', 
+                                    function($scope, $routeParams, $location, $window, userService) {
  	
  	$scope.user = {};
  	userService.getById($routeParams.id).then(function(returnData) {
          $scope.user = returnData;
+         $scope.newPasswordConfirm = $scope.user.password;
      });
-
  	
- 	$scope.submit = function() {
- 		userService.update($routeParams.id, $scope.user).then(function(returnData) {
-             $location.path('/users');
-         });
+ 	$scope.submit = function(isValid) {
+ 		if(isValid) {
+ 	 		if($scope.password != undefined) {
+ 	 			$scope.user.password = $scope.password;
+ 	 		}
+ 	 		
+ 	 		userService.update($routeParams.id, $scope.user).then(function(returnData) {
+ 	             $location.path('/users');
+ 	        });
+ 		}
  	};
  	
  	$scope.cancel = function() {

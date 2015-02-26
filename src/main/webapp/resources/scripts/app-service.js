@@ -22,7 +22,8 @@ leatherback.service('userService', function($http, $q, abstractService) {
 	return({
 		changePassword: changePassword,
 		list: list,
-		getById: getById
+		getById: getById,
+		update: update
 	});
 	
 	function list() {
@@ -53,6 +54,20 @@ leatherback.service('userService', function($http, $q, abstractService) {
                 'Accept' : 'application/json'
 			}
 		});
+		
+		return(request.then(abstractService.handleSuccess, abstractService.handleError));
+	}
+	
+	function update(id, user) {
+		var request = $http({
+            method: 'put',
+            url: 'api/user/' + id,
+            data: user,
+            headers : {
+                'Content-Type' : 'application/json; charset=utf-8',
+                'Accept' : 'application/json'
+            }
+        });
 		
 		return(request.then(abstractService.handleSuccess, abstractService.handleError));
 	}
