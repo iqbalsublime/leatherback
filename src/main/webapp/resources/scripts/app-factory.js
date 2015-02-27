@@ -8,6 +8,17 @@ leatherback.factory('partNumberFactory', function() {
 	};
 });
 
+leatherback.factory('submitButtonFactory', function($filter) {
+	return {
+	    options: {
+			buttonDefaultText: $filter('translate')('CONFIRM'),
+			buttonSubmittingText: $filter('translate')('PLEASE_WAIT'),
+			buttonSuccessText: $filter('translate')('SUCCESSFULLY_SUBMITTED'),
+			buttonErrorText: $filter('translate')('FAILED_TO_SUBMIT')
+	    }
+	};
+});
+
 leatherback.factory('calculator', function() {
 	var service = {};
 	

@@ -17,19 +17,20 @@ public class DatabaseContext {
 	static {
 		try {
 			Properties properties = PropertyUtil.getProperties("META-INF/database.properties");
-			databaseUser = properties.getProperty("database.username");
-			databasePassword = properties.getProperty("database.password");
+			// databaseUser = properties.getProperty("database.username");
+			// databasePassword = properties.getProperty("database.password");
 			databaseUrl = properties.getProperty("database.url");
 			databaseDriver = properties.getProperty("database.driverClassName");
-		} catch (IOException e) {
+		} catch (IOException exception) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			exception.printStackTrace();
 		}
 
 	}
 
 	public static Connection getConnection() throws ClassNotFoundException, SQLException {
 		Class.forName(databaseDriver);
-		return DriverManager.getConnection(databaseUrl, databaseUser, databasePassword);
+		// return DriverManager.getConnection(databaseUrl, databaseUser, databasePassword);
+		return DriverManager.getConnection(databaseUrl);
 	}
 }

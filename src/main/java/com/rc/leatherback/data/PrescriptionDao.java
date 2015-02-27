@@ -49,14 +49,17 @@ public class PrescriptionDao {
 		return prescriptions;
 	}
 
-	private static final String FIND_ALL_PAGINATION = "select * from table_prescription limit ? offset ?;";
+	// private static final String FIND_ALL_PAGINATION = "select * from table_prescription limit ? offset ?;";
+	private static final String FIND_ALL_PAGINATION = ";with result_cte as ( select *, ROW_NUMBER() over (order by id) as row_num from table_prescription ) select * from result_cte where row_num >= ? and row_num < ?;";
 
 	public List<Prescription> findAllPagination(Connection connection, int limit, int offset) throws SQLException {
 		List<Prescription> prescriptions = new ArrayList<Prescription>();
 
 		PreparedStatement statement = connection.prepareStatement(FIND_ALL_PAGINATION);
-		statement.setInt(1, limit);
-		statement.setInt(2, offset);
+		// statement.setInt(1, limit);
+		// statement.setInt(2, offset);
+		statement.setInt(1, offset);
+		statement.setInt(2, offset + limit);
 		ResultSet resultSet = statement.executeQuery();
 		while (resultSet.next()) {
 			prescriptions.add(bindData(resultSet));
@@ -68,16 +71,19 @@ public class PrescriptionDao {
 		return prescriptions;
 	}
 
-	private static final String FIND_BY_LOT_NUMBER_PAGINATION = "select * from table_prescription where lot_number = ? limit ? offset ?;";
+	// private static final String FIND_BY_LOT_NUMBER_PAGINATION =
+	// "select * from table_prescription where lot_number = ? limit ? offset ?;";
+	private static final String FIND_BY_LOT_NUMBER_PAGINATION = ";with result_cte as ( select *, ROW_NUMBER() over (order by id) as row_num from table_prescription where lot_number = ?) select * from result_cte where row_num >= ? and row_num < ?;";
 
-	public List<Prescription> findByLotNumberPagination(Connection connection, String lotNumber, int limit, int offset)
-			throws SQLException {
+	public List<Prescription> findByLotNumberPagination(Connection connection, String lotNumber, int limit, int offset) throws SQLException {
 		List<Prescription> prescriptions = new ArrayList<Prescription>();
 
 		PreparedStatement statement = connection.prepareStatement(FIND_BY_LOT_NUMBER_PAGINATION);
 		statement.setString(1, lotNumber);
-		statement.setInt(2, limit);
-		statement.setInt(3, offset);
+		// statement.setInt(2, limit);
+		// statement.setInt(3, offset);
+		statement.setInt(2, offset);
+		statement.setInt(3, offset + limit);
 		ResultSet resultSet = statement.executeQuery();
 		while (resultSet.next()) {
 			prescriptions.add(bindData(resultSet));
@@ -89,7 +95,9 @@ public class PrescriptionDao {
 		return prescriptions;
 	}
 
-	private static final String FIND_BY_PART_NUMBER_PAGINATION = "select * from table_prescription where part_number = ? limit ? offset ?;";
+	// private static final String FIND_BY_PART_NUMBER_PAGINATION =
+	// "select * from table_prescription where part_number = ? limit ? offset ?;";
+	private static final String FIND_BY_PART_NUMBER_PAGINATION = ";with result_cte as ( select *, ROW_NUMBER() over (order by id) as row_num from table_prescription where part_number = ?) select * from result_cte where row_num >= ? and row_num < ?;";
 
 	public List<Prescription> findByPartNumberPagination(Connection connection, String partNumber, int limit, int offset)
 			throws SQLException {
@@ -97,8 +105,10 @@ public class PrescriptionDao {
 
 		PreparedStatement statement = connection.prepareStatement(FIND_BY_PART_NUMBER_PAGINATION);
 		statement.setString(1, partNumber);
-		statement.setInt(2, limit);
-		statement.setInt(3, offset);
+		// statement.setInt(2, limit);
+		// statement.setInt(3, offset);
+		statement.setInt(2, offset);
+		statement.setInt(3, offset + limit);
 		ResultSet resultSet = statement.executeQuery();
 		while (resultSet.next()) {
 			prescriptions.add(bindData(resultSet));
@@ -202,8 +212,8 @@ public class PrescriptionDao {
 
 	private static final String COUNT_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER = "select count(id) from table_prescription where date between ? and ? and lot_number like ? and part_number like ?;";
 
-	public int countByDateAndLotNumberAndPartNumber(Connection connection, Date startDate, Date endDate, String lotNumber,
-			String partNumber) throws SQLException {
+	public int countByDateAndLotNumberAndPartNumber(Connection connection, Date startDate, Date endDate, String lotNumber, String partNumber)
+			throws SQLException {
 
 		int countResult = 0;
 
@@ -271,8 +281,8 @@ public class PrescriptionDao {
 
 	private static final String FIND_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER = "select * from table_prescription where date between ? and ? and lot_number like ? and part_number like ?;";
 
-	public List<Prescription> findByDateAndLotNumberAndPartNumber(Connection connection, Date startDate, Date endDate,
-			String lotNumber, String partNumber) throws SQLException {
+	public List<Prescription> findByDateAndLotNumberAndPartNumber(Connection connection, Date startDate, Date endDate, String lotNumber,
+			String partNumber) throws SQLException {
 
 		List<Prescription> prescriptions = new ArrayList<Prescription>();
 
@@ -338,10 +348,12 @@ public class PrescriptionDao {
 		return prescriptions;
 	}
 
-	private static final String FIND_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER_PAGINATION = "select * from table_prescription where date between ? and ? and lot_number like ? and part_number like ? limit ? offset ?;";
+	// private static final String FIND_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER_PAGINATION =
+	// "select * from table_prescription where date between ? and ? and lot_number like ? and part_number like ? limit ? offset ?;";
+	private static final String FIND_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER_PAGINATION = ";with result_cte as ( select *, ROW_NUMBER() over (order by id) as row_num from table_prescription where date between ? and ? and lot_number like ? and part_number like ?) select * from result_cte where row_num >= ? and row_num < ?;";
 
-	public List<Prescription> findByDateAndLotNumberAndPartNumber(Connection connection, Date startDate, Date endDate,
-			String lotNumber, String partNumber, int limit, int offset) throws SQLException {
+	public List<Prescription> findByDateAndLotNumberAndPartNumber(Connection connection, Date startDate, Date endDate, String lotNumber,
+			String partNumber, int limit, int offset) throws SQLException {
 		List<Prescription> prescriptions = new ArrayList<Prescription>();
 
 		PreparedStatement statement = connection.prepareStatement(FIND_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER_PAGINATION);
@@ -349,8 +361,10 @@ public class PrescriptionDao {
 		statement.setDate(2, DateTimeUtil.convertToSqlDate(endDate));
 		statement.setString(3, lotNumber);
 		statement.setString(4, partNumber);
-		statement.setInt(5, limit);
-		statement.setInt(6, offset);
+		// statement.setInt(5, limit);
+		// statement.setInt(6, offset);
+		statement.setInt(5, offset);
+		statement.setInt(6, offset + limit);
 		ResultSet resultSet = statement.executeQuery();
 		while (resultSet.next()) {
 			prescriptions.add(bindData(resultSet));
@@ -362,7 +376,9 @@ public class PrescriptionDao {
 		return prescriptions;
 	}
 
-	private static final String FIND_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER_HEAD_PAGINATION = "select * from table_prescription where date between ? and ? and lot_number like ? and part_number_head like ? limit ? offset ?;";
+	// private static final String FIND_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER_HEAD_PAGINATION =
+	// "select * from table_prescription where date between ? and ? and lot_number like ? and part_number_head like ? limit ? offset ?;";
+	private static final String FIND_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER_HEAD_PAGINATION = ";with result_cte as ( select *, ROW_NUMBER() over (order by id) as row_num from table_prescription where date between ? and ? and lot_number like ? and part_number_head like ?) select * from result_cte where row_num >= ? and row_num < ?;";
 
 	public List<Prescription> findByDateAndLotNumberAndPartNumberHead(Connection connection, Date startDate, Date endDate,
 			String lotNumber, String partNumberHead, int limit, int offset) throws SQLException {
@@ -373,8 +389,10 @@ public class PrescriptionDao {
 		statement.setDate(2, DateTimeUtil.convertToSqlDate(endDate));
 		statement.setString(3, lotNumber);
 		statement.setString(4, partNumberHead);
-		statement.setInt(5, limit);
-		statement.setInt(6, offset);
+		// statement.setInt(5, limit);
+		// statement.setInt(6, offset);
+		statement.setInt(5, offset);
+		statement.setInt(6, offset + limit);
 		ResultSet resultSet = statement.executeQuery();
 		while (resultSet.next()) {
 			prescriptions.add(bindData(resultSet));
@@ -386,7 +404,9 @@ public class PrescriptionDao {
 		return prescriptions;
 	}
 
-	private static final String FIND_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER_BODY_PAGINATION = "select * from table_prescription where date between ? and ? and lot_number like ? and part_number_body like ? limit ? offset ?;";
+	// private static final String FIND_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER_BODY_PAGINATION =
+	// "select * from table_prescription where date between ? and ? and lot_number like ? and part_number_body like ? limit ? offset ?;";
+	private static final String FIND_BY_DATE_AND_LOT_NUMBER_AND_PART_NUMBER_BODY_PAGINATION = ";with result_cte as ( select *, ROW_NUMBER() over (order by id) as row_num from table_prescription where date between ? and ? and lot_number like ? and part_number_body like ?) select * from result_cte where row_num >= ? and row_num < ?;";
 
 	public List<Prescription> findByDateAndLotNumberAndPartNumberBody(Connection connection, Date startDate, Date endDate,
 			String lotNumber, String partNumberBody, int limit, int offset) throws SQLException {
@@ -397,8 +417,10 @@ public class PrescriptionDao {
 		statement.setDate(2, DateTimeUtil.convertToSqlDate(endDate));
 		statement.setString(3, lotNumber);
 		statement.setString(4, partNumberBody);
-		statement.setInt(5, limit);
-		statement.setInt(6, offset);
+		// statement.setInt(5, limit);
+		// statement.setInt(6, offset);
+		statement.setInt(5, offset);
+		statement.setInt(6, offset + limit);
 		ResultSet resultSet = statement.executeQuery();
 		while (resultSet.next()) {
 			prescriptions.add(bindData(resultSet));

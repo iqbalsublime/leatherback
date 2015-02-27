@@ -6,7 +6,7 @@ leatherback.config(function ($routeProvider) {
         })
         
         .when('/password', {
-            templateUrl: '/templates/password.tpl.html',
+            templateUrl: '/templates/user/password.tpl.html',
             controller: 'passwordCtrl'        	
         })
         

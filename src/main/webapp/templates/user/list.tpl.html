@@ -1,21 +1,5 @@
 <h3>{{ 'AUTHORISATION_MANAGE' | translate }}</h3>
 	<div class="col-md-12 well">
-		<div class="row">
-		  <div class="col-xs-6 col-md-4">
-		  	<pagination 
-		  		total-items="totalItems" 
-		  		ng-model="currentPage" 
-		  		max-size="maxSize" 
-		  		class="pagination-sm" 
-		  		boundary-links="true" 
-		  		rotate="false" 
-		  		num-pages="numPages"
-		  		first-text="{{ 'FIRST_PAGE' | translate }}"
-		  		previous-text="{{ 'PREVIOUS_PAGE' | translate }}"
-		  		next-text="{{ 'NEXT_PAGE' | translate }}"
-		  		last-text="{{ 'LAST_PAGE' | translate }}"></pagination>
-		  </div>
-		</div>
 		
         <table class="table table-striped table-bordered">
           <thead>
@@ -45,17 +29,5 @@
 			</tr>
           </tbody>
         </table>
-		<pagination 
-		  		total-items="totalItems" 
-		  		ng-model="currentPage" 
-		  		max-size="maxSize" 
-		  		class="pagination-sm" 
-		  		boundary-links="true" 
-		  		rotate="false" 
-		  		num-pages="numPages"
-		  		first-text="{{ 'FIRST_PAGE' | translate }}"
-		  		previous-text="{{ 'PREVIOUS_PAGE' | translate }}"
-		  		next-text="{{ 'NEXT_PAGE' | translate }}"
-		  		last-text="{{ 'LAST_PAGE' | translate }}"></pagination>
-		<pre>{{ 'PAGE' | translate }}: {{currentPage}} / {{numPages}}</pre>
+
 	</div>

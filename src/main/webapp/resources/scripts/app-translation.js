@@ -120,7 +120,7 @@ leatherback.config(function($translateProvider) {
 	  	PRESCRIPTION_AUTHORISATION: '配方單權限',
 	  	PLEASE_WAIT: '請稍後',
 	  	SUCCESSFULLY_SUBMITTED: '完成',
-	  	FAILED_TO_SUBMIT: '資料不正確',
+	  	FAILED_TO_SUBMIT: '資料傳送失敗',
 	  	PASSWORD_DOES_NOT_MATCH: '兩次密碼不相同',
 	  	THE_FIELD_IS_REQUIRED: '此欄位必填',
 	  	DATA_TOO_LONG: '資料超過限定長度',

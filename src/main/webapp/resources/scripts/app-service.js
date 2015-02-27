@@ -5,11 +5,12 @@ leatherback.service('abstractService', function($http, $q) {
 	});
 	
 	function handleError(response) {
-        if (!angular.isObject(response.data) || !response.data.message) {
-            return($q.reject('An unknown error occurred.'));
-        }
-
-        return($q.reject(response.data.message));
+//        if (!angular.isObject(response.data) || !response.data.message) {
+//            return($q.reject('An unknown error occurred.'));
+//        }
+//
+//        return($q.reject(response.data.message));
+		return($q.reject(response));
     }
 
     function handleSuccess(response) {

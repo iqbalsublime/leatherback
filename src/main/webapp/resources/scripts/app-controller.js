@@ -297,8 +297,13 @@ leatherback.controller('editCtrl', ['$scope', '$routeParams','$location', '$filt
 	};
 }]);
 
-leatherback.controller('passwordCtrl', ['$scope', '$location', '$filter', 'userService', 
-                                    function($scope, $location, $filter, userService) {
+leatherback.controller('passwordCtrl', ['$scope', '$location', '$filter', 'userService', 'submitButtonFactory',
+                                    function($scope, $location, $filter, userService, submitButtonFactory) {
+	
+	$scope.isSubmitting = null;
+	$scope.result = null;
+	$scope.options = submitButtonFactory.options;
+	
 	$scope.alerts = [];
 	
 	$scope.closeAlert = function(index) {
@@ -307,12 +312,37 @@ leatherback.controller('passwordCtrl', ['$scope', '$location', '$filter', 'userS
 	  
 	$scope.password = {};
  	$scope.submit = function(isValid) {
+ 		$scope.isSubmitting = true;
  		if(isValid) {
  	 		userService.changePassword($scope.password).then(function(returnData) {
+ 	 			$scope.result = 'success';
+ 	 			
  	 			$scope.alerts.push({type: 'success', msg: $filter('translate')('SUCCESSFULLY_CHANGED')});
  	 			$scope.password.newPassword = "";
  	 			$scope.newPasswordConfirm = "";
- 	         });	
+ 	 			
+ 	         }, function(response) {
+ 	        	$scope.result = 'error';
+ 	        	$scope.alerts.push({type: 'danger', msg: response.status});
+// 	        	console.log('aa' + response.status);
+//                 switch(response.status) {
+//                     case 401:
+////                         $scope.dialogTitle = 'Sign in failed';
+////                         $scope.dialogMessage = 'Please check your username or password. (' + response.data.errorCode + ')';
+////                         $scope.dialogShow = true;
+//                    	 $scope.alerts.push({type: 'success', msg: $filter('translate')('SUCCESSFULLY_CHANGED')});
+//                         break;
+//                     case 417:
+////                         $scope.dialogTitle = 'Unknown exception';
+////                         $scope.dialogMessage = 'Please report the error code to system administrator. (' + response.data.errorCode + ')';
+////                         $scope.dialogShow = true;
+//                    	 $scope.alerts.push({type: 'success', msg: $filter('translate')('SUCCESSFULLY_CHANGED')});
+//                         break;
+//                 }
+             });	
+ 		} 
+ 		else {
+ 			$scope.result = 'error';
  		}
  	};
 }]);
@@ -329,17 +359,12 @@ leatherback.controller('listUsersCtrl', ['$scope','$location','userService',
     };
 }]);
 
-leatherback.controller('editUserCtrl', ['$scope', '$routeParams','$location', '$window', '$filter', 'userService', 
-                                    function($scope, $routeParams, $location, $window, $filter, userService) {
+leatherback.controller('editUserCtrl', ['$scope', '$routeParams','$location', '$window', '$filter', 'userService', 'submitButtonFactory', 
+                                    function($scope, $routeParams, $location, $window, $filter, userService, submitButtonFactory) {
  	
 	$scope.isSubmitting = null;
 	$scope.result = null;
-	$scope.options = {
-			buttonDefaultText: $filter('translate')('CONFIRM'),
-			buttonSubmittingText: $filter('translate')('PLEASE_WAIT'),
-			buttonSuccessText: $filter('translate')('SUCCESSFULLY_SUBMITTED'),
-			buttonErrorText: $filter('translate')('FAILED_TO_SUBMIT')
-	};
+	$scope.options = submitButtonFactory.options;
 	  
  	$scope.user = {};
  	userService.getById($routeParams.id).then(function(returnData) {
@@ -358,9 +383,10 @@ leatherback.controller('editUserCtrl', ['$scope', '$routeParams','$location', '$
  	 			$scope.result = 'success';
  	 			$location.path('/users');
  	        });
- 		} else {
- 			$scope.result = 'error';
- 		}
+ 		} 
+// 	 	else {
+// 			$scope.result = 'error';
+// 		}
  	};
  	
  	$scope.cancel = function() {
