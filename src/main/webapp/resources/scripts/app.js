@@ -3,5 +3,8 @@ var leatherback = angular.module('leatherback', [
     'ngLocale',
     'ui.bootstrap',
     'ui.utils',
-    'pascalprecht.translate'
+    'pascalprecht.translate',
+    'jp.ng-bs-animated-button',
+    'blockUI'
  ]);
+

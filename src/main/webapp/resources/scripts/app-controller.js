@@ -306,12 +306,14 @@ leatherback.controller('passwordCtrl', ['$scope', '$location', '$filter', 'userS
 	};
 	  
 	$scope.password = {};
- 	$scope.submit = function() {
- 		userService.changePassword($scope.password).then(function(returnData) {
- 			$scope.alerts.push({type: 'success', msg: $filter('translate')('SUCCESSFULLY_CHANGED')});
- 			$scope.password.newPassword = "";
- 			$scope.newPasswordConfirm = "";
-         });
+ 	$scope.submit = function(isValid) {
+ 		if(isValid) {
+ 	 		userService.changePassword($scope.password).then(function(returnData) {
+ 	 			$scope.alerts.push({type: 'success', msg: $filter('translate')('SUCCESSFULLY_CHANGED')});
+ 	 			$scope.password.newPassword = "";
+ 	 			$scope.newPasswordConfirm = "";
+ 	         });	
+ 		}
  	};
 }]);
 
@@ -327,9 +329,18 @@ leatherback.controller('listUsersCtrl', ['$scope','$location','userService',
     };
 }]);
 
-leatherback.controller('editUserCtrl', ['$scope', '$routeParams','$location', '$window', 'userService', 
-                                    function($scope, $routeParams, $location, $window, userService) {
+leatherback.controller('editUserCtrl', ['$scope', '$routeParams','$location', '$window', '$filter', 'userService', 
+                                    function($scope, $routeParams, $location, $window, $filter, userService) {
  	
+	$scope.isSubmitting = null;
+	$scope.result = null;
+	$scope.options = {
+			buttonDefaultText: $filter('translate')('CONFIRM'),
+			buttonSubmittingText: $filter('translate')('PLEASE_WAIT'),
+			buttonSuccessText: $filter('translate')('SUCCESSFULLY_SUBMITTED'),
+			buttonErrorText: $filter('translate')('FAILED_TO_SUBMIT')
+	};
+	  
  	$scope.user = {};
  	userService.getById($routeParams.id).then(function(returnData) {
          $scope.user = returnData;
@@ -337,14 +348,18 @@ leatherback.controller('editUserCtrl', ['$scope', '$routeParams','$location', '$
      });
  	
  	$scope.submit = function(isValid) {
+ 		$scope.isSubmitting = true;
  		if(isValid) {
  	 		if($scope.password != undefined) {
  	 			$scope.user.password = $scope.password;
  	 		}
  	 		
  	 		userService.update($routeParams.id, $scope.user).then(function(returnData) {
- 	             $location.path('/users');
+ 	 			$scope.result = 'success';
+ 	 			$location.path('/users');
  	        });
+ 		} else {
+ 			$scope.result = 'error';
  		}
  	};
  	

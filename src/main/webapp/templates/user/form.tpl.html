@@ -7,7 +7,7 @@
 	    <label for="label-name" class="col-sm-2 control-label">{{ 'NAME' | translate }}</label>
 	    <div class="col-sm-3">
 	      <input type="text" name="name" ng-model="user.name" class="form-control" required>	
-	      <p ng-show="userForm.name.$invalid && !userForm.name.$pristine" class="help-block">You name is required.</p>
+	      <p ng-show="userForm.name.$invalid && !userForm.name.$pristine" class="help-block">{{ 'THE_FIELD_IS_REQUIRED' | translate }}</p>
 	    </div>
 	  </div>
 	  
@@ -21,10 +21,10 @@
 	  <div class="form-group" ng-class="{ 'has-error' : userForm.password.$invalid && !userForm.password.$pristine }">
 	    <label for="label-password" class="col-sm-2 control-label">{{ 'NEW_PASSWORD' | translate }}</label>
 	    <div class="col-sm-3">
-	      <input type="password" name="password" ng-model="user.password" class="form-control" placeholder="{{ 'MSG_NEW_PASSWORD' | translate }}" ng-minlength="3" ng-maxlength="8" required>
-	      <p ng-show="userForm.password.$error.required" class="help-block">You password is required.</p>
-	      <p ng-show="userForm.password.$error.minlength" class="help-block">Password is too short.</p>
-          <p ng-show="userForm.password.$error.maxlength" class="help-block">Password is too long.</p>
+	      <input type="password" name="password" ng-model="user.password" class="form-control" placeholder="{{ 'MSG_NEW_PASSWORD' | translate }}" ng-minlength="3" ng-maxlength="13" required>
+	      <p ng-show="userForm.password.$error.required" class="help-block">{{ 'THE_FIELD_IS_REQUIRED' | translate }}</p>
+	      <p ng-show="userForm.password.$error.minlength" class="help-block">{{ 'DATA_TOO_SHORT' | translate }}</p>
+          <p ng-show="userForm.password.$error.maxlength" class="help-block">{{ 'DATA_TOO_LONG' | translate }}</p>
 	    </div>
 	  </div>
 	  
@@ -32,7 +32,7 @@
 	    <label for="label-password-again" class="col-sm-2 control-label">{{ 'NEW_PASSWORD_AGAIN' | translate }}</label>
 	    <div class="col-sm-3">
 	      <input type="password" name="newPasswordConfirm" ng-model="newPasswordConfirm" class="form-control" placeholder="{{ 'MSG_NEW_PASSWORD_AGAIN' | translate }}" match="user.password">
-	      <p ng-show="userForm.newPasswordConfirm.$error.match" class="help-block">Fields do not match!</p>	
+	      <p ng-show="userForm.newPasswordConfirm.$error.match" class="help-block">{{ 'PASSWORD_DOES_NOT_MATCH' | translate }}</p>	
 	    </div>
 	  </div>
 	  
@@ -60,8 +60,8 @@
 	  
 	  <div class="form-group">
 	    <div class="col-sm-offset-2 col-sm-10">
-	      <button type="submit" class="btn btn-primary" ng-disabled="userForm.$invalid">{{ 'CONFIRM' | translate }}</button>
-	      <button type="button" class="btn btn-default" ng-click="cancel()">{{ 'CANCEL' | translate }}</button>
+			<jp-ng-bs-animated-button is-submitting="isSubmitting" result="result" options="options" ng-disabled="userForm.$invalid"></jp-ng-bs-animated-button>
+	      	<button type="button" class="btn btn-default" ng-click="cancel()">{{ 'CANCEL' | translate }}</button>
 	    </div>
 	  </div>
 	  

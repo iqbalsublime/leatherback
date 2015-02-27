@@ -9,10 +9,12 @@
 <title>Insert title here</title>
  <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/styles/vendor/bootstrap-theme.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/resources/styles/vendor/ng-bs-animated-button.css" rel="stylesheet">
+<link href="${pageContext.request.contextPath}/resources/styles/vendor/angular-block-ui.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/styles/app.css" rel="stylesheet">
 </head>
 
-<body>
+<body> 
    <!-- Fixed navbar -->
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
@@ -54,6 +56,8 @@
     <script src="${pageContext.request.contextPath}/resources/scripts/vendor/ui-bootstrap-tpls-0.12.0.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/vendor/ui-utils.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/vendor/i18n/angular-locale_zh-tw.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/scripts/vendor/ng-bs-animated-button.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/scripts/vendor/angular-block-ui.js"></script>
     
     <script src="${pageContext.request.contextPath}/resources/scripts/app.js"></script>
     <script src="${pageContext.request.contextPath}/resources/scripts/app-route.js"></script>

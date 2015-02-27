@@ -53,7 +53,14 @@ leatherback.config(function($translateProvider) {
 	  	PRESCRIPTION_LIST_AUTH: 'Prescription list authorisation',
 	  	USERNAME: 'Username',
 	  	FUNCTIONS_AUTHORISATION: 'Functions Authorisation',
-	  	PRESCRIPTION_AUTHORISATION: 'Prescription Authorisation'
+	  	PRESCRIPTION_AUTHORISATION: 'Prescription Authorisation',
+	  	PLEASE_WAIT: 'Submitting',
+	  	SUCCESSFULLY_SUBMITTED: 'Completed',
+	  	FAILED_TO_SUBMIT: 'There was some errors',
+	  	PASSWORD_DOES_NOT_MATCH: 'The passwords does not match',
+	  	THE_FIELD_IS_REQUIRED: 'This field is required',
+	  	DATA_TOO_LONG: 'The data is too long',
+	  	DATA_TOO_SHORT: 'The data is too short'
 	})
 	
 	.translations('zh', {
@@ -110,7 +117,14 @@ leatherback.config(function($translateProvider) {
 	  	PRESCRIPTION_LIST_AUTH: '配方查詢',
 	  	USERNAME: '帳號',
 	  	FUNCTIONS_AUTHORISATION: '功能權限',
-	  	PRESCRIPTION_AUTHORISATION: '配方單權限'
+	  	PRESCRIPTION_AUTHORISATION: '配方單權限',
+	  	PLEASE_WAIT: '請稍後',
+	  	SUCCESSFULLY_SUBMITTED: '完成',
+	  	FAILED_TO_SUBMIT: '資料不正確',
+	  	PASSWORD_DOES_NOT_MATCH: '兩次密碼不相同',
+	  	THE_FIELD_IS_REQUIRED: '此欄位必填',
+	  	DATA_TOO_LONG: '資料超過限定長度',
+	  	DATA_TOO_SHORT: '資料少於限定長度'
 
 	})
     
