@@ -60,7 +60,10 @@ leatherback.config(function($translateProvider) {
 	  	PASSWORD_DOES_NOT_MATCH: 'The passwords does not match',
 	  	THE_FIELD_IS_REQUIRED: 'This field is required',
 	  	DATA_TOO_LONG: 'The data is too long',
-	  	DATA_TOO_SHORT: 'The data is too short'
+	  	DATA_TOO_SHORT: 'The data is too short',
+	  	CONFIRM_DELETE: 'Are you sure you would like to delete?',
+	  	YES: 'Yes',
+	  	NO: 'No'
 	})
 	
 	.translations('zh', {
@@ -124,7 +127,10 @@ leatherback.config(function($translateProvider) {
 	  	PASSWORD_DOES_NOT_MATCH: '兩次密碼不相同',
 	  	THE_FIELD_IS_REQUIRED: '此欄位必填',
 	  	DATA_TOO_LONG: '資料超過限定長度',
-	  	DATA_TOO_SHORT: '資料少於限定長度'
+	  	DATA_TOO_SHORT: '資料少於限定長度',
+	  	CONFIRM_DELETE: '確定要刪除批號:',
+	  	YES: '確定',
+	  	NO: '取消'
 
 	})
     

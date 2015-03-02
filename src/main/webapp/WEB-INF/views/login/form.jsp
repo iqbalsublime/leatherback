@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Signin Template for Bootstrap</title>
+    <title>Everlon</title>
 
     <!-- Bootstrap core CSS -->
  	<link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
@@ -22,7 +22,7 @@
     <div class="container">
 
       <form class="form-signin" action="/login" method="post">
-        <h4 class="form-signin-heading">EVER POLYMER CO., LTD.</h4>
+        <h4 class="form-signin-heading">EVER POLYMER CO., LTD.  v1.1</h4>
 		<div id="message" class="alert alert-danger" role="alert" style="display:none;">
 		  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
 		  <span class="sr-only">Error:</span>

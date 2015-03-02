@@ -53,16 +53,26 @@
 		<button class="btn btn-primary" ng-click="close()">{{ 'CLOSE' | translate }}</button>
 	</div>
 </script>
-    
+<script type="text/ng-template" id="confirmDelete.html">
+	<div class="modal-header">
+		
+	</div>
+	<div class="modal-body">
+		{{ 'CONFIRM_DELETE' | translate }} {{lotNumber}} ?
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" ng-click="yes()">{{ 'YES' | translate }}</button>
+		<button class="btn btn-warning" ng-click="no()">{{ 'NO' | translate }}</button>
+	</div>
+</script>
+
 <h3>{{ 'ADD_A_PRESCRIPTION' | translate }}</h3>
 	<div class="col-md-12 well">
-		<div class="row">
-		  <div class="col-xs-12 col-sm-6 col-md-8">
+		<div>
 		  	<button type="button" class="btn btn-primary" ng-click="add()">{{ 'ADD_A_PRESCRIPTION' | translate }}</button>
 		  	<!-- <button type="button" class="btn btn-warning" ng-click="search()">{{ 'SEARCH_PRESCRIPTIONS' | translate }}</button> -->
-		  </div>
-
-		  <div class="col-xs-6 col-md-4">
+		</div>
+		<div>
 		  	<pagination 
 		  		total-items="totalItems" 
 		  		ng-model="currentPage" 
@@ -75,7 +85,6 @@
 		  		previous-text="{{ 'PREVIOUS_PAGE' | translate }}"
 		  		next-text="{{ 'NEXT_PAGE' | translate }}"
 		  		last-text="{{ 'LAST_PAGE' | translate }}"></pagination>
-		  </div>
 		</div>
 		
         <table class="table table-striped table-bordered">
@@ -99,9 +108,9 @@
 				<td>{{prescription.totalAmountAfterHanded}}</td>
 				<td>{{prescription.averageCost}}</td>
 				<td>
-					<button type="button" class="btn btn-success" ng-click="edit(prescription.id)">{{ 'MODIFY' | translate }}</button>
-					<button type="button" class="btn btn-danger" ng-click="remove($index, prescription.id)">{{ 'DELETE' | translate }}</button>
-					<button type="button" class="btn btn-info" ng-click="show(prescription.id)">{{ 'DETAILS' | translate }}</button>
+					<button type="button" class="btn btn-success" ng-click="edit(prescription.id)" ng-show="(authEdit === 'true')">{{ 'MODIFY' | translate }}</button>
+					<button type="button" class="btn btn-danger" ng-click="remove($index, prescription.id, prescription.lotNumber)" ng-show="(authDel === 'true')">{{ 'DELETE' | translate }}</button>
+					<button type="button" class="btn btn-info" ng-click="show(prescription.id)" ng-show="(authList === 'true')">{{ 'DETAILS' | translate }}</button>
 				</td>
 			</tr>
           </tbody>

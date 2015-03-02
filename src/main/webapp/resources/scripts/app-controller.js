@@ -1,6 +1,15 @@
-leatherback.controller('mainCtrl', ['$scope','$location','prescriptionService','$modal', 'pagination', 
+leatherback.controller('mainCtrl', ['$scope','$location','prescriptionService','$modal', 'pagination',
                                     function($scope, $location, prescriptionService, $modal, pagination) {
-
+	
+//	$scope.$watchGroup(['authAdd', 'authDel', 'authEdit', 'authList'], function() {
+//		console.log('add: ' + $scope.authAdd);
+//		console.log('del: ' + $scope.authDel);
+//		console.log('edit: ' + $scope.authEdit);
+//		console.log('list: ' + $scope.authList);
+		
+//	});
+		
+	
 	$scope.maxSize = 5;
 	$scope.currentPage = 1;
 	
@@ -15,34 +24,42 @@ leatherback.controller('mainCtrl', ['$scope','$location','prescriptionService','
     $scope.add = function() {
     	$location.path('/add');
     };
-    
-    $scope.search = function() {
-    	$location.path('/search');
-    };
-    
+        
     $scope.edit = function(id) {
     	$location.path('/edit/' + id);
     };
     
-    $scope.remove = function(index, id) {
-    	var dlg = dialogs.confirm();
-		dlg.result.then(function(btn){
-		   	prescriptionService.remove(id).then(function(returnData) {
+    $scope.remove = function(index, id, lotNumber) {
+    	var modalInstance = $modal.open({
+	  	      templateUrl: 'confirmDelete.html',
+	  	      controller: 'confirmDialogCtrl',
+	  	      size: 'sm',
+	  	      backdrop: 'static', 
+    	      resolve: {
+    	    	  lotNumber: function () {
+      	          return lotNumber;
+      	        }
+      	      }
+	  	});
+    	
+    	modalInstance.result.then(function() {
+			prescriptionService.remove(id).then(function(returnData) {
 		    	prescriptionService.list($scope.currentPage).then(function(returnData) {
 		            $scope.prescriptions = returnData.data;
 		            pagination.setPageStatus($scope, returnData.totalItems, returnData.currentPage);
 		        });
 	        });
-		},function(btn){
-			$scope.confirmed = 'You confirmed "No."';
-		});
+	    }, function () {
+	    	//console.log('no');
+	    });
     };
 
     $scope.show = function(id) {
     	var modalInstance = $modal.open({
     	      templateUrl: 'showDetails.html',
-    	      controller: 'showCtrl',
+    	      controller: 'showDetailsDialogCtrl',
     	      size: 'lg',
+    	      backdrop: 'static', 
     	      resolve: {
     	        id: function () {
     	          return id;
@@ -52,7 +69,20 @@ leatherback.controller('mainCtrl', ['$scope','$location','prescriptionService','
     };
 }]);
 
-leatherback.controller('showCtrl', ['$scope', '$location', '$modalInstance', 'prescriptionService', 'id',
+leatherback.controller('confirmDialogCtrl',['$scope', '$modalInstance', 'lotNumber',
+                                            function($scope, $modalInstance, lotNumber){
+	$scope.lotNumber = lotNumber;
+	
+	$scope.no = function(){
+		$modalInstance.dismiss('no');
+	}; // end close
+	
+	$scope.yes = function(){
+		$modalInstance.close('yes');
+	}; // end yes
+}]);
+
+leatherback.controller('showDetailsDialogCtrl', ['$scope', '$location', '$modalInstance', 'prescriptionService', 'id',
                                     function($scope, $location, $modalInstance, prescriptionService, id) {
     $scope.prescription = {};
     prescriptionService.getById(id).then(function(returnData) {

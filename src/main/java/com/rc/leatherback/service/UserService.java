@@ -16,95 +16,111 @@ import com.rc.leatherback.model.User;
 
 public class UserService {
 
-    private UserDao userDao;
-    private AuthorisationDao authorisationDao;
+	private UserDao userDao;
+	private AuthorisationDao authorisationDao;
 
-    public UserService() {
-        this.userDao = new UserDao();
-        this.authorisationDao = new AuthorisationDao();
-    }
+	public UserService() {
+		this.userDao = new UserDao();
+		this.authorisationDao = new AuthorisationDao();
+	}
 
-    public void changePassword(User user, String newPassword) throws ClassNotFoundException, SQLException {
-        try (Connection connection = DatabaseContext.getConnection()) {
-            try {
-                connection.setAutoCommit(false);
-                userDao.updatePassword(connection, user.getId(), newPassword);
-                connection.commit();
-            } catch (SQLException exception) {
-                connection.rollback();
+	public void changePassword(User user, String newPassword) throws ClassNotFoundException, SQLException {
+		try (Connection connection = DatabaseContext.getConnection()) {
+			try {
+				connection.setAutoCommit(false);
+				userDao.updatePassword(connection, user.getId(), newPassword);
+				connection.commit();
+			} catch (SQLException exception) {
+				connection.rollback();
 
-                throw new FailedToUpdatePasswordException(String.format("User %s 's password updated failed.", user.getId()),
-                                exception);
-            }
-        }
-    }
+				throw new FailedToUpdatePasswordException(String.format("User %s 's password updated failed.", user.getId()), exception);
+			}
+		}
+	}
 
-    public List<User> findAllUsers() throws ClassNotFoundException, SQLException {
-        try (Connection connection = DatabaseContext.getConnection()) {
-            List<User> users = userDao.findAllUsers(connection);
-            for (User user : users) {
-                Authorisation authorisation = authorisationDao.getByUserId(connection, user.getId());
-                user.setAuthorisation(authorisation);
-            }
+	public List<User> findAllUsers() throws ClassNotFoundException, SQLException {
+		try (Connection connection = DatabaseContext.getConnection()) {
+			List<User> users = userDao.findAllUsers(connection);
+			for (User user : users) {
+				Authorisation authorisation = authorisationDao.getByUserId(connection, user.getId());
+				user.setAuthorisation(authorisation);
+			}
 
-            return users;
-        }
-    }
+			return users;
+		}
+	}
 
-    public User getUserByUserId(long userId) throws ClassNotFoundException, SQLException {
-        try (Connection connection = DatabaseContext.getConnection()) {
-            User user = userDao.getById(connection, userId);
-            if (user == null) {
-                throw new UserNotFoundException(String.format("User is not found by user id: %s", userId));
-            }
+	public User getUserByUsername(String username) throws ClassNotFoundException, SQLException {
+		try (Connection connection = DatabaseContext.getConnection()) {
+			User user = userDao.getByUsername(connection, username);
+			if (user == null) {
+				throw new UserNotFoundException(String.format("User is not found by username: %s", username));
+			}
 
-            Authorisation authorisation = authorisationDao.getByUserId(connection, user.getId());
-            if (authorisation == null) {
-                throw new AuthorisationNotFoundException(String.format("Authorisation is not found by user id: %s", userId));
-            }
-            user.setAuthorisation(authorisation);
+			Authorisation authorisation = authorisationDao.getByUserId(connection, user.getId());
+			if (authorisation == null) {
+				throw new AuthorisationNotFoundException(String.format("Authorisation is not found by username: %s", username));
+			}
+			user.setAuthorisation(authorisation);
 
-            return user;
-        }
-    }
+			return user;
+		}
+	}
 
-    public void updateUser(User loggedInUser, long userId, User user) throws ClassNotFoundException, SQLException {
-        Date modifyDate = new Date();
+	public User getUserByUserId(long userId) throws ClassNotFoundException, SQLException {
+		try (Connection connection = DatabaseContext.getConnection()) {
+			User user = userDao.getById(connection, userId);
+			if (user == null) {
+				throw new UserNotFoundException(String.format("User is not found by user id: %s", userId));
+			}
 
-        user.setModifiedBy(loggedInUser.getName());
-        user.setModifiedDate(modifyDate);
-        user.getAuthorisation().setModifiedBy(loggedInUser.getName());
-        user.getAuthorisation().setModifiedDate(modifyDate);
+			Authorisation authorisation = authorisationDao.getByUserId(connection, user.getId());
+			if (authorisation == null) {
+				throw new AuthorisationNotFoundException(String.format("Authorisation is not found by user id: %s", userId));
+			}
+			user.setAuthorisation(authorisation);
 
-        Connection connection = DatabaseContext.getConnection();
-        try {
-            connection.setAutoCommit(false);
+			return user;
+		}
+	}
 
-            // Check whether parameter id is valid
-            User originalUser = userDao.getById(connection, userId);
-            if (originalUser == null) {
-                throw new UserNotFoundException(String.format("User is not found by user id: %s", userId));
-            }
+	public void updateUser(User loggedInUser, long userId, User user) throws ClassNotFoundException, SQLException {
+		Date modifyDate = new Date();
 
-            Authorisation originalAuthorisation = authorisationDao.getByUserId(connection, user.getId());
-            if (originalAuthorisation == null) {
-                throw new AuthorisationNotFoundException(String.format("Authorisation is not found by user id: %s", userId));
-            }
+		user.setModifiedBy(loggedInUser.getName());
+		user.setModifiedDate(modifyDate);
+		user.getAuthorisation().setModifiedBy(loggedInUser.getName());
+		user.getAuthorisation().setModifiedDate(modifyDate);
 
-            // Update prescription
-            user.setId(originalUser.getId());
-            userDao.update(connection, user);
+		Connection connection = DatabaseContext.getConnection();
+		try {
+			connection.setAutoCommit(false);
 
-            user.getAuthorisation().setId(originalAuthorisation.getId());
-            authorisationDao.update(connection, user.getAuthorisation());
+			// Check whether parameter id is valid
+			User originalUser = userDao.getById(connection, userId);
+			if (originalUser == null) {
+				throw new UserNotFoundException(String.format("User is not found by user id: %s", userId));
+			}
 
-            connection.commit();
-        } catch (SQLException exception) {
-            connection.rollback();
+			Authorisation originalAuthorisation = authorisationDao.getByUserId(connection, user.getId());
+			if (originalAuthorisation == null) {
+				throw new AuthorisationNotFoundException(String.format("Authorisation is not found by user id: %s", userId));
+			}
 
-            throw exception;
-        } finally {
-            connection.close();
-        }
-    }
+			// Update prescription
+			user.setId(originalUser.getId());
+			userDao.update(connection, user);
+
+			user.getAuthorisation().setId(originalAuthorisation.getId());
+			authorisationDao.update(connection, user.getAuthorisation());
+
+			connection.commit();
+		} catch (SQLException exception) {
+			connection.rollback();
+
+			throw exception;
+		} finally {
+			connection.close();
+		}
+	}
 }

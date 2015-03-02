@@ -30,9 +30,15 @@ public class LoginServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setAttribute("messageShow", "");
-		RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/views/login/form.jsp");
-		requestDispatcher.forward(req, resp);
+		HttpSession session = req.getSession(true);
+		Object userObject = session.getAttribute("user");
+		if (userObject != null) {
+			resp.sendRedirect("/dashboard");
+		} else {
+			req.setAttribute("messageShow", "");
+			RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/views/login/form.jsp");
+			requestDispatcher.forward(req, resp);
+		}
 	}
 
 	@Override

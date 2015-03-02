@@ -14,32 +14,33 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebFilter(filterName = "authenticationFilter", servletNames = { "DashboardServlet" }, dispatcherTypes = {
-                DispatcherType.REQUEST, DispatcherType.ASYNC })
+@WebFilter(filterName = "authenticationFilter", servletNames = { "DashboardServlet" }, dispatcherTypes = { DispatcherType.REQUEST,
+		DispatcherType.ASYNC })
 public class AuthenticationFilter implements Filter {
 
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+	@Override
+	public void init(FilterConfig filterConfig) throws ServletException {
 
-    }
+	}
 
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
-                    ServletException {
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
-        HttpSession session = ((HttpServletRequest) request).getSession(true);
-        Object userObject = session.getAttribute("user");
-        if (userObject == null) {
-            // throw new AuthenticatedFailedException("User is not found in session");
-            ((HttpServletResponse) response).sendError(HttpServletResponse.SC_FORBIDDEN);
-        } else {
-            chain.doFilter(request, response);
-        }
-    }
+		HttpSession session = ((HttpServletRequest) request).getSession(true);
+		Object userObject = session.getAttribute("user");
+		if (userObject == null) {
+			// throw new AuthenticatedFailedException("User is not found in session");
+			String errorMessage = "Login Error: wrong password!";
+			((HttpServletResponse) response).setHeader("X-Error-Message", errorMessage);
+			((HttpServletResponse) response).sendError(HttpServletResponse.SC_FORBIDDEN, errorMessage);
+		} else {
+			chain.doFilter(request, response);
+		}
+	}
 
-    @Override
-    public void destroy() {
+	@Override
+	public void destroy() {
 
-    }
+	}
 
 }
